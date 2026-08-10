@@ -1,413 +1,436 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI & ML Quiz</title>
+    <title>AI & Machine Learning Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #f4f7f6;
             margin: 0;
             padding: 20px;
+            color: #333;
         }
-        .quiz-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
         }
         .question-card {
             margin-bottom: 25px;
-            padding-bottom: 15px;
+            padding: 15px;
             border-bottom: 1px solid #e0e0e0;
         }
         .question-text {
-            font-weight: bold;
             font-size: 1.1em;
-            margin-bottom: 10px;
-            color: #333;
+            font-weight: bold;
+            margin-bottom: 12px;
         }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .options-list {
+            list-style: none;
+            padding: 0;
         }
-        .btn {
-            background-color: #e9ecef;
-            border: 2px solid #ced4da;
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background-color: #eef2f5;
+            border: 1px solid #ccc;
             padding: 10px 15px;
+            margin-bottom: 8px;
             border-radius: 5px;
             cursor: pointer;
-            text-align: left;
             font-size: 0.95em;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: background-color 0.2s ease;
         }
-        .btn:hover {
-            background-color: #dee2e6;
+        .option-btn:hover:not([disabled]) {
+            background-color: #dbe4eb;
         }
-        .btn.correct {
+        .option-btn.correct {
             background-color: #28a745 !important;
             color: white;
-            border-color: #28a745 !important;
+            border-color: #28a745;
         }
-        .btn.incorrect {
+        .option-btn.wrong {
             background-color: #dc3545 !important;
             color: white;
-            border-color: #dc3545 !important;
+            border-color: #dc3545;
         }
         .explanation {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #e8f4f8;
-            border-left: 4px solid #17a2b8;
             display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #e7f3fe;
+            border-left: 5px solid #2196F3;
+            border-radius: 4px;
             font-size: 0.9em;
-            color: #2c3e50;
+            color: #0c5460;
         }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <h2>AI / ML Interactive Quiz</h2>
-    <div id="quiz"></div>
+<div class="container">
+    <h1>AI & Machine Learning Quiz</h1>
+    <div id="quiz-container"></div>
 </div>
 
 <script>
 const quizData = [
     {
-        q: "Q.1. Which of the following is NOT a subfield of AI.? (निम्नलिखित में से कौन सा AI का उपक्षेत्र नहीं है?)",
-        options: ["Machine learning", "Natural language processing", "Virtual reality", "Robotics"],
-        ans: 2,
-        exp: "Virtual Reality (VR) is a simulated experience environment, whereas ML, NLP, and Robotics are direct subfields/applications of AI."
+        q: "Q.1. Which of the following is NOT a subfield of AI.?",
+        options: ["Machine learning", "Natural language processing", "Virtual reality", "Robotics", "All of these"],
+        answer: 2,
+        explanation: "Virtual Reality (VR) is an immersive computer-generated environment technology, whereas ML, NLP, and Robotics are direct subfields of AI."
     },
     {
         q: "Q.2. Which of the following is a type of AI that involves training a computer program using a large dataset.?",
-        options: ["Expert systems", "Fuzzy logic", "Reinforcement learning", "Machine learning"],
-        ans: 3,
-        exp: "Machine learning relies on training algorithmic models using data to recognize patterns and make decisions."
+        options: ["Expert systems", "Fuzzy logic", "Reinforcement learning", "Machine learning", "All of these"],
+        answer: 3,
+        explanation: "Machine Learning specifically focuses on training algorithms using datasets to discover patterns and make decisions."
     },
     {
         q: "Q.3. Who is the father of artificial intelligence.?",
-        options: ["John McCarthy", "Fisher Ada", "Allen Newell", "Alan Turing"],
-        ans: 0,
-        exp: "John McCarthy coined the term 'Artificial Intelligence' in 1955 and was a key pioneer in the field."
+        options: ["John McCarthy", "Fisher Ada", "Allen Newell", "Alan Turing", "All of these"],
+        answer: 0,
+        explanation: "John McCarthy is recognized as the father of AI; he coined the term in 1956 at the Dartmouth Conference."
     },
     {
         q: "Q.4. Which is not the commonly used programming language for AI.?",
-        options: ["PROLOG", "LISP", "Perl", "JavaScript"],
-        ans: 2,
-        exp: "Perl is primarily used for text processing and system administration, not mainstream AI development compared to Prolog or LISP."
+        options: ["PROLOG", "LISP", "Perl", "Java script", "All of these"],
+        answer: 2,
+        explanation: "Perl is primarily used for text manipulation, CGI scripting, and system administration, not mainstream AI development."
     },
     {
         q: "Q.5. The first AI programming language was called.?",
-        options: ["Python", "IPL", "LISP", "Machine Language"],
-        ans: 2,
-        exp: "LISP (List Processing), developed by John McCarthy in 1958, is the earliest dedicated AI programming language."
+        options: ["Python", "IPL", "LISP", "Machine Language", "None of these"],
+        answer: 2,
+        explanation: "LISP (List Processing) created by John McCarthy in 1958 is widely regarded as the first programming language for AI."
     },
     {
-        q: "Q.6. AI is one of the newest disciplines, formally initiated in _______ when the name was coined.?",
-        options: ["1986", "1956", "1995", "1990"],
-        ans: 1,
-        exp: "The Dartmouth Conference in 1956 is widely recognized as the birth of Artificial Intelligence as a discipline."
+        q: "Q.6. AI (Artificial Intelligence) is one of the newest disciplines, formally initiated in",
+        options: ["1986", "1956", "1995", "1990", "1988"],
+        answer: 1,
+        explanation: "AI was officially founded as an academic discipline at the Dartmouth Workshop in the summer of 1956."
     },
     {
         q: "Q.7. What is Artificial intelligence.?",
-        options: ["Putting your intelligence into Computer", "Programming with your own intelligence", "Making a Machine intelligent", "Playing a Game"],
-        ans: 2,
-        exp: "AI focuses on creating systems/machines capable of performing tasks that typically require human intelligence."
+        options: ["Putting your intelligence into Computer", "Programming with your own intelligence", "Making a Machine intelligent", "Playing a Game", "None of these"],
+        answer: 2,
+        explanation: "AI refers to the science and engineering of making machines intelligent so they can perform tasks humanly."
     },
     {
         q: "Q.8. In which university the first demonstration of AI program run.?",
-        options: ["Carnegie Mellon University", "Oxford University", "Cambridge University", "Stanford University"],
-        ans: 0,
-        exp: "The Logic Theorist program, considered the first AI program, was demonstrated at Carnegie Mellon University (then Carnegie Tech)."
+        options: ["Carnegie Mellon University", "Oxford University", "Cambridge University", "Stanford University", "None of these"],
+        answer: 0,
+        explanation: "Carnegie Mellon University (CMU) was home to early pioneering AI demonstrations like the Logic Theorist."
     },
     {
         q: "Q.9. In which year John McCarthy coined the term Artificial Intelligence.?",
-        options: ["1950", "1953", "1956", "1959"],
-        ans: 2,
-        exp: "John McCarthy coined the term 'Artificial Intelligence' for the 1956 Dartmouth conference proposal."
+        options: ["1950", "1953", "1956", "1959", "None of these"],
+        answer: 2,
+        explanation: "John McCarthy coined 'Artificial Intelligence' for his proposal for the 1956 Dartmouth Conference."
     },
     {
         q: "Q.10. Machine Learning Is Introduced In.?",
-        options: ["1950", "1953", "1956", "1959"],
-        ans: 3,
-        exp: "Arthur Samuel coined the term 'Machine Learning' in 1959 while working at IBM."
+        options: ["1950", "1953", "1956", "1951", "1959"],
+        answer: 4,
+        explanation: "The term Machine Learning was coined by Arthur Samuel in 1959 while working at IBM."
     },
     {
         q: "Q.11. Google Recommendations Are Called.?",
-        options: ["AI", "Machine Learning", "Data Mining", "Data Warehousing"],
-        ans: 0,
-        exp: "Google recommendations utilize Artificial Intelligence and underlying recommendation algorithms."
+        options: ["AI", "Machine Learning", "Data Mining", "Data Where Housing", "All of these"],
+        answer: 0,
+        explanation: "Google utilizes Artificial Intelligence powered recommendation models to personalize user suggestions."
     },
     {
         q: "Q.12. Robot's 'Arm' Is Called.?",
-        options: ["Actuator", "Effector", "Manipulator", "Sensors"],
-        ans: 0,
-        exp: "An actuator is a component responsible for moving and controlling a mechanism, like a robot's arm movement."
+        options: ["Actuator", "Effector", "Manipulator", "Sensors", "All of these"],
+        answer: 0,
+        explanation: "An actuator is a mechanical component responsible for moving and controlling a robot's arm structure."
     },
     {
         q: "Q.13. What Is AI.?",
-        options: ["Playing Games", "Programming With Your Own Intelligence", "Making Machines Intelligent", "Solve Problem"],
-        ans: 2,
-        exp: "The foundational core definition of AI is enabling machines to think and operate intelligently."
+        options: ["Playing Games", "Programming With Your Own Intelligence", "Making Machines Intelligent", "Solve Problem", "All of these"],
+        answer: 2,
+        explanation: "AI primarily focuses on endowing machines with intellectual capabilities similar to human intelligence."
     },
     {
         q: "Q.14. The Process Of Deriving Meaningful Information From A Lot of Data Is Called.?",
-        options: ["Extraction", "Data Mining", "Data Warehousing", "Abstraction"],
-        ans: 1,
-        exp: "Data Mining is the practice of examining large pre-existing databases to extract useful insights."
+        options: ["Extraction", "Data Mining", "Data Where Housing", "Abstraction", "None of these"],
+        answer: 1,
+        explanation: "Data Mining is the practice of examining large pre-existing databases to extract useful patterns and knowledge."
     },
     {
         q: "Q.15. In Which Conference John McCarthy First Coined The Term 'Artificial Intelligence' In 1956.?",
-        options: ["Dartmouth Conference", "ACM Conference", "AAAI Conference", "RNT Conference"],
-        ans: 0,
-        exp: "The Dartmouth Summer Research Project on Artificial Intelligence held in 1956 introduced the term."
+        options: ["Dartmouth Conference", "Acm Conference", "Aaai Conference", "RNT Conference", "None of these"],
+        answer: 0,
+        explanation: "The Dartmouth Summer Research Project on Artificial Intelligence (1956) was where the field officially began."
     },
     {
         q: "Q.16. Which Programming Language Is Best Choice For Development Of AI.?",
-        options: ["Python", "Java", "Dot.Net", "Mat-Lab"],
-        ans: 0,
-        exp: "Python is currently the top choice for AI development due to extensive ecosystem libraries like TensorFlow and PyTorch."
+        options: ["Python", "Java", "Dot.Net", "Mat-Lab", "All of these"],
+        answer: 0,
+        explanation: "Python is currently the most popular choice for AI due to its rich ecosystem of data science libraries."
     },
     {
         q: "Q.17. First Robot Was Introduced To General Motors Assembly Line In.?",
-        options: ["1960", "1959", "1965", "1956"],
-        ans: 0,
-        exp: "Unimate, the world's first industrial robot, was implemented on General Motors' assembly line around 1960–1961."
+        options: ["1960", "1959", "1965", "1956", "1990"],
+        answer: 0,
+        explanation: "Unimate, the first industrial robot, began work on a General Motors assembly line in 1961 (often dated 1960 in history)."
     },
     {
         q: "Q.18. First Robot Was Introduced In 1960 To Which Assembly Line.?",
-        options: ["AI Laboratory", "General Motor's Assembly Line", "Allen Institute Of AI", "Turing Institute"],
-        ans: 1,
-        exp: "Unimate joined the General Motors assembly line to perform die-casting operations."
+        options: ["AI Laboratory", "General Motor's Assembly Line", "Allen Institute Of AI", "Turing Institute", "None of these"],
+        answer: 1,
+        explanation: "The Unimate robot automated die-casting operations at General Motors assembly plants."
     },
     {
-        q: "Q.19. The First AI Chat-Bot Name Which Introduced In 1961/1966.?",
-        options: ["Alexa", "Siri", "ELIZA", "Cortana"],
-        ans: 2,
-        exp: "ELIZA, created by Joseph Weizenbaum at MIT in the 1960s, is recognized as the world's first chatbot."
+        q: "Q.19. The First AI Chat-Bot Name Which Introduced In 1961.?",
+        options: ["Alexa", "Siri", "Eliza", "Cortana", "None of these"],
+        answer: 2,
+        explanation: "ELIZA, created by Joseph Weizenbaum at MIT in 1966, was one of the earliest conversational chatbots."
     },
     {
         q: "Q.20. Which of the given language is not commonly used for AI.?",
-        options: ["PROLOG", "LISP", "Python", "Perl"],
-        ans: 3,
-        exp: "Perl is generally used for scripting/system automation, rather than structured AI system construction."
+        options: ["PROLOG", "LISP", "Python", "Perl", "None of these"],
+        answer: 3,
+        explanation: "Perl is not widely preferred for modern machine learning or core AI tasks compared to Python or LISP."
     },
     {
         q: "Q.21. LISP was created by.?",
-        options: ["Marvin Minsky", "Allen Newell and Herbert Simon", "John McCarthy", "Alan Turing"],
-        ans: 2,
-        exp: "John McCarthy designed LISP in 1958 at MIT."
+        options: ["Marvin Minsky", "Allen Newell and Herbert Simon", "John McCarthy", "Alan Turing", "None of these"],
+        answer: 2,
+        explanation: "John McCarthy designed LISP in 1958 while at the Massachusetts Institute of Technology."
     },
     {
         q: "Q.22. Which of the following is not an application of AI.?",
-        options: ["Content mining", "Handwriting Recognition", "Intelligent Robots", "Speech Recognition"],
-        ans: 0,
-        exp: "Content mining relies primarily on standard web scraping and data extraction routines rather than intelligent AI modeling."
+        options: ["Content mining", "Handwriting Recognition", "Intelligent Robots", "Speech Recognition", "All of these"],
+        answer: 0,
+        explanation: "Standard content mining relies heavily on basic web scraping rules, though standard AI options here list option 1 as the correct key."
     },
     {
-        q: "Q.23. _______ is an artificial-intelligence chatbot developed by OpenAI.?",
-        options: ["Sofia", "Bard", "ChatGPT", "Fred"],
-        ans: 2,
-        exp: "ChatGPT is the AI chatbot developed and released by OpenAI."
+        q: "Q.23. ... is an artificial-intelligence chatbot developed by San Francisco-based startup OpenAI.?",
+        options: ["Sofia", "Bard", "ChatGPT", "Fred", "All of these"],
+        answer: 2,
+        explanation: "ChatGPT was launched by OpenAI as a conversational AI agent trained on massive language data."
     },
     {
-        q: "Q.24. _______ is an emerging branch in computer science, which interprets means and method of making computers think like human beings.?",
-        options: ["Blockchain", "VR", "AI", "Cloud computing"],
-        ans: 2,
-        exp: "Artificial Intelligence focuses on recreating human-like reasoning and logic in machine software."
+        q: "Q.24. ... is an emerging branch in computer science, which interprets means and method of making computers think like human beings.?",
+        options: ["Block chain", "VR", "AI", "Cloud computing", "All of these"],
+        answer: 2,
+        explanation: "Artificial Intelligence (AI) focuses on simulating human intelligence in machines."
     },
     {
-        q: "Q.25. Which of the following is the smallest and fastest computer imitating brain working.?",
-        options: ["Supercomputer", "Quantum computer", "Param-10000", "IBM chips"],
-        ans: 1,
-        exp: "Quantum computers utilize quantum mechanics to process complex operations, mimicking neural parallel structures fast."
+        q: "Q.25. Which of the following is the smallest and fastest computer Imitating brain working.?",
+        options: ["Supercomputer", "Quantum computer", "Param-10000", "IBM chips", "Super Computer"],
+        answer: 1,
+        explanation: "Quantum computing utilizes principles of quantum physics to compute complex intelligence functions rapidly."
     },
     {
         q: "Q.26. What is ChatGPT.?",
-        options: ["Input", "Process", "Output", "Program"],
-        ans: 3,
-        exp: "ChatGPT is a specialized software application (program/model) executing natural language processing."
+        options: ["Input", "Process", "Output", "Virus", "Program"],
+        answer: 4,
+        explanation: "ChatGPT is a software application or computer program designed for text generation via AI."
     },
     {
         q: "Q.27. ChatGPT Initially Released in year.?",
-        options: ["2010", "2014", "2022", "2023"],
-        ans: 2,
-        exp: "OpenAI officially released ChatGPT as a public prototype on November 30, 2022."
+        options: ["2010", "2014", "2022", "2023", "2021"],
+        answer: 2,
+        explanation: "ChatGPT was officially launched by OpenAI on November 30, 2022."
     },
     {
         q: "Q.28. ChatGPT Was Developed By.?",
-        options: ["Microsoft", "Apple", "OpenAI", "Google"],
-        ans: 2,
-        exp: "OpenAI designed and trained the ChatGPT model series."
+        options: ["Microsoft", "Apple", "OpenAI", "Google", "HP"],
+        answer: 2,
+        explanation: "OpenAI built and released the ChatGPT chatbot platform."
     },
     {
         q: "Q.29. What is ChatGPT.?",
-        options: ["A Large Language Model", "Popular Video Game", "Social Media Platform", "Fitness Tracker"],
-        ans: 0,
-        exp: "ChatGPT is built on OpenAI's Generative Pre-trained Transformer series, which are Large Language Models (LLMs)."
+        options: ["A Large Language Model", "Popular Video Game", "Social Media Platform", "Fitness Tracker", "All of these"],
+        answer: 0,
+        explanation: "ChatGPT is built upon generative Large Language Models (LLMs)."
     },
     {
         q: "Q.30. What is the technology behind ChatGPT.?",
-        options: ["Machine Learning", "Virtual Reality", "Augmented Reality", "Robotics"],
-        ans: 0,
-        exp: "ChatGPT relies heavily on Machine Learning and Deep Neural Networks (Transformer architecture)."
+        options: ["Machine Learning", "Virtual Reality", "Augmented Reality", "Robotics", "All of these"],
+        answer: 0,
+        explanation: "ChatGPT is powered by deep learning, which is a specialized subset of Machine Learning."
     },
     {
         q: "Q.31. ChatGPT Model is trained using.?",
-        options: ["HTTP", "PPP", "RLHF", "LLHF"],
-        ans: 2,
-        exp: "ChatGPT uses Reinforcement Learning from Human Feedback (RLHF) to align outputs with user preferences."
+        options: ["HTTP", "PPP", "RLHF", "LLHF", "VPN"],
+        answer: 2,
+        explanation: "RLHF stands for Reinforcement Learning from Human Feedback, used to align ChatGPT outputs."
     },
     {
-        q: "Q.32. What is the latest version of ChatGPT mentioned.?",
-        options: ["Chat GPT-1", "Chat GPT-2", "Chat GPT-3", "Chat GPT-4"],
-        ans: 3,
-        exp: "GPT-4 is the advanced multimodal architecture in the GPT series."
+        q: "Q.32. What is the latest version of ChatGPT.?",
+        options: ["Chat GPT-1", "Chat GPT-2", "Chat GPT-3", "Chat GPT-4", "Chat GPT-0"],
+        answer: 3,
+        explanation: "GPT-4 is one of the advanced flagship multimodal models developed by OpenAI."
     },
     {
         q: "Q.33. What is the main purpose of ChatGPT.?",
-        options: ["To generate creative text formats", "To translate languages", "To write different kinds of creative content", "To provide answers to questions in a human-like way"],
-        ans: 3,
-        exp: "ChatGPT is primarily engineered to operate conversational interaction in a clear, human-like manner."
+        options: ["To generate creative text formats", "To translate languages", "To write different kinds of creative content", "To provide answers to questions in a human-like way", "All of these"],
+        answer: 3,
+        explanation: "ChatGPT is designed to engage in natural text dialog and answer user queries contextually."
     },
     {
         q: "Q.34. What does the acronym 'GPT' stand for in ChatGPT.?",
-        options: ["Generative Post-trained Transformer", "Large Language Model", "Generative Pre-trained Transformer", "OpenAI ChatGPT"],
-        ans: 2,
-        exp: "GPT stands for Generative Pre-trained Transformer."
+        options: ["Generative Post-trained Transformer", "Large Language Model", "Generative Pre-trained Transformer", "OpenAI ChatGPT", "Non of these"],
+        answer: 2,
+        explanation: "GPT stands for Generative Pre-trained Transformer architecture."
     },
     {
         q: "Q.35. Which of the following is a fast processing Operating System.?",
-        options: ["Batch Operating System", "Time Sharing Operating System", "Distributed Operating System", "Real Time Operating System"],
-        ans: 2,
-        exp: "Distributed Operating Systems distribute data across multiple nodes providing high processing speed and throughput."
+        options: ["Batch Operating System", "Time Sharing Operating System", "Distributed Operating System", "Real Time Operating System", "Network Operating System"],
+        answer: 2,
+        explanation: "Distributed Operating Systems process tasks across multiple connected nodes rapidly."
     },
     {
         q: "Q.36. Supervised learning and unsupervised clustering both require which is correct according to the statement.?",
-        options: ["output attribute", "hidden attribute", "input attribute", "categorical attribute"],
-        ans: 2,
-        exp: "Both machine learning paradigms require an input dataset/attribute to begin processing and modeling."
+        options: ["output attribute", "hidden attribute", "input attribute", "categorical attribute", "All of these"],
+        answer: 2,
+        explanation: "Both algorithms need input data features/attributes to operate."
     },
     {
-        q: "Q.37. Classifying new Netflix series reviews marked as positive, negative and neutral is an example of.?",
-        options: ["Supervised learning", "Unsupervised learning", "Semi supervised learning", "Reinforcement learning"],
-        ans: 0,
-        exp: "Since input data contains labeled outputs (positive/negative), it falls under Supervised Learning."
+        q: "Q.37. Classifying reviews of a new Netflix series is an example of.?",
+        options: ["Supervised learning", "Unsupervised learning", "Semi supervised learning", "Reinforcement learning", "All of these"],
+        answer: 0,
+        explanation: "Because categories (positive/negative/neutral) are pre-labeled, it is Supervised Learning."
     },
     {
         q: "Q.38. The problem of finding hidden structure in unlabeled data is called.?",
-        options: ["supervised learning", "unsupervised learning", "reinforcement learning", "deep learning"],
-        ans: 1,
-        exp: "Unsupervised learning works on unlabeled datasets to discover hidden clusters or patterns."
+        options: ["supervised learning", "unsupervised learning", "reinforcement learning", "All of these", "None of these"],
+        answer: 1,
+        explanation: "Unsupervised learning finds hidden patterns, clusters, or structures within unlabeled data."
     },
     {
         q: "Q.39. In what type of learning labelled training data is used.?",
-        options: ["supervised learning", "unsupervised learning", "reinforcement learning", "federated learning"],
-        ans: 0,
-        exp: "Supervised learning explicitly requires human-provided labels attached to training samples."
+        options: ["supervised learning", "unsupervised learning", "reinforcement learning", "All of these", "None of these"],
+        answer: 0,
+        explanation: "Supervised learning relies on labeled datasets to train models."
     },
     {
         q: "Q.40. Application of machine learning methods to large databases is called.?",
-        options: ["data mining", "artificial intelligence", "big data computing", "internet of things"],
-        ans: 0,
-        exp: "Data mining leverages ML models to extract meaningful knowledge patterns from massive datasets."
+        options: ["data mining", "artificial intelligence", "big data computing", "internet of things", "None of these"],
+        answer: 0,
+        explanation: "Data mining leverages machine learning techniques to extract knowledge from large datasets."
     },
     {
         q: "Q.41. Machine learning is a subset of.?",
-        options: ["Deep Learning", "Artificial Intelligence", "Data Learning", "Robotics"],
-        ans: 1,
-        exp: "Machine Learning is a specialized field within the broader umbrella of Artificial Intelligence."
+        options: ["Deep Learning", "Artificial Intelligence", "Data Learning", "All of these", "None of these"],
+        answer: 1,
+        explanation: "Machine Learning is a specialized subfield within Artificial Intelligence."
     },
     {
-        q: "Q.42. Who is known as one of the key figures/fathers of Machine/Deep Learning.?",
-        options: ["Geoffrey Hill", "Geoffrey Chaucer", "Geoffrey Everest Hinton", "Alan Turing"],
-        ans: 2,
-        exp: "Geoffrey Hinton is widely recognized as a 'Godfather of Deep Learning' and modern ML approaches."
+        q: "Q.42. Who is the father of Machine Learning.?",
+        options: ["Geoffrey Hill", "Geoffrey Chaucer", "Geoffrey Everest Hinton", "All of these", "None of these"],
+        answer: 2,
+        explanation: "Geoffrey Hinton is widely regarded as the Godfather of Deep Learning and modern ML."
     },
     {
         q: "Q.43. What are the three types of Machine Learning.?",
-        options: ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning", "All of these"],
-        ans: 3,
-        exp: "Supervised, Unsupervised, and Reinforcement Learning are the 3 core pillars of Machine Learning."
+        options: ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning", "All of these", "None of these"],
+        answer: 3,
+        explanation: "Supervised, Unsupervised, and Reinforcement Learning are the 3 main types of ML."
     },
     {
-        q: "Q.44. Real-Time decisions, Game AI, Skill acquisition, and Robot Navigation are applications of.?",
-        options: ["Reinforcement Learning", "Supervised Learning", "Unsupervised Learning", "Deep Learning"],
-        ans: 0,
-        exp: "Reinforcement Learning relies on feedback loops (rewards/penalties) suited for real-time control and games."
+        q: "Q.44. Real-Time decisions, Game AI, Skill acquisition are applications of.?",
+        options: ["Reinforcement Learning", "Supervised Learning", "Unsupervised Learning", "All of these", "None of these"],
+        answer: 0,
+        explanation: "Reinforcement Learning learns optimal actions via trial, error, and reward mechanisms."
     },
     {
         q: "Q.45. What is called the application of machine learning methods to large databases.?",
-        options: ["Data mining", "Internet of things", "Artificial intelligence", "Database Management"],
-        ans: 0,
-        exp: "Data Mining is the practical extraction of useful pattern data using algorithmic machine learning techniques."
+        options: ["Data mining", "Internet of things", "Artificial intelligence", "All of these", "None of these"],
+        answer: 0,
+        explanation: "Applying machine learning algorithms to extract patterns from large data stores is Data Mining."
     },
     {
         q: "Q.46. The term machine learning was coined by.?",
-        options: ["James Gosling", "Arthur Samuel", "John Von Neumann", "Guido van Rossum"],
-        ans: 1,
-        exp: "Arthur Samuel, an American pioneer in computer gaming and AI, coined the term in 1959."
+        options: ["James Gosling", "Arthur Samuel", "John Von Neumann", "Guido van Rossum", "None of these"],
+        answer: 1,
+        explanation: "Arthur Samuel coined the term 'Machine Learning' in 1959 at IBM."
     }
 ];
 
+// Helper function to shuffle array elements (Fisher-Yates Shuffle algorithm)
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
 function renderQuiz() {
-    const quizContainer = document.getElementById('quiz');
-    quizData.forEach((item, index) => {
+    const container = document.getElementById('quiz-container');
+    
+    quizData.forEach((item, qIndex) => {
         const qCard = document.createElement('div');
         qCard.className = 'question-card';
 
-        const qTitle = document.createElement('div');
-        qTitle.className = 'question-text';
-        qTitle.innerText = item.q;
-        qCard.appendChild(qTitle);
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.innerText = item.q;
+        qCard.appendChild(qText);
 
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options';
-
-        item.options.forEach((opt, optIdx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = (optIdx + 1) + ") " + opt;
-            btn.onclick = () => checkAnswer(btn, index, optIdx);
-            optionsContainer.appendChild(btn);
+        // Prepare option objects so we track original index for verification
+        let optionsObj = item.options.map((opt, index) => {
+            return { text: opt, originalIndex: index };
         });
 
-        qCard.appendChild(optionsContainer);
+        // Shuffle options on each page load
+        let shuffledOptions = shuffleArray(optionsObj);
 
-        const expDiv = document.createElement('div');
-        expDiv.id = `exp-${index}`;
-        expDiv.className = 'explanation';
-        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
-        qCard.appendChild(expDiv);
+        const optsList = document.createElement('div');
+        optsList.className = 'options-list';
 
-        quizContainer.appendChild(qCard);
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation';
+        expBox.innerText = `Explanation: ${item.explanation}`;
+
+        shuffledOptions.forEach((optObj) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = optObj.text;
+
+            btn.onclick = function() {
+                // Disable all option buttons for this question once answered
+                const siblings = optsList.querySelectorAll('.option-btn');
+                siblings.forEach(b => b.disabled = true);
+
+                if (optObj.originalIndex === item.answer) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('wrong');
+                    // Highlight the correct option in green
+                    siblings.forEach(b => {
+                        if (b.innerText === item.options[item.answer]) {
+                            b.classList.add('correct');
+                        }
+                    });
+                }
+                expBox.style.display = 'block';
+            };
+
+            optsList.appendChild(btn);
+        });
+
+        qCard.appendChild(optsList);
+        qCard.appendChild(expBox);
+        container.appendChild(qCard);
     });
-}
-
-function checkAnswer(selectedBtn, qIndex, selectedIdx) {
-    const card = selectedBtn.closest('.question-card');
-    const buttons = card.querySelectorAll('.btn');
-    const correctIdx = quizData[qIndex].ans;
-
-    buttons.forEach((btn, idx) => {
-        btn.disabled = true; // Disable buttons after click
-        if (idx === correctIdx) {
-            btn.classList.add('correct');
-        }
-    });
-
-    if (selectedIdx !== correctIdx) {
-        selectedBtn.classList.add('incorrect');
-    }
-
-    const expDiv = document.getElementById(`exp-${qIndex}`);
-    expDiv.style.display = 'block';
 }
 
 window.onload = renderQuiz;
