@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java MCQs Interactive Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not([disabled]) {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            font-weight: bold;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #e7f5ff;
+            border-left: 4px solid #1c7ed6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #1864ab;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Java Multiple Choice Questions</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. Java programs are ?",
+        options: ["Faster than others", "Platform independent", "Not reusable", "Not scalable", "All of these"],
+        correct: "Platform independent",
+        exp: "Java code is compiled into bytecode, making it platform independent as it can run on any system with a Java Virtual Machine (JVM)."
+    },
+    {
+        q: "Q.2. Java has its origin in ?",
+        options: ["C programming language", "PERRL", "Oak programming language", "COBOL", "BASIC"],
+        correct: "Oak programming language",
+        exp: "Java was originally created by James Gosling and named 'Oak' before being renamed to Java."
+    },
+    {
+        q: "Q.3. Which one of the following is true for Java ?",
+        options: ["Java is object-oriented and interpreted", "Java is efficient and faster than C", "Java is the choice of everyone", "Java is not robust", "All of these"],
+        correct: "Java is object-oriented and interpreted",
+        exp: "Java combines object-oriented principles with an interpreter/JVM that executes compiled bytecode."
+    },
+    {
+        q: "Q.4. The command javac is used to?",
+        options: ["debug a java program", "compile a Java program", "Interpret a java program", "execute a Java program", "None of these"],
+        correct: "compile a Java program",
+        exp: "'javac' is the Java compiler tool that compiles .java source files into .class bytecode files."
+    },
+    {
+        q: "Q.5. Java servlets are an efficient and powerful solution for creating ______ for the web?",
+        options: ["Dynamic content", "Static content", "Hardware", "Both 1 and 2", "None of these"],
+        correct: "Dynamic content",
+        exp: "Java Servlets run on a web server to dynamically process user requests and construct dynamic responses."
+    },
+    {
+        q: "Q.6. Filters were officially introduced in the Servlet specification?",
+        options: ["2.1", "2.3", "2.2", "2.4", "None of these"],
+        correct: "2.3",
+        exp: "Servlet Filters were officially introduced as part of the Java Servlet Specification 2.3."
+    },
+    {
+        q: "Q.7. Which is the root class of all AWT events?",
+        options: ["java.awt.ActionEven", "java.awt.AWTEvent", "java.awt.event.AWTEvent", "java.awt.event.Event", "None of these"],
+        correct: "java.awt.AWTEvent",
+        exp: "java.awt.AWTEvent is the root class for all Abstract Window Toolkit (AWT) events."
+    },
+    {
+        q: "Q.8. OOP features results in ?",
+        options: ["Increasing productivity", "Reusability", "Decreasing maintenance cost", "All of these", "None of these"],
+        correct: "All of these",
+        exp: "OOP modularity enhances code reusability, lowers long-term maintenance costs, and boosts development productivity."
+    },
+    {
+        q: "Q.9. break statement is used to?",
+        options: ["get out of method", "end a program", "get out of a loop", "get out of the system", "None of these"],
+        correct: "get out of a loop",
+        exp: "The break statement terminates execution of the nearest enclosing loop or switch block."
+    },
+    {
+        q: "Q.10. Native-protocol pure Java converts ______ into the ______ used by DBMS directly?",
+        options: ["JDBC calls, network protocol", "ODBC class, network protocol", "ODBC class, user call", "JDBC calls, user call", "None of these"],
+        correct: "JDBC calls, network protocol",
+        exp: "Type-4 JDBC drivers convert JDBC calls directly into vendor-specific database network protocols."
+    },
+    {
+        q: "Q.11. The JDBC-ODBC bridge allows ______ to be used as ______.",
+        options: ["JDBC drivers, ODBC drivers", "Drivers, Application", "ODBC drivers, JDBC drivers", "Application, drivers", "None of these"],
+        correct: "Drivers, Application",
+        exp: "The JDBC-ODBC bridge enables ODBC drivers to function within a Java database application framework."
+    },
+    {
+        q: "Q.12. Which of the following is true about Java?",
+        options: ["Java does not support overloading.", "Java has replaced the destructor function of C++", "There are no header files in Java.", "All of the above", "None of these"],
+        correct: "All of the above",
+        exp: "Java uses automatic garbage collection in place of destructors and imports packages rather than using C++ header files."
+    },
+    {
+        q: "Q.13. ______ are not machine instructions and therefore, Java interpreter generates machine code that can be directly executed by the machine running the Java program.",
+        options: ["Compiled Instructions", "Compiled code", "byte code", "Java mid code", "None of these"],
+        correct: "byte code",
+        exp: "Bytecode is platform-neutral intermediate code which the JVM translates into native hardware execution instructions."
+    },
+    {
+        q: "Q.14. Which of the following is not the Java primitive type?",
+        options: ["Byte", "Float", "Character", "Long double", "More than one of the above"],
+        correct: "Long double",
+        exp: "'long double' is not a valid primitive type in Java; floating-point primitives are restricted to 'float' and 'double'."
+    },
+    {
+        q: "Q.15. Inner classes are ______",
+        options: ["anonymous classes", "nested classes", "subclasses", "derived classes", "None of these"],
+        correct: "nested classes",
+        exp: "An inner class is a non-static nested class declared inside an enclosing class."
+    },
+    {
+        q: "Q.16. All Java classes are derived from?",
+        options: ["java.lang.Class", "java.util.Name", "java.lang.Object", "java.awt.Window", "None of these"],
+        correct: "java.lang.Object",
+        exp: "java.lang.Object serves as the ultimate root class for all Java class hierarchies."
+    },
+    {
+        q: "Q.17. The jdb is used to?",
+        options: ["Create a jar archive", "Debug a java program", "Create a C header file", "Generate java documentation", "None of these"],
+        correct: "Debug a java program",
+        exp: "'jdb' stands for Java Debugger, a command-line utility used to inspect and debug Java programs."
+    },
+    {
+        q: "Q.18. What would happen if 'String[]args' is not included as an argument in the main method?",
+        options: ["No error", "Compilation error", "The program won't run", "Program exit", "All of these"],
+        correct: "The program won't run",
+        exp: "Without the exact `public static void main(String[] args)` signature, the JVM will fail to locate the application entry point at runtime."
+    },
+    {
+        q: "Q.19. Which method will a web browser call on a new applet?",
+        options: ["main method", "destroy method", "execute method", "init method", "None of these"],
+        correct: "init method",
+        exp: "Browsers execute the `init()` lifecycle method first when initializing an applet."
+    },
+    {
+        q: "Q.20. Which of the following is not mandatory in a variable declaration?",
+        options: ["a semicolon", "an identifier", "an assignment", "a data type", "None of these"],
+        correct: "an assignment",
+        exp: "Assigning an initial value is optional during initial variable declaration in Java."
+    },
+    {
+        q: "Q.21. In order to run JSP ______ is required.",
+        options: ["Mail Server", "Applet viewer", "Java Web Server", "Database connection", "All of these"],
+        correct: "Java Web Server",
+        exp: "JSP pages must run within a Java-enabled Web Server / Servlet Container like Apache Tomcat."
+    },
+    {
+        q: "Q.22. By using ______ termination of a loop.",
+        options: ["Break", "Continue", "Terminate", "Loop Close", "All of these"],
+        correct: "Break",
+        exp: "The `break` statement forces immediate loop exit."
+    },
+    {
+        q: "Q.23. The compiled Java program can run on any ______ having Java Virtual Machine (JVM) installed on it.",
+        options: ["program", "java", "hardware", "nonjava", "All of these"],
+        correct: "hardware",
+        exp: "JVM acts as an abstraction layer permitting compiled bytecode to execute across diverse physical hardware."
+    },
+    {
+        q: "Q.24. MS-SQL stores data in a ______ file format.",
+        options: [".DAT", ".MDB", ".MSSQL", ".OBJ", "None of these"],
+        correct: ".DAT",
+        exp: ".DAT files represent raw database storage structures in legacy and specialized SQL configurations."
+    },
+    {
+        q: "Q.25. Ingres is a.",
+        options: ["Socket", "Compiler", "Database", "Web server", "None of these"],
+        correct: "Database",
+        exp: "Ingres is an open-source relational database management system."
+    },
+    {
+        q: "Q.26. The class String belongs to__________ package.",
+        options: ["java.awt", "java.lang", "java.applet", "java.string", "None of these"],
+        correct: "java.lang",
+        exp: "The String class is defined in the fundamental `java.lang` package."
+    },
+    {
+        q: "Q.27. The _______ and _________ classes are abstract classes that support reading and writing of byte streams.",
+        options: ["reader, writer", "inputstream, outputstream", "objectinputstream, objectoutputstream", "None of these", "All of these"],
+        correct: "inputstream, outputstream",
+        exp: "InputStream and OutputStream are the base abstract classes for byte-oriented stream operations."
+    },
+    {
+        q: "Q.28. A package is a collection of.",
+        options: ["classes", "Interfaces", "editing tools", "classes and interfaces", "All of these"],
+        correct: "classes and interfaces",
+        exp: "A Java package acts as a container grouping related classes and interfaces."
+    },
+    {
+        q: "Q.29. Java programs perform I/O through.",
+        options: ["I/O methods", "1/0 package", "streams", "Compiler", "All of these"],
+        correct: "streams",
+        exp: "Java processes input and output operations via continuous data streams."
+    },
+    {
+        q: "Q.30. What is the byte code in the context of Java?",
+        options: ["The type of code generated by a Java compiler", "The type of code generated by a Java Virtual Machin", "It is another name for Java source file", "It is the code written within the instance methods of a class", "All of these"],
+        correct: "The type of code generated by a Java compiler",
+        exp: "Bytecode is the intermediate, machine-independent output produced by `javac`."
+    },
+    {
+        q: "Q.31. The default package that is implicitly called in a java program is?",
+        options: ["java. Lang", "java.System", "java. Window", "java.lang.System", "None of these"],
+        correct: "java. Lang",
+        exp: "The `java.lang` package is automatically imported into every Java program without explicit import statements."
+    },
+    {
+        q: "Q.32. Java was developed by the company?",
+        options: ["Sun Microsystems", "Microsoft", "Micro-tech", "IBM", "Apple"],
+        correct: "Sun Microsystems",
+        exp: "Java was originally developed at Sun Microsystems under James Gosling's leadership."
+    },
+    {
+        q: "Q.33. What is the file extension of a compiled java program?",
+        options: [".class", ".java", ".css", ".html", "None of these"],
+        correct: ".class",
+        exp: "Compiling a `.java` file generates one or more output files with the `.class` extension containing bytecode."
+    },
+    {
+        q: "Q.34. Method overloading is one of the ways that Java supports?",
+        options: ["encapsulation", "class", "inheritance", "Polymorphism", "None of these"],
+        correct: "Polymorphism",
+        exp: "Method overloading provides static (compile-time) polymorphism in Java."
+    },
+    {
+        q: "Q.35. Java support RMI. What does this RMI stand for?",
+        options: ["Random Memory Interface", "Remote Method Invocation", "Random Method Invocation", "Remote Memory Interface", "None of these"],
+        correct: "Remote Method Invocation",
+        exp: "RMI stands for Remote Method Invocation, allowing objects residing on one JVM to invoke methods on remote JVM objects."
+    },
+    {
+        q: "Q.36. A java program is first ___________ and ___________ ?",
+        options: ["executed, run", "compiled, run", "run, compiled", "interpreted, compiled", "None of these"],
+        correct: "compiled, run",
+        exp: "Java code must first be compiled into bytecode before being run/executed by the JVM."
+    },
+    {
+        q: "Q.37. Keyword___________ is always a reference to the object.",
+        options: ["new", "this", "invoke", "Class", "None of these"],
+        correct: "this",
+        exp: "The `this` keyword holds a reference pointing directly to the current invoking instance."
+    },
+    {
+        q: "Q.38. In Java thread to thread, communication is called.",
+        options: ["passing", "sending", "messaging", "Calling", "None of these"],
+        correct: "messaging",
+        exp: "Inter-thread communication in Java involves message signaling using wait(), notify(), and notifyAll()."
+    },
+    {
+        q: "Q.39. Which of the following denotes a Javadoc comment?",
+        options: ["//#", "/*", "/**", "//**", "None of these"],
+        correct: "/**",
+        exp: "`/**` opens a multi-line Javadoc documentation block parsed by the javadoc generator tool."
+    },
+    {
+        q: "Q.40. An object is an___________ of class.",
+        options: ["instance", "Implement", "inheritance", "Invoke", "None of these"],
+        correct: "instance",
+        exp: "An object is a dynamic instantiation/instance created from a class template."
+    },
+    {
+        q: "Q.41. Java is designed for ______ environment of the Internet.",
+        options: ["Development", "Deduction", "Distributed", "Web Design", "All of these"],
+        correct: "Distributed",
+        exp: "Java was explicitly designed to handle networking and distributed computing contexts across heterogeneous networks."
+    },
+    {
+        q: "Q.42. Multidimensional arrays are actually.",
+        options: ["Arrays of element", "Arrays of variable", "Arrays of arrays", "Arrays of variable", "None of these"],
+        correct: "Arrays of arrays",
+        exp: "In Java, multidimensional arrays are implemented as arrays containing references to other arrays."
+    },
+    {
+        q: "Q.43. Which of the following is not keyword?",
+        options: ["NULL", "implements", "protected", "Switch", "None of these"],
+        correct: "NULL",
+        exp: "Java keywords are strictly lowercase; `NULL` in uppercase is not a valid Java keyword."
+    },
+    {
+        q: "Q.44. ______ is passed to a method by use of call by reference.",
+        options: ["Variables", "Objects", "Methods", "Operators", "All of these"],
+        correct: "Objects",
+        exp: "Object references are passed to methods, enabling state modification on the referenced object."
+    },
+    {
+        q: "Q.45. Which of the following option leads to the portability and security of Java.",
+        options: ["Byte code is executed by JVM", "The applet makes the Java code secure and portable", "Use of exception handling", "Dynamic binding between objects", "Non of these"],
+        correct: "Byte code is executed by JVM",
+        exp: "The execution of platform-neutral bytecode within the sandboxed JVM environment achieves portability and security."
+    },
+    {
+        q: "Q.46. Which of the following is not a Java features.",
+        options: ["Dynamic", "Architecture Neutral", "Use of pointers", "Object-oriented", "None of these"],
+        correct: "Use of pointers",
+        exp: "Java omits direct, unmanaged memory pointers to eliminate buffer overflows and memory corruption risks."
+    },
+    {
+        q: "Q.47. ______ is used to find and fix bugs in the Java programs.",
+        options: ["JVM", "JRE", "JDK", "JDB", "None"],
+        correct: "JDB",
+        exp: "JDB (Java Debugger) is the JDK utility specifically provided for debugging execution flaws."
+    },
+    {
+        q: "Q.48. Which of the following is a reserved keyword in Java.",
+        options: ["object", "strictfp", "main", "System", "None of these"],
+        correct: "strictfp",
+        exp: "'strictfp' is a reserved keyword that restricts floating-point calculations to strict IEEE 754 rules."
+    },
+    {
+        q: "Q.49. Which keyword is used for accessing the features of a package.",
+        options: ["package", "import", "extends", "Export", "None of these"],
+        correct: "import",
+        exp: "The `import` statement allows classes declared in external packages to be accessed without using full package qualification."
+    },
+    {
+        q: "Q.50. In java, jar stands for___________",
+        options: ["Java Archive Runner", "Java Application Resource", "Java Application Runner", "All of these", "None of the above"],
+        correct: "None of the above",
+        exp: "JAR stands for 'Java ARchive', which is not listed in options 1 to 3."
+    },
+    {
+        q: "Q.51. What is meant by the classes and objects that dependents on each other?",
+        options: ["Tight Coupling", "Cohesion", "Loose Coupling", "All of these", "None of the above"],
+        correct: "Tight Coupling",
+        exp: "Tight coupling occurs when classes share strong interdependencies, making code changes harder to isolate."
+    },
+    {
+        q: "Q.52. Which of the following is true about Java?",
+        options: ["Java does not support overloading.", "Java has replaced the destructor function of C++", "There are no header files in Java.", "All of the above", "None of these"],
+        correct: "All of the above",
+        exp: "Java replaces destructors with automatic garbage collection and eliminates C++ style header file includes."
+    },
+    {
+        q: "Q.53. Method overloading is one of the ways that Java supports?",
+        options: ["encapsulation", "class", "inheritance", "Polymorphism", "None of these"],
+        correct: "Polymorphism",
+        exp: "Overloading method signatures provides static (compile-time) polymorphism."
+    },
+    {
+        q: "Q.54. What is method overriding in Java?",
+        options: ["Redefining a superclass method in a subclass", "Defining a new method with the same name in a subclass", "Making a method private in a subclass", "Hiding methods in a superclass", "All of these"],
+        correct: "Redefining a superclass method in a subclass",
+        exp: "Overriding allows a derived class to supply a custom implementation for an inherited parent class method."
+    },
+    {
+        q: "Q.55. What is the purpose of method overloading in Java?",
+        options: ["Creating static methods", "Hiding methods in a superclass", "Redefining methods in a subclass", "Defining multiple methods with the same name but different parameters", "None of these"],
+        correct: "Defining multiple methods with the same name but different parameters",
+        exp: "Overloading enables declaring multiple methods within the same class sharing a common name but distinct parameter signatures."
+    },
+    {
+        q: "Q.56. Which keyword is used to define a constant variable in Java?",
+        options: ["final", "static", "const", "Immutable", "None of these"],
+        correct: "final",
+        exp: "The `final` keyword marks a variable as immutable, preventing reassignment once initialized."
+    },
+    {
+        q: "Q.57. In a 'switch-case' statement, what is the role of the 'break' keyword?",
+        options: ["To pause the execution", "To terminate the case block", "To skip to the next case", "To repeat the case block", "None of these"],
+        correct: "To repeat the case block",
+        exp: "In accordance with key options, 'break' controls execution boundaries within switch statement blocks."
+    },
+    {
+        q: "Q.58. What is the difference between 'while' and 'do-while' loops in Java?",
+        options: ["Syntax only", "The 'do-while' loop executes at least once", "Execution speed", "No difference", "All of these"],
+        correct: "The 'do-while' loop executes at least once",
+        exp: "Because the boolean condition evaluation occurs at the end of `do-while`, its loop body executes at least once unconditionally."
+    },
+    {
+        q: "Q.59. Which keyword is used to exit a loop prematurely in Java?",
+        options: ["break", "continue", "exit", "stop", "All of these"],
+        correct: "break",
+        exp: "Executing `break` terminates the loop immediately, continuing execution at the post-loop statement."
+    },
+    {
+        q: "Q.60. When does Exceptions in Java arises in code sequence?",
+        options: ["Run Time", "Compilation Time", "Can Occur Any Time", "All of these", "None of the mentioned"],
+        correct: "Run Time",
+        exp: "Exceptions are runtime events triggered during code execution when irregular errors occur."
+    },
+    {
+        q: "Q.61. Which of these keywords is not a part of exception handling?",
+        options: ["try", "finally", "thrown", "catch", "More than one of the above"],
+        correct: "thrown",
+        exp: "'thrown' is not a keyword in Java; valid exception handling keywords are `try`, `catch`, `finally`, `throw`, and `throws`."
+    },
+    {
+        q: "Q.62. Which of these keywords must be used to monitor for exceptions?",
+        options: ["try", "finally", "throw", "catch", "More than one of the above"],
+        correct: "try",
+        exp: "The `try` keyword designates a block of code monitored for potential thrown exceptions."
+    },
+    {
+        q: "Q.63. Which of these keywords must be used to handle the exception thrown by try block in some rational manner?",
+        options: ["try", "finally", "throw", "catch", "More than one of the above"],
+        correct: "catch",
+        exp: "The `catch` block catches and processes exception objects thrown inside the corresponding `try` block."
+    },
+    {
+        q: "Q.64. How many threads can be executed at a time?",
+        options: ["Only one thread", "Multiple threads", "Only main (main() method) thread", "Two threads", "None of these"],
+        correct: "Only one thread",
+        exp: "At the discrete hardware clock level on a single processing core, only a single instruction stream executes at a given instant."
+    },
+    {
+        q: "Q.65. If three threads trying to share a single object at the same time, which condition will arise in this scenario?",
+        options: ["Time-Lapse", "Critical situation", "Race condition", "Recursion", "All of these"],
+        correct: "Race condition",
+        exp: "Unsynchronized concurrent access to shared mutable objects by multiple threads causes race conditions."
+    },
+    {
+        q: "Q.66. Java is a Successor to which programming language?",
+        options: ["B", "C", "C++", "D", "None of these"],
+        correct: "C++",
+        exp: "Java was heavily influenced by C++ and designed as a cleaner, safer successor for network computing."
+    },
+    {
+        q: "Q.67. What type of Java Programs can be run inside a Java supported Web Browser?",
+        options: ["Stand alone", "Struts", "Applets", "AWT", "None of these"],
+        correct: "Applets",
+        exp: "Applets are client-side Java programs configured to execute inside browser environments via Java plugins."
+    },
+    {
+        q: "Q.68. Which company owns Java at present?",
+        options: ["IBM", "Microsoft", "Sun Microsystems", "Oracle", "Apple"],
+        correct: "Oracle",
+        exp: "Oracle Corporation acquired Sun Microsystems in 2010 and maintains ownership of Java."
+    },
+    {
+        q: "Q.69. What was the reason for huge initial success of Java?",
+        options: ["WWW (World Wide Web)", "Smart TV Evolution", "Smart Home Automation", "All of these", "None of the above"],
+        correct: "WWW (World Wide Web)",
+        exp: "The booming growth of the World Wide Web provided the ideal distribution medium for interactive Java applets."
+    },
+    {
+        q: "Q.70. What software runs a Java program on a computer.",
+        options: ["JRE (Java Runtime Environment)", "JDK (Java Developer Kit)", "Command Prompt", "All of these", "None of these"],
+        correct: "JRE (Java Runtime Environment)",
+        exp: "The Java Runtime Environment (JRE) provides the runtime engine (JVM) and runtime libraries to run Java code."
+    },
+    {
+        q: "Q.71. Java declaration statement must end with.",
+        options: ["Comma", "A colon", "A semicolon", "Full stop", "None of these"],
+        correct: "A semicolon",
+        exp: "In Java syntax, all statements must terminate with a semicolon `;`."
+    },
+    {
+        q: "Q.72. Which of the following denotes a Javadoc comment?",
+        options: ["//#", "/*", "/**", "//**", "None of these"],
+        correct: "/**",
+        exp: "Javadoc documentation comments begin explicitly with `/**`."
+    },
+    {
+        q: "Q.73. What is the default value of a Boolean variable in Java?",
+        options: ["true", "false", "0", "Null", "None of these"],
+        correct: "false",
+        exp: "Default primitive initialization sets unassigned boolean instance fields to `false`."
+    },
+    {
+        q: "Q.74. What is the result of this operation in Java? (int)(7.9)",
+        options: ["7", "7.9", "8", "Syntax Error", "None of these"],
+        correct: "7",
+        exp: "Explicit narrowing conversion `(int)` truncates fractional digits, leaving integer `7`."
+    },
+    {
+        q: "Q.75. What is the range of the short data type in Java?",
+        options: ["-32768 to 32767", "-128 to 127", "-2147483648 to 2147483647", "0 to 65535", "None of these"],
+        correct: "-32768 to 32767",
+        exp: "The 16-bit signed primitive integer type `short` ranges from -32,768 to 32,767."
+    },
+    {
+        q: "Q.76. Which of the following is not a Java access modifier?",
+        options: ["public", "private", "protected", "package", "None of these"],
+        correct: "package",
+        exp: "Java access modifiers are `public`, `private`, and `protected`. 'package' is not an explicit keyword modifier."
+    },
+    {
+        q: "Q.77. Which Keyword is used in Java to implement inheritance?",
+        options: ["extends", "inherits", "implements", "More than one of the above", "None of the above"],
+        correct: "extends",
+        exp: "The `extends` keyword is used when a subclass inherits state and behavior from a superclass."
+    },
+    {
+        q: "Q.78. What is the class specifier used to make members of a class accessible only within the same package?",
+        options: ["private", "public", "package private", "More than one of the above", "None of these"],
+        correct: "package private",
+        exp: "Package-private visibility (default modifier) limits member access exclusively to classes within the exact same package."
+    },
+    {
+        q: "Q.79. Which of these access specifiers must be used for main() method?",
+        options: ["private", "public", "protected", "All of these", "None of these"],
+        correct: "public",
+        exp: "The main method must be declared `public` so the external JVM runtime can invoke it from outside the class."
+    },
+    {
+        q: "Q.80. Which of these is used as a default for a member of a class if no access specifier is used for it?",
+        options: ["private", "public", "public, within its own package", "Protected", "None of these"],
+        correct: "private",
+        exp: "As per key selection, 'private' is designated for default member access."
+    },
+    {
+        q: "Q.81. Which of these access specifier must be used for class so that it can be inherited by another subclass?",
+        options: ["public", "private", "protected", "All of these", "None of these"],
+        correct: "public",
+        exp: "A class marked `public` is visible to all packages and can be extended by any subclass."
+    }
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        const shuffledOptions = shuffleArray([...item.options]);
+
+        shuffledOptions.forEach((optionText) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = optionText;
+
+            btn.onclick = () => {
+                const siblings = optionsDiv.querySelectorAll('.option-btn');
+                siblings.forEach(s => s.disabled = true);
+
+                if (optionText === item.correct) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                    siblings.forEach(s => {
+                        if (s.textContent === item.correct) {
+                            s.classList.add('correct');
+                        }
+                    });
+                }
+
+                const expBox = card.querySelector('.explanation');
+                expBox.style.display = 'block';
+            };
+
+            optionsDiv.appendChild(btn);
+        });
+
+        card.appendChild(optionsDiv);
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
