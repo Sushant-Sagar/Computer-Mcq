@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML / CSS / JavaScript Quiz Practice</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1a365d;
+        }
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .question-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-link {
+            display: block;
+            padding: 12px 16px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #1e293b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-link:hover {
+            background-color: #e2e8f0;
+        }
+        .option-link.correct {
+            background-color: #22c55e !important;
+            color: #ffffff !important;
+            border-color: #16a34a !important;
+            font-weight: bold;
+        }
+        .option-link.wrong {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+        .option-link.disabled {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+        .explanation-box {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 4px;
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>HTML, CSS & JavaScript Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    { id: 1, q: "Q.1. _____ was specifically designed to store and transport data.?", options: ["HTML", "DHTML", "XML", "JSON", "More than one of the above"], ans: "XML", exp: "XML (Extensible Markup Language) was designed to store and transport data, whereas HTML was designed to display data." },
+    { id: 2, q: "Q.2. HTML document is saved in.?", options: ["ASCII Text", "Machine Language codes", "Binary Format", "BCD Codes", "All of these"], ans: "ASCII Text", exp: "HTML files are plain ASCII text files that contain markup tags." },
+    { id: 3, q: "Q.3. _____ is used to modify the way the browser displays the object.?", options: ["Tags", "Arguments", "Attributes", "Parameters", "All of these"], ans: "Attributes", exp: "Attributes provide additional information about HTML elements and modify their default behavior or visual presentation." },
+    { id: 4, q: "Q.4. Which of the following provides a set of choices to a user.?", options: ["Button", "Text", "List", "Combo", "All of these"], ans: "List", exp: "List elements (and combo dropdowns) present structured choices to users." },
+    { id: 5, q: "Q.5. The HTML element used to enter a scrolling area of text is.?", options: ["Marquee", "Scroll", "Text", "Move", "All of these"], ans: "Marquee", exp: "The <marquee> tag was historically used in HTML to create scrolling text or images." },
+    { id: 6, q: "Q.6. What is the DOM (Document Object Model) in HTML.?", options: ["Language-dependent application programming", "ASP.NET object hierarchy", "Application programming interface", "HTML document object representation and interaction convention", "All of these"], ans: "HTML document object representation and interaction convention", exp: "The DOM represents an HTML document as a tree structure of nodes allowing dynamic access and updates." },
+    { id: 7, q: "Q.7. HTML is a subset of.?", options: ["SGMT", "SGML", "SGME", "XHTML", "DHTML"], ans: "SGML", exp: "HTML is derived from Standard Generalized Markup Language (SGML)." },
+    { id: 8, q: "Q.8. When a tag in HTML is closed, which character is used to represent it.?", options: ["#", "!", "/", "\\", "None of these"], ans: "/", exp: "Closing HTML tags use the forward slash '/' character (e.g., </p>)." },
+    { id: 9, q: "Q.9. In HTML, which tag is used to make a numbered list.?", options: ["<ol>", "<ul>", "<li>", "<ll>", "None of these"], ans: "<ol>", exp: "<ol> stands for 'Ordered List' which renders numbered items." },
+    { id: 10, q: "Q.10. When saving an HTML file, which of the following extensions is used.?", options: ["hl", ".h", ".htl", ".html", "None of these"], ans: ".html", exp: "HTML files are saved with either .html or .htm extensions." },
+    { id: 11, q: "Q.11. In HTML, which tag is used to create a blank line.?", options: ["<b>", "<br>", "<em>", "<a>", "More than one of the above"], ans: "<br>", exp: "The <br> tag inserts a line break (blank line) in HTML text." },
+    { id: 12, q: "Q.12. What is the purpose of the HTML <hr/> tag.?", options: ["Italics are used to make material appear bold.", "To provide a vertical division between portions.", "To make a line break between sections", "To make a horizontal rule between sections", "More than one of the above"], ans: "To make a horizontal rule between sections", exp: "<hr/> defines a thematic break or horizontal rule across the page." },
+    { id: 13, q: "Q.13. Which element functions similarly to the <b> element.?", options: ["<blockquote>", "<strong>", "<em>", "<i>", "More than one of the above"], ans: "<strong>", exp: "Both <b> and <strong> make text bold, but <strong> adds semantic importance." },
+    { id: 14, q: "Q.14. ALL HTML tags are enclosed in what.?", options: ["# and #", "? and !", "< and >", "{ and }", "More than one of the above"], ans: "< and >", exp: "HTML tags are wrapped in angle brackets '<' and '>'." },
+    { id: 15, q: "Q.15. To create HTML page, you need.?", options: ["Web browser", "Text editor", "Both [1] and [2]", "Slides", "None of the above"], ans: "Both [1] and [2]", exp: "You need a text editor to write HTML code and a web browser to view the output." },
+    { id: 16, q: "Q.16. <a> and </a> are the tags used for.?", options: ["Adding image", "Aligning text", "Audio-voiced text", "Adding links to your page", "None of the above"], ans: "Adding links to your page", exp: "The <a> tag defines a hyperlink in HTML." },
+    { id: 17, q: "Q.17. The default background color in HTML is.?", options: ["Red", "Green", "Blue", "White", "Black"], ans: "White", exp: "Web browsers render HTML pages with a default white background." },
+    { id: 18, q: "Q.18. The BODY tag is usually used after.?", options: ["HTML tag", "EM tag", "TITLE tag", "HEAD tag", "None of these"], ans: "HEAD tag", exp: "In standard HTML layout, <body> comes immediately after the </head> closing tag." },
+    { id: 19, q: "Q.19. WYSIWYG stands for", options: ["What You See Is What You Get", "What you See Is What You Gain", "When You Start Is When You Go", "More than one of the above", "None of the above"], ans: "What You See Is What You Get", exp: "WYSIWYG editor allows content to be edited in a form resembling its appearance when published." },
+    { id: 20, q: "Q.20. Which tag tells the browser where the page starts and stops?", options: ["<html>", "<body>", "<head>", "<title>", "None of these"], ans: "<html>", exp: "The <html> root element wraps the entire web page content." },
+    { id: 21, q: "Q.21. Which program do you need to write HTML?", options: ["A graphics program", "Any text editor", "HTML-development suite 4", "All of the above", "None of these"], ans: "Any text editor", exp: "Any plain text editor like Notepad, VS Code, or Sublime Text can write HTML." },
+    { id: 22, q: "Q.22. In HTML, tags that include both on and off tag are called?", options: ["comment tag", "document tag", "container tag", "All of these", "None of the above"], ans: "container tag", exp: "Container tags require both opening (<tag>) and closing (</tag>) tags." },
+    { id: 23, q: "Q.23. The main container for <TR>, <TD> and <TH> is ?", options: ["<DATA>", "<GROUP>", "<TABLE>", "All of these", "None of the above"], ans: "<TABLE>", exp: "Table structural rows and cells reside within the <table> tag." },
+    { id: 24, q: "Q.24. The tag used for creating hypertext and hypermedia links is?", options: ["<HR>", "<BR>", "<PRE>", "<A>", "<IMGSRC>"], ans: "<A>", exp: "The Anchor tag <A> creates hypermedia links." },
+    { id: 25, q: "Q.25. All normal webpages consists of ?", options: ["Top and Bottom", "Body and Frameset", "Head and Body", "All of these", "None of the above"], ans: "Head and Body", exp: "An HTML document primarily contains a <head> and a <body> section." },
+    { id: 26, q: "Q.26. <! Is a", options: ["Comment tag", "Underlined tag", "Underlined with italic tag", "Italic Tag", "None of the above"], ans: "Comment tag", exp: "HTML comments begin with <!-- and end with -->." },
+    { id: 27, q: "Q.27. Choose the correct HTML tag for the largest heading.?", options: ["<h1>", "<h2>", "<h4>", "<h6>", "None of these"], ans: "<h1>", exp: "<h1> defines the highest/largest heading level." },
+    { id: 28, q: "Q.28. To created a bulleted list, use", options: ["<ol>", "<ul>", "<il>", "<bl>", "None of the above"], ans: "<ul>", exp: "<ul> creates an unordered (bulleted) list." },
+    { id: 29, q: "Q.29. Which tag will add rows to your tables?", options: ["<tr> and </tr>", "<th> and </th>", "<td> and </td>", "All of these", "None of the above"], ans: "<tr> and </tr>", exp: "<tr> stands for 'Table Row'." },
+    { id: 30, q: "Q.30. Which tag can set the background color for your page?", options: ["<body>", "<font>", "<head>", "<title>", "None of these"], ans: "<body>", exp: "The <body> tag holds styling/attributes like bgcolor or CSS background property." },
+    { id: 31, q: "Q.31. Which tag is used to Insert Images Into your web page?", options: ["Img", "scr", "Im", "src", "None of these"], ans: "Img", exp: "The <img> tag embeds images into an HTML document." },
+    { id: 32, q: "Q.32. Which of the following will NOT be found in the <head> section.?", options: ["<Table>", "<Metatags>", "<Title>", "All of these", "None of these"], ans: "<Table>", exp: "<table> tags belong inside the <body>, not the <head>." },
+    { id: 33, q: "Q.33. If you create an HTML page in word processor?", options: ["save it with binary file", "save it with WMF file", "save it with ASCII text file", "All of the above", "None of these"], ans: "save it with ASCII text file", exp: "HTML must be saved as plain ASCII text format without rich formatting." },
+    { id: 34, q: "Q.34. Generally, there are?", options: ["4 headers in most HTML page", "5 headers in most HTML page", "6 headers in most HTML page", "7 headers in most HTML page", "None of these"], ans: "6 headers in most HTML page", exp: "HTML provides 6 header tags from <h1> to <h6>." },
+    { id: 35, q: "Q.35. What is the correct HTML code for inserting an image?", options: ["<img>image.gif</img>", "<img href=\"image.gif\"/>", "<img src=\"image.gif\">", "All of these", "None of these"], ans: "<img src=\"image.gif\">", exp: "Images use the 'src' attribute inside the <img> tag." },
+    { id: 36, q: "Q.36. What will be the added by using <td> and </td> tag?", options: ["rows", "steps", "cell", "columns", "None of these"], ans: "cell", exp: "<td> defines standard table cells (data cells)." },
+    { id: 37, q: "Q.37. Which format usually works best for photos in HTML.?", options: ["HTML", "GIF", "JPG", "All of the above", "None of these"], ans: "JPG", exp: "JPEG/JPG format provides ideal compression for photo quality." },
+    { id: 38, q: "Q.38. The HTML tags are all.?", options: ["in lower case", "in upper case", "case sensitive", "not case sensitive", "None of these"], ans: "not case sensitive", exp: "HTML tags are case-insensitive (though lowercase is standard/recommended)." },
+    { id: 39, q: "Q.39. Which the correct e-mail link.?", options: ["<a href=\"mailto:xxx@yyy\">", "<mail>xxx@yyy</mail>", "<a href=\"xxx@yyy\">", "<href=\"xxx@yyy\">", "None of these"], ans: "<a href=\"mailto:xxx@yyy\">", exp: "The mailto: prefix opens the default email client." },
+    { id: 40, q: "Q.40. Which section is used for text and tags that are shown directly on your web page.?", options: ["Head", "Metatags", "Body", "Title", "None of these"], ans: "Body", exp: "All user-visible page content resides inside <body>." },
+    { id: 41, q: "Q.41. To start a list at the count of 3, use.?", options: ["<ol begin=\"3\">", "<ol list=\"3\">", "<ol start=\"3\">", "<ol num=\"3\">", "None of these"], ans: "<ol start=\"3\">", exp: "The 'start' attribute alters the starting number of an ordered list." },
+    { id: 42, q: "Q.42. What does vlink mean.?", options: ["active link", "visible link", "visited link", "All of these", "None of the above"], ans: "visited link", exp: "vlink represents the color attribute of Visited Links." },
+    { id: 43, q: "Q.43. Who is making the Web standards.?", options: ["The World Wide Web Consortium", "Internet Explorer", "Netscape Navigator", "All of these", "None of the above"], ans: "The World Wide Web Consortium", exp: "The W3C sets official standards for web technologies." },
+    { id: 44, q: "Q.44. What is the correct HTML code for inserting a background image.?", options: ["<body background=\"background.gif\">", "<img src=\"background.gif\" background />", "<background image=\"background.gif\">", "<background=\"background.gif\">", "None of these"], ans: "<body background=\"background.gif\">", exp: "Historically, the 'background' attribute on <body> specified background images." },
+    { id: 45, q: "Q.45. The default value of BORDER attribute is.?", options: ["1 pixel", "2 pixel", "3 pixel", "All of these", "None of the above"], ans: "1 pixel", exp: "The default table border thickness when enabled is 1 pixel." },
+    { id: 46, q: "Q.46. What is Cell Padding in HTML.?", options: ["It specifies the space between the cell content and its borders.", "It specifies the space between the cell content and its headings", "It specifies the space between the cell content and its formatting", "It specifies the space between the cell content and its descriptions", "None of these"], ans: "It specifies the space between the cell content and its borders.", exp: "Cellpadding defines inner spacing within table cells." },
+    { id: 47, q: "Q.47. The default font size for HTML is _____ pixels.?", options: ["4", "8", "16", "32", "64"], ans: "16", exp: "Default browser root font size is 16px." },
+    { id: 48, q: "Q.48. What are the types of unordered or bulleted list in HTML.?", options: ["disc, square, triangle", "polygon, triangle, circle", "disc, circle, square", "All of the above", "None of these"], ans: "disc, circle, square", exp: "HTML unordered lists accept disc, circle, and square bullet styles." },
+    { id: 49, q: "Q.49. Which of the following is the correct way to change the font face in HTML.?", options: ["<font name = \"Calibri\">", "<font face=\"Calibri\"> ......... </font>", "<font = \"Calibri\">", "More than one of the above", "None of these"], ans: "<font face=\"Calibri\"> ......... </font>", exp: "The legacy <font> tag used the 'face' attribute." },
+    { id: 50, q: "Q.50. _____ is a property in HTML that specifies the amount of space between the border of a table cell and its contents.?", options: ["Cell Spacing", "Cell Padding", "Cell Border", "Cell Text", "None of these"], ans: "Cell Padding", exp: "Cell Padding controls space between cell content and border." },
+    { id: 51, q: "Q.51. Which of the following is an HTML specification used to add more information to HTML tags.?", options: ["Modifydata", "Minidata", "Macrodata", "Microdata", "All of these"], ans: "Microdata", exp: "Microdata adds machine-readable semantics to HTML elements." },
+    { id: 52, q: "Q.52. Which HTML element is used for YouTube videos.?", options: ["<samp>", "<small>", "<frame>", "<iframe>", "More than one of the above"], ans: "<iframe>", exp: "YouTube videos are embedded using <iframe> tags." },
+    { id: 53, q: "Q.53. What HTML tag is used to define the contact information for the author/owner of a document or an article.?", options: ["<contact>", "<authorinfo>", "<address>", "<addr>", "None of these"], ans: "<address>", exp: "The <address> element supplies author/owner contact details." },
+    { id: 54, q: "Q.54. Which tag is used to override the current text direction.?", options: ["<bdi>", "<bdo>", "<br>", "More than one of the above", "None of the above"], ans: "<bdo>", exp: "<bdo> stands for Bi-Directional Override." },
+    { id: 55, q: "Q.55. To separate single list, use.?", options: ["<ol> and </ol>", "<ul> and </ul>", "<li> and </li>", "All of the above", "None of these"], ans: "<li> and </li>", exp: "<li> defines individual items within a list." },
+    { id: 56, q: "Q.56. The _____ tag is used to create dropdowns and combo lists.?", options: ["<select>", "<dropdown>", "<combo>", "Both 1 & 2", "Both 2 & 3"], ans: "<select>", exp: "<select> creates drop-down lists in HTML forms." },
+    { id: 57, q: "Q.57. Which attribute specifies the path to the image.?", options: ["href", "link", "src", "All of the above", "a"], ans: "src", exp: "'src' (source) points to the image path." },
+    { id: 58, q: "Q.58. What is the correct way in which we can start an ordered list that has the numeric value count of 5.?", options: ["<ol type = \"1\" start = \"5\">", "<ol type = \"1\" num = \"5\">", "<ol type = \"1\" begin = \"5\">", "<ol type = \"1\" initial = \"5\">", "None of these"], ans: "<ol type = \"1\" start = \"5\">", exp: "Combining type='1' with start='5' counts from 5 upwards." },
+    { id: 59, q: "Q.59. The latest HTML standard is.?", options: ["XML", "SGML", "HTML 4.0", "HTML 5.0", "None of these"], ans: "HTML 5.0", exp: "HTML5 is the latest modern standard." },
+    { id: 60, q: "Q.60. What is the correct HTML for adding a background color.?", options: ["<background>yellow<Background>", "<body color = yellow>", "<body bgcolor = yellow>", "<body bg=yellow>", "None of these"], ans: "<body bgcolor = yellow>", exp: "The legacy bgcolor attribute sets page background color." },
+    { id: 61, q: "Q.61. Which Symbol at used at the beginning of the HREF text for linking in same page.?", options: ["#", "$", "&", "A", "None of these"], ans: "#", exp: "The '#' symbol targets an element ID on the same page." },
+    { id: 62, q: "Q.62. Which tag is a container.?", options: ["<body>", "<br>", "<hr>", "<img>", "All of these"], ans: "<body>", exp: "<body> requires a closing </body> tag, making it a container." },
+    { id: 63, q: "Q.63. Which of the following is an attribute of Table tag.?", options: ["SRC", "LINK", "CELLPADDING", "BOLD", "All of these"], ans: "CELLPADDING", exp: "CELLPADDING is a valid attribute of the <table> tag." },
+    { id: 64, q: "Q.64. HTML uses.?", options: ["User defined Tags", "Incorrect", "Pre-Specified Tags", "Predefined Tags", "All of the Above"], ans: "Predefined Tags", exp: "HTML consists of standard predefined tags." },
+    { id: 65, q: "Q.65. Fundamental HTML Block is known as.?", options: ["HTML Body", "HTML Tag", "HTML Attribute", "HTML Entity", "None of these"], ans: "HTML Tag", exp: "HTML tags are the fundamental building blocks." },
+    { id: 66, q: "Q.66. Which of the following is the correct way to send mail in HTML.?", options: ["<a href = \"mailto: xy@y\">", "<a href = \"xy@y\">", "<mail xy@y</mail>", "All of these", "None of the above"], ans: "<a href = \"mailto: xy@y\">", exp: "mailto: handles email links." },
+    { id: 67, q: "Q.67. Can the element <h1> be replaced with <H1>.?", options: ["No, they represent different elements altogether", "Yes, both are same", "First is correct only", "Second is correct only", "None of the above"], ans: "Yes, both are same", exp: "HTML tags are case-insensitive." },
+    { id: 68, q: "Q.68. To start a list using filled circles we use.?", options: ["<ul type:\"disc\">", "<ul type=\"round\">", "<ul type=\"disc\">", "<ul type:\"round\">", "None of the above"], ans: "<ul type=\"disc\">", exp: "type='disc' renders solid black bullet circles." },
+    { id: 69, q: "Q.69. A linked page using anchor tag is normally displayed in.?", options: ["New window", "Current window", "New tab", "Same tab", "None of the above"], ans: "Current window", exp: "By default, links open in the current window unless target='_blank' is set." },
+    { id: 70, q: "Q.70. Which of the following is not a pair tag.?", options: ["<img>", "<ul>", "<a>", "<li>", "None of the above"], ans: "<img>", exp: "<img> is a self-closing void element." },
+    { id: 71, q: "Q.71. Default style and color of unvisited link in any browser is.?", options: ["Normal and Blue", "Underline and Purple", "Underline and Magenta", "Underlined and Blue", "None of the above"], ans: "Underlined and Blue", exp: "Unvisited links default to blue and underlined." },
+    { id: 72, q: "Q.72. What does CSS Stands for .?", options: ["Colorful Style Sheets", "Creative Style Sheets", "Computer Style Sheets", "Cascading Style Sheets", "None of these"], ans: "Cascading Style Sheets", exp: "CSS stands for Cascading Style Sheets." },
+    { id: 73, q: "Q.73. It is a style sheet language used for describing the look & formatting of a document in a markup language.?", options: ["Document Object Model", "Multimedia Filters", "Cascading Style Sheets", "DHTML", "All of these"], ans: "Cascading Style Sheets", exp: "CSS styles web page layouts and visual attributes." },
+    { id: 74, q: "Q.74. Extension of CSS file is.?", options: [".HTML", "HTM", ".CSS", "CSC", "None of these"], ans: ".CSS", exp: "External style sheets use the .css file extension." },
+    { id: 75, q: "Q.75. How many ways are there to apply CSS to an HTML document.?", options: ["Inline", "Internal", "External", "All of these", "None of these"], ans: "All of these", exp: "CSS can be applied via Inline, Internal, and External methods." },
+    { id: 76, q: "Q.76. When was the first CSS released.?", options: ["1991", "1993", "1994", "1995", "1996"], ans: "1996", exp: "CSS level 1 was published in December 1996." },
+    { id: 77, q: "Q.77. Who published the first standard of CSS.?", options: ["ISO", "OSI", "IEEE", "W3C", "All of these"], ans: "W3C", exp: "W3C published the standard for CSS." },
+    { id: 78, q: "Q.78. Who proposed the concept of Cascading Style Sheets.?", options: ["Tim Berners Lee", "Vint Cerf", "Charles Babbage", "Brendan Eich", "Wium Lie"], ans: "Wium Lie", exp: "Håkon Wium Lie proposed CSS in 1994." },
+    { id: 79, q: "Q.79. Which Markup language is used for describing the presentation of a document.?", options: ["HTML", "CSS", "DHTML", "Java Script", "All of these"], ans: "CSS", exp: "CSS describes document design and presentation." },
+    { id: 80, q: "Q.80. By using CSS you can control.?", options: ["Color of the Text", "Style of Fonts", "Paragraph Spacing", "Columns Size", "All of these"], ans: "All of these", exp: "CSS controls typography, colors, layout, and spacing." },
+    { id: 81, q: "Q.81. Name the latest version of CSS.?", options: ["CSS 5", "CSS 4", "CSS 3", "CSS 6", "CSS 4.1"], ans: "CSS 3", exp: "CSS3 is the current standard modular release." },
+    { id: 82, q: "Q.82. What is the disadvantage of CSS.?", options: ["Less user friendly", "Multiple Browsers Testing required", "Hard to code", "Costly", "All of these"], ans: "Multiple Browsers Testing required", exp: "Cross-browser compatibility testing can be tedious in CSS." },
+    { id: 83, q: "Q.83. CSS code reusability feature is seen in .?", options: ["Internal CSS", "Inline CSS", "External CSS", "All of these", "None of these"], ans: "External CSS", exp: "External CSS files can be linked to multiple web pages." },
+    { id: 84, q: "Q.84. Benefits of External CSS is.?", options: ["Everything is stored in single file", "Used to maintain large websites", "One file can control multiple documents", "Pages load quicker", "All of these"], ans: "All of these", exp: "External CSS streamlines updates across large websites." },
+    { id: 85, q: "Q.85. This CSS style is an effective method of styling a single page.?", options: ["Inline", "Internal", "External", "All of these", "None of these"], ans: "Internal", exp: "Internal CSS defined inside <style> tags targets a single document." },
+    { id: 86, q: "Q.86. Which CSS type is not the best way to maintain your website.?", options: ["Inline", "Internal", "External", "All of these", "None of these"], ans: "Inline", exp: "Inline styles mix presentation with structure, making maintenance hard." },
+    { id: 87, q: "Q.87. Which is the correct CSS Syntax.?", options: ["Body:color=black", "{body;color:black}", "{body:color=black(body)}", "Body {color:Black}", "All of these"], ans: "Body {color:Black}", exp: "Correct CSS format: selector { property: value; }." },
+    { id: 88, q: "Q.88. How can we write comment in CSS.?", options: ["//", "////", "/* */", "<' ... '>", "None of these"], ans: "/* */", exp: "CSS comments are enclosed inside /* and */." },
+    { id: 89, q: "Q.89. CSS is written in which language.?", options: ["PHP", "HTML", "Java", "Python", "All of these"], ans: "HTML", exp: "CSS is embedded inside or alongside HTML documents." },
+    { id: 90, q: "Q.90. The HTML attribute used to define the inline styles is.?", options: ["Style", "Styles", "Class", "All of these", "None of these"], ans: "Style", exp: "The 'style' attribute applies inline CSS." },
+    { id: 91, q: "Q.91. Which type of CSS is used in this code? <p style=\"border:2px solid red;\">", options: ["Inline CSS", "Internal CSS", "External CSS", "All of these", "None of these"], ans: "Inline CSS", exp: "Styles placed inside the HTML tag attribute are Inline CSS." },
+    { id: 92, q: "Q.92. Embedded CSS is also called as ?", options: ["Inline CSS", "Internal CSS", "External CSS", "All of these", "None of these"], ans: "Internal CSS", exp: "Embedded CSS placed within <style> tags is also called Internal CSS." },
+    { id: 93, q: "Q.93. For this CSS style, you'll only need to add the style attribute to each HTML tag?", options: ["Inline CSS", "Internal CSS", "External CSS", "All of these", "None of these"], ans: "Inline CSS", exp: "Inline CSS utilizes the 'style' attribute on individual elements." },
+    { id: 94, q: "Q.94. Which of the following is the correct syntax for referring the external style sheet?", options: ["<style src = example.css>", "<style src = \"example.css\" >", "<stylesheet> example.css </stylesheet>", "<link rel=\"stylesheet\" type=\"text/css\" href=\"example.css\">", "None of these"], ans: "<link rel=\"stylesheet\" type=\"text/css\" href=\"example.css\">", exp: "The <link> tag connects external CSS files." },
+    { id: 95, q: "Q.95. CSS padding property is used to define the space between?", options: ["Content & Content", "Border & Border", "Content & Border", "Content & Cell", "All of these"], ans: "Content & Border", exp: "Padding sets the space inside an element between its content and border." },
+    { id: 96, q: "Q.96. To show the start and end of HTML element, _____ is used.?", options: ["Attribute", "Value", "Selector", "Tag", "All of these"], ans: "Tag", exp: "Opening and closing tags wrap HTML elements." },
+    { id: 97, q: "Q.97. Which of the following CSS framework is used to create a responsive design.?", options: ["Django", "Rails", "Clarawell", "Bootstrap", "All of these"], ans: "Bootstrap", exp: "Bootstrap is a popular CSS library for responsive web development." },
+    { id: 98, q: "Q.98. Which is not the feature of Bootstrap.?", options: ["Front-end framework", "Back-end framework", "Free, open-source framework", "Built on HTML, CSS, and JavaScript", "All of these"], ans: "Back-end framework", exp: "Bootstrap is exclusively a front-end framework." },
+    { id: 99, q: "Q.99. Which framework is Bootstrap built on.?", options: ["PHP", "Java", "CSS", "All of these", "None of these"], ans: "CSS", exp: "Bootstrap is built on core CSS and JavaScript." },
+    { id: 100, q: "Q.100. What type of design approach does Bootstrap emphasize.?", options: ["Content-First", "Mobile-First", "Graphics-First", "All of these", "None of these"], ans: "Mobile-First", exp: "Bootstrap prioritizes mobile-first layout design." },
+    { id: 101, q: "Q.101. Bootstrap is mainly used for.?", options: ["Server-side operations", "Network security", "Front-end development", "Data analysis", "None of these"], ans: "Front-end development", exp: "Bootstrap handles UI styling and front-end development." },
+    { id: 102, q: "Q.102. Which company originally developed Bootstrap.?", options: ["Google", "Microsoft", "Facebook", "Twitter", "None of these"], ans: "Twitter", exp: "Twitter original developers created Bootstrap." },
+    { id: 103, q: "Q.103. Bootstrap's grid system is based on how many columns.?", options: ["10", "12", "14", "16", "24"], ans: "12", exp: "Bootstrap divides layouts into a flexible 12-column grid system." },
+    { id: 104, q: "Q.104. Which Bootstrap feature provides the ability to hide or show content based on screen size.?", options: ["Data-binding", "Responsive utilities", "Ajax components", "All of these", "None of the above"], ans: "Responsive utilities", exp: "Responsive display utility classes show/hide content by breakpoint." },
+    { id: 105, q: "Q.105. What is the advantage of using Bootstrap's precompiled feature.?", options: ["Faster server response", "Easier debugging", "Quicker deployment", "Enhanced security", "Non of these"], ans: "Quicker deployment", exp: "Precompiled CSS/JS enables quick deployment without build tools." },
+    { id: 106, q: "Q.106. Who is/are the developers of Bootstrap.?", options: ["Mark Otto and Jacob Thornton", "Tim Berners - Lee", "Håkon Wium Lie", "All of these", "None of the above"], ans: "Mark Otto and Jacob Thornton", exp: "Mark Otto and Jacob Thornton created Twitter Bootstrap." },
+    { id: 107, q: "Q.107. The latest stable version of Bootstrap is", options: ["5.3", "4.3", "3.3", "2.3", "None of these"], ans: "5.3", exp: "Bootstrap v5.x is the latest stable release line." },
+    { id: 108, q: "Q.108. Which is true about Bootstrap.?", options: ["Bootstrap is a collection of CSS classes", "Bootstrap is a collection of JavaScript function", "Bootstrap works on a grid system for creating page layout", "Bootstrap supports all browsers for creating responsive websites", "More than one of the above"], ans: "More than one of the above", exp: "Bootstrap includes CSS classes, JS functions, and a grid system." },
+    { id: 109, q: "Q.109. What does rel means in CSS.?", options: ["Relational database", "Relation between the tag and href", "Relationship between the linked file and the HTML document", "Both 1 & 2", "Both 2 & 3"], ans: "Relationship between the linked file and the HTML document", exp: "rel specifies the relationship between document and linked resource." },
+    { id: 110, q: "Q.110. The \"color:red\" in CSS can be known as.?", options: ["Value", "Declaration", "Selector", "Rule", "All of these"], ans: "Declaration", exp: "Property plus value (e.g. color:red) forms a CSS declaration." },
+    { id: 111, q: "Q.111. Which of the following is the correct syntax for add an external style sheet.?", options: ["<style href='main.css'></style>", "<style src='main.css'></style>", "<link rel='stylesheet' type=\"text/css\" src='main.css'>", "<link rel='stylesheet' type=\"text/css\" href='main.css'>", "More than one of the above"], ans: "<link rel='stylesheet' type=\"text/css\" href='main.css'>", exp: "<link rel='stylesheet' href='...'> links CSS files." },
+    { id: 112, q: "Q.112. In CSS, what does h1 can be called as.?", options: ["Attribute", "Selector", "Tag", "Value", "More than one of the above"], ans: "Selector", exp: "In CSS context, h1 targets elements as a Selector." },
+    { id: 113, q: "Q.113. Which of the following is the correct way to apply CSS Styles.?", options: ["in an external CSS file", "inside an HTML element", "inside the <head> section of an HTML page", "All of the above", "None of these"], ans: "All of the above", exp: "CSS can be added external, internal (head), or inline (element)." },
+    { id: 114, q: "Q.114. Which of the following name was given to Bootstrap originally.?", options: ["Twitter Blueprint", "Twitter Bootstrap", "Twitter Blueprint Bootstrap", "Twitter Handle", "None of the above"], ans: "Twitter Blueprint", exp: "Bootstrap was initially called Twitter Blueprint." },
+    { id: 115, q: "Q.115. External stylesheets use the _____ tag inside the head element.?", options: ["<style>", "<css>", "<link>", "<line>", "All of these"], ans: "<link>", exp: "<link> includes external stylesheets." },
+    { id: 116, q: "Q.116. This tag is used as a container for HTML elements which is styled with CSS or manipulated with JavaScript.?", options: ["<strong>", "<bold>", "<div>", "<style>", "All of these"], ans: "<div>", exp: "<div> acts as a generic structural block container." },
+    { id: 117, q: "Q.117. JavaScript is focus on Website.?", options: ["Content", "Structure", "Presentation", "Behavior", "More than one of the above"], ans: "Behavior", exp: "JavaScript controls dynamic page functionality and behavior." },
+    { id: 118, q: "Q.118. JavaScript created in .?", options: ["1991", "1993", "1994", "1995", "1990"], ans: "1995", exp: "JavaScript was created by Brendan Eich in 1995." },
+    { id: 119, q: "Q.119. JavaScript was developed by.?", options: ["Tim Berners Lee", "Vint Cerf", "Wium Lie", "Brandan Eich", "All of these"], ans: "Brandan Eich", exp: "Brendan Eich created JavaScript." },
+    { id: 120, q: "Q.120. Javascript was originally named as.", options: ["LiveScript", "Java", "Mocha", "Locha", "None of these"], ans: "Mocha", exp: "JavaScript was initially code-named Mocha." },
+    { id: 121, q: "Q.121. Mocha was renamed with.?", options: ["LiveScript", "JavaScript", "Mocha", "CSS", "None of these"], ans: "LiveScript", exp: "Mocha was first renamed LiveScript, then JavaScript." },
+    { id: 122, q: "Q.122. LiveScript was renamed with.?", options: ["LiveScript", "JavaScript", "Mocha", "CSS", "None of these"], ans: "JavaScript", exp: "Netscape renamed LiveScript to JavaScript." },
+    { id: 123, q: "Q.123. JavaScript Standard was given by.?", options: ["IS", "ASCII", "W3C", "ECMA", "None of these"], ans: "ECMA", exp: "ECMA International standardizes JavaScript (ECMAScript)." },
+    { id: 124, q: "Q.124. Among these which is not the version of JavaScript.?", options: ["ES1", "ES2", "ES3", "ES4", "None of these"], ans: "ES4", exp: "ES4 was abandoned and never officially released." },
+    { id: 125, q: "Q.125. JavaScript is which type of language.", options: ["Compiled", "Interpreted", "Assembled", "Compiled & Interpreted", "Either 1 or 2"], ans: "Interpreted", exp: "JavaScript is traditionally an interpreted scripting language." },
+    { id: 126, q: "Q.126. Not a feature of JavaScript language is.?", options: ["Object oriented language", "Lightweight Language", "Scripting Language", "Machine Dependent", "All of these"], ans: "Machine Dependent", exp: "JavaScript is platform and machine independent." },
+    { id: 127, q: "Q.127. JavaScript is a .?", options: ["Client Side Language", "Server Side Language", "High Level Language", "All of these", "None of these"], ans: "All of these", exp: "JavaScript operates client-side, server-side (Node.js), and is high-level." },
+    { id: 128, q: "Q.128. Which of the following is not JavaScript Data Types.?", options: ["Undefined", "Number", "Boolean", "Float", "More than one of the above"], ans: "Float", exp: "In JavaScript, numbers are all 'Number' type (no explicit Float type)." },
+    { id: 129, q: "Q.129. Which company developed JavaScript.?", options: ["Netscape", "Bell Labs", "Sun Microsystems", "W3C", "None of these"], ans: "Netscape", exp: "Netscape Communications developed JavaScript." },
+    { id: 130, q: "Q.130. Inside which HTML element do we put the JavaScript.?", options: ["<script>", "<head>", "<meta>", "<style>", "None of these"], ans: "<script>", exp: "JavaScript is written inside <script> tags." },
+    { id: 131, q: "Q.131. JavaScript is designed for following purpose.?", options: ["To style HTML pages", "To execute Queries related to databases on a server", "To add interactivity to html pages", "All of these", "None of these"], ans: "All of these", exp: "JavaScript adds web page interactivity and executes scripts." },
+    { id: 132, q: "Q.132. Which symbol is used for comments in JavaScript.?", options: ["\\\\", "//", "**", "**/", "None of these"], ans: "//", exp: "Single-line comments in JS start with '//'." },
+    { id: 133, q: "Q.133. _____ JavaScript is also called client-side JavaScript.?", options: ["Microsoft", "Navigator", "LiveWire", "Native", "None of these"], ans: "Navigator", exp: "Client-side JS was historically known as Navigator JavaScript." },
+    { id: 134, q: "Q.134. _____ JavaScript is also called server-side JavaScript.?", options: ["Microsoft", "Navigator", "LiveWire", "Native", "None of these"], ans: "LiveWire", exp: "Server-side JS was originally called LiveWire by Netscape." },
+    { id: 135, q: "Q.135. Scripting language are.?", options: ["High Level Programming language", "Assembly Level programming language", "Machine level programming language", "All of these", "None of these"], ans: "High Level Programming language", exp: "Scripting languages are high-level abstraction languages." },
+    { id: 136, q: "Q.136. JavaScript is interpreted by.?", options: ["Client", "Server", "Object", "All of these", "None of these"], ans: "Client", exp: "Browser client engines interpret client-side JS." },
+    { id: 137, q: "Q.137. Node.js a _____ language.?", options: ["Client Side", "Server Side", "Both of these", "Network Side", "None of these"], ans: "Server Side", exp: "Node.js runs JavaScript on the server side." },
+    { id: 138, q: "Q.138. What is the correct JavaScript syntax to write \"Hello World\".?", options: ["System.out.println(\"Hello World\")", "println (\"Hello World\")", "document.write(\"Hello World\")", "response.write(\"Hello World\")", "None of these"], ans: "document.write(\"Hello World\")", exp: "document.write() outputs directly into the HTML document stream." },
+    { id: 139, q: "Q.139. Inside which HTML element do we put the JavaScript?", options: ["<js>", "<scripting>", "<script>", "<javascript>", "None of these"], ans: "<script>", exp: "JavaScript resides within <script> tags." },
+    { id: 140, q: "Q.140. JavaScript entities start with _____ and end with _____.?", options: ["Semicolon, colon", "Semicolon, Ampersand", "Ampersand, colon", "Ampersand, semicolon", "None of these"], ans: "Ampersand, semicolon", exp: "JS entities start with '&' and end with ';'." },
+    { id: 141, q: "Q.141. Which of the following option terminates Java Statement?", options: ["Semicolon", "Full Stop", "Comma", "Slash", "None of these"], ans: "Semicolon", exp: "Statements end with a semicolon ';'." },
+    { id: 142, q: "Q.142. JavaScript is which type of language ?", options: ["Programming", "Application", "Scripting", "All of these", "None of these"], ans: "Scripting", exp: "JavaScript is primarily categorized as a scripting language." },
+    { id: 143, q: "Q.143. Which was the first browser to support JavaScript", options: ["IE", "Netscape", "Mozilla Firefox", "Google Chrome", "None of these"], ans: "Netscape", exp: "Netscape Navigator 2.0 was the first to support JS." },
+    { id: 144, q: "Q.144. Which type of JavaScript language is?", options: ["Low Level", "Object-Based", "Assembly-language", "Machine Level", "All of these"], ans: "Object-Based", exp: "JS is an object-based language utilizing prototypes." },
+    { id: 145, q: "Q.145. In the JavaScript, which one of the following is not considered as an error?", options: ["Syntax error", "Missing of semicolons", "Division by zero", "Missing of Bracket", "All of these"], ans: "Division by zero", exp: "Division by zero produces 'Infinity' in JS rather than throwing a runtime error." },
+    { id: 146, q: "Q.146. JavaScript is used for.?", options: ["Dynamically updating content", "Controlling multimedia", "Animating images", "Creating interactive maps", "All of these"], ans: "All of these", exp: "JavaScript drives dynamic interactions, media, animations, and web apps." },
+    { id: 147, q: "Q.147. What could replace JavaScript as Backend.?", options: ["Python", "Ruby", "Kotlin", "PHP", "All of these"], ans: "All of these", exp: "Python, PHP, Ruby, and Kotlin are widely used backend alternatives." },
+    { id: 148, q: "Q.148. What could replace JavaScript as FrontEnd.?", options: ["TypeScript", "CoffeeScript", "ClojureScript", "Elm", "All of these"], ans: "All of these", exp: "Languages compiling to JS (TypeScript, Elm, ClojureScript) serve as frontend alternatives." }
+];
+
+// Fisher-Yates Shuffle Algorithm
+function shuffleArray(array) {
+    let shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        // Shuffle 5 options on every page load
+        const shuffledOptions = shuffleArray(item.options);
+
+        shuffledOptions.forEach(optText => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.className = 'option-link';
+            a.href = '#';
+            a.textContent = optText;
+
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                checkAnswer(card, a, optText, item.ans);
+            });
+
+            li.appendChild(a);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expBox);
+
+        container.appendChild(card);
+    });
+}
+
+function checkAnswer(card, selectedAnchor, selectedText, correctText) {
+    const allOptions = card.querySelectorAll('.option-link');
+    const expBox = card.querySelector('.explanation-box');
+
+    allOptions.forEach(opt => {
+        opt.classList.add('disabled');
+        if (opt.textContent === correctText) {
+            opt.classList.add('correct');
+        }
+    });
+
+    if (selectedText !== correctText) {
+        selectedAnchor.classList.add('wrong');
+    }
+
+    expBox.style.display = 'block';
+}
+
+// Run on page load
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
