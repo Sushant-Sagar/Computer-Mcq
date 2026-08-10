@@ -3,86 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Computing Interactive Quiz</title>
+    <title>Cloud Computing Quiz</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 20px;
+            padding: 0;
+            color: #333;
         }
         .quiz-container {
             max-width: 900px;
-            margin: 0 auto;
+            margin: auto;
             background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
-            color: #1a365d;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #3182ce;
-            padding-bottom: 10px;
+            color: #2c3e50;
+            margin-bottom: 25px;
         }
         .question-card {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-        }
-        .question-text {
-            font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        @media (min-width: 600px) {
-            .options {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .btn {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e0;
-            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
             border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #1a252f;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-item {
+            margin-bottom: 8px;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 14px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
             cursor: pointer;
-            text-align: left;
-            font-size: 0.95em;
-            color: #4a5568;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
-        .btn:hover:not(:disabled) {
-            background-color: #edf2f7;
-            border-color: #cbd5e0;
+        .option-link:hover {
+            background-color: #eef2f7;
         }
-        .btn.correct {
-            background-color: #38a169 !important;
-            color: white !important;
-            border-color: #38a169 !important;
+        .option-link.correct {
+            background-color: #28a745 !important;
+            color: #ffffff !important;
+            border-color: #28a745 !important;
+            font-weight: bold;
         }
-        .btn.incorrect {
-            background-color: #e53e3e !important;
-            color: white !important;
-            border-color: #e53e3e !important;
+        .option-link.incorrect {
+            background-color: #dc3545 !important;
+            color: #ffffff !important;
+            border-color: #dc3545 !important;
         }
         .explanation {
-            margin-top: 15px;
-            padding: 12px 15px;
-            background-color: #ebf8ff;
-            border-left: 4px solid #3182ce;
-            border-radius: 4px;
             display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #eef7fc;
+            border-left: 4px solid #17a2b8;
             font-size: 0.95em;
-            color: #2b6cb0;
+            color: #1c3d5a;
+            border-radius: 0 4px 4px 0;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -90,512 +91,522 @@
 
 <div class="quiz-container">
     <h1>Cloud Computing Practice Quiz</h1>
-    <div id="quiz"></div>
+    <div id="quiz-body"></div>
 </div>
 
 <script>
-const rawQuizData = [
+const rawQuestions = [
     {
-        q: "1. Who Invented Cloud Computing?",
-        options: ["Paul Baran", "Leonard Kleinrock", "Lawrence Roberts", "J. C. R. Licklider"],
-        ans: 3,
-        exp: "J. C. R. Licklider is credited with formulating the initial concepts of cloud computing in the 1960s."
+        q: "Q.1. Who Invented Cloud Computing.?",
+        options: ["Paul Baran", "Leonard Kleinrock", "Lawrence Roberts", "J. C. R. Licklider", "None of these"],
+        correct: 3,
+        exp: "J.C.R. Licklider is credited with formulating the initial concepts of cloud computing in the 1960s with ARPANET."
     },
     {
-        q: "2. The term __________ refers to a Network or Internet.",
-        options: ["CRM", "Cloud", "Computing", "Cloud Computing"],
-        ans: 3,
-        exp: "Cloud Computing refers to manipulating, configuring, and accessing hardware and software resources remotely over the network or internet."
+        q: "Q.2. The term _____ refers to a Network or Internet.?",
+        options: ["CRM", "Cloud", "Computing", "Cloud Computing", "All of these"],
+        correct: 3,
+        exp: "'Cloud Computing' refers to a network- or internet-based computing model where services are delivered on demand."
     },
     {
-        q: "3. Cloud Computing refers to __________.",
-        options: ["accessing the hardware", "configuring the hardware", "manipulating the hardware", "All of these"],
-        ans: 3,
-        exp: "Cloud computing allows users to access, configure, and manipulate computing resources over the internet."
+        q: "Q.3. Cloud Computing refers to.?",
+        options: ["accessing the hardware", "configuring the hardware", "manipulating the hardware", "All of these", "None of these"],
+        correct: 3,
+        exp: "Cloud computing involves accessing, configuring, and manipulating virtualized network hardware and software."
     },
     {
-        q: "4. Which of the following are the features of cloud computing?",
-        options: ["Security", "Availability", "Large Network Access", "All of these"],
-        ans: 3,
-        exp: "Key features of cloud computing include high availability, robust security, broad network access, and rapid elasticity."
+        q: "Q.4. Which of the following are the features of cloud computing.?",
+        options: ["Security", "Availability", "Large Network Access", "All of these", "None of these"],
+        correct: 3,
+        exp: "Security, high availability, and broad network access are core features of modern cloud computing environments."
     },
     {
-        q: "5. Which of the following is a type of cloud computing service?",
-        options: ["Software-as-a-Server (SaaS)", "Software-and-a-Server (SaaS)", "Software-as-a-Service (SaaS)", "Service-as-a-Software (SaaS)"],
-        ans: 2,
-        exp: "SaaS stands for Software-as-a-Service, delivering software applications over the internet on a subscription basis."
+        q: "Q.5. Which of the following is a type of cloud computing service.?",
+        options: ["Software-as-a-Server (SaaS)", "Software-and-a-Server (SaaS)", "Software-as-a-Service (SaaS)", "Service-as-a-Software (SaaS)", "None of these"],
+        correct: 2,
+        exp: "SaaS stands for Software-as-a-Service, a standard cloud service model delivering applications via the web."
     },
     {
-        q: "6. __________ provides the runtime environment for applications, development and deployment tools, etc.",
-        options: ["XaaS", "IaaS", "SaaS", "PaaS"],
-        ans: 3,
-        exp: "PaaS (Platform as a Service) provides execution runtime, database, web server, and development tools."
+        q: "Q.6. _____ provides the runtime environment for applications, development and deployment tools, etc.?",
+        options: ["XaaS", "IaaS", "SaaS", "PaaS", "None of these"],
+        correct: 3,
+        exp: "Platform as a Service (PaaS) provides developers with application execution environments and development frameworks."
     },
     {
-        q: "7. __________ is yet another service model, which includes Network-as-a-Service, Business-as-a-Service, Identity-as-a-Service, Database-as-a-Service or Strategy-as-a-Service.",
-        options: ["XaaS", "IaaS", "SaaS", "PaaS"],
-        ans: 0,
-        exp: "XaaS (Anything-as-a-Service) encompasses various cloud services delivered over the internet."
+        q: "Q.7. _____ is yet another service model, which includes Network-as-a-Service, Business-as-a-Service, Identity-as-a-Service, Database-as-a-Service or Strategy-as-a-Service.",
+        options: ["XaaS", "IaaS", "SaaS", "PaaS", "None of these"],
+        correct: 0,
+        exp: "XaaS stands for Anything-as-a-Service or Everything-as-a-Service, encompassing various on-demand cloud services."
     },
     {
-        q: "8. Which of the following is an example of a SaaS cloud service?",
-        options: ["Dropbox", "Salesforce", "Google Workspace", "All of these"],
-        ans: 3,
-        exp: "Dropbox, Salesforce, and Google Workspace are all ready-to-use software applications delivered via the cloud (SaaS)."
+        q: "Q.8. Which of the following is an example of a SaaS cloud service.?",
+        options: ["Dropbox", "Salesforce", "Google Workspace", "All of these", "None of these"],
+        correct: 3,
+        exp: "Dropbox, Salesforce, and Google Workspace are all end-user applications delivered via the cloud (SaaS)."
     },
     {
-        q: "9. Which one of the following refers to the user's part of the Cloud Computing system?",
-        options: ["Front End", "Back End", "Management", "Infrastructure"],
-        ans: 0,
-        exp: "The front end includes the user interface, client device, and web browsers required to access cloud services."
+        q: "Q.9. Which one of the following refers to the user's part of the Cloud Computing system.?",
+        options: ["front end", "back End", "Management", "Infrastructure", "All of these"],
+        correct: 0,
+        exp: "The front end includes the user interface, web browsers, and client applications used to access the cloud."
     },
     {
-        q: "10. Which one of the following can be considered as the example of the Front-end?",
-        options: ["AWS", "Google Compute Engine", "Web Browser", "Cisco Metapod"],
-        ans: 2,
-        exp: "A Web Browser acts as the front-end interface through which users interact with cloud applications."
+        q: "10. Which one of the following can be considered as the example of the Front-end.?",
+        options: ["AWS", "Google Compute Engine", "Web Browser", "Cisco Metapod", "All of these"],
+        correct: 2,
+        exp: "A web browser serves as a primary front-end interface through which users access cloud applications."
     },
     {
-        q: "11. Identify among the following, which provides a runtime environment.",
-        options: ["PaaS", "XaaS", "SaaS", "IaaS"],
-        ans: 0,
-        exp: "PaaS (Platform as a Service) supplies a runtime environment allowing developers to build and run applications."
+        q: "Q.11. Identify among the following, which provides a runtime environment.?",
+        options: ["PaaS", "XaaS", "SaaS", "All of these", "None of these"],
+        correct: 0,
+        exp: "PaaS supplies execution environments for developing, running, and managing applications without backend maintenance."
     },
     {
-        q: "12. Which one of the following is a Cloud Platform by Amazon?",
-        options: ["Cloudera", "Azure", "Amazon Web Services (AWS)", "Google Cloud"],
-        ans: 2,
-        exp: "Amazon Web Services (AWS) is the cloud computing platform provided by Amazon."
+        q: "Q.12. Which one of the following is Cloud Platform by Amazon.?",
+        options: ["Cloudera", "Azure", "Amazon Web Services (AWS)", "All of these", "None of these"],
+        correct: 2,
+        exp: "Amazon Web Services (AWS) is Amazon's premier enterprise cloud computing platform."
     },
     {
-        q: "13. Which of the following is an essential concept related to Cloud?",
-        options: ["Abstraction", "Productivity", "Reliability", "Scalability"],
-        ans: 0,
-        exp: "Abstraction is a fundamental cloud concept that hides the underlying complex hardware details from users."
+        q: "Q.13. Which of the following is an essential concept related to Cloud.?",
+        options: ["Abstraction", "Productivity", "Reliability", "All of these", "None of these"],
+        correct: 0,
+        exp: "Abstraction hides underlying complex physical hardware from users behind simple virtualized interfaces."
     },
     {
-        q: "14. Which one of the following cloud concepts is related to sharing and pooling the resources?",
-        options: ["Virtualization", "Polymorphism", "Abstraction", "Encapsulation"],
-        ans: 0,
-        exp: "Virtualization enables resource pooling and sharing by creating virtual instances of physical servers and storage."
+        q: "Q.14. Which one of the following cloud concepts is related to sharing and pooling the resources.?",
+        options: ["Virtualization", "Polymorphism", "Abstraction", "All of these", "None of these"],
+        correct: 0,
+        exp: "Virtualization enables multitenancy by pooling physical compute, storage, and networking hardware."
     },
     {
-        q: "15. Which of the following has many features of that is now known as cloud computing?",
-        options: ["Internet", "Software", "Web service", "All of these"],
-        ans: 0,
-        exp: "The internet established basic concepts like network access and remote hosting that evolved into modern cloud computing."
+        q: "Q.15. Which of the following has many features of that is now known as cloud computing.?",
+        options: ["Internet", "Software", "Web service", "All of these", "None of these"],
+        correct: 0,
+        exp: "The global network architecture of the Internet provided the original foundation for cloud infrastructure."
     },
     {
-        q: "16. Google Apps is a suite of cloud computing __________ applications that includes e-mail (Gmail), Organizer (Google Calendar), Word Processing documents (Google Docs), and others.",
-        options: ["IaaS", "PaaS", "SaaS", "All of these"],
-        ans: 2,
-        exp: "Google Apps (now Google Workspace) delivers end-user applications directly over the web, making it a SaaS offering."
+        q: "Q.16. Google Apps is a suite of cloud computing _________ applications that includes e-mail (Gmail), Organizer (Google Calendar), Word Processing documents (Google Docs), and others.?",
+        options: ["IaaS", "PaaS", "SaaS", "All of these", "None of these"],
+        correct: 2,
+        exp: "Google Workspace / Apps provides software directly to users, making it a Software-as-a-Service (SaaS) product."
     },
     {
-        q: "17. Which of the following is among the primary uses of cloud computing?",
-        options: ["Security", "Data Storage", "Data Privacy", "Operational Cost"],
-        ans: 1,
-        exp: "One of the most widespread primary uses of cloud computing is remote data storage and backup."
+        q: "Q.17. Which of the following is among the primary uses of cloud computing.?",
+        options: ["security", "data storage", "data privacy", "operational cost", "All of these"],
+        correct: 1,
+        exp: "Remote scalable data storage is one of the primary and most widespread operational uses of cloud computing."
     },
     {
-        q: "18. Which of the following is the least preferable cloud computing in demand?",
-        options: ["PaaS", "SaaS", "IaaS", "HaaS"],
-        ans: 3,
-        exp: "Hardware-as-a-Service (HaaS) is less commonly referenced or requested compared to standard models like IaaS, PaaS, and SaaS."
+        q: "Q.18. Which of the following is the least preferable cloud computing in demand.?",
+        options: ["PaaS", "SaaS", "IaaS", "HaaS", "None of these"],
+        correct: 3,
+        exp: "Hardware as a Service (HaaS) is less commonly used as a distinct term compared to standard IaaS, PaaS, and SaaS."
     },
     {
-        q: "19. Public cloud is also called as __________.",
-        options: ["PaaS - Platform as a Service", "IaaS - Infrastructure as a Service", "SaaS - Software as a Service", "HaaS - Hardware as a Service"],
-        ans: 2,
-        exp: "Public cloud is heavily associated with SaaS offerings delivered broadly over the public internet to end users."
+        q: "Q.19. Public cloud is also called as.?",
+        options: ["PaaS-platform as a service", "IaaS-infrastructure as a service", "SaaS-software as a service", "HaaS - hardware as a service", "None of these"],
+        correct: 2,
+        exp: "Public cloud solutions frequently deliver multi-tenant software directly over public networks (SaaS)."
     },
     {
-        q: "20. Cloud services provide __________ relationship with their users.",
-        options: ["One to one", "Many to one", "One to many", "All of these"],
-        ans: 2,
-        exp: "Cloud architecture uses a one-to-many model where a single cloud provider serves multiple tenants/users simultaneously."
+        q: "Q.20. Cloud services provide ________ relationship with their users.?",
+        options: ["One to one", "Many to one", "One to many", "All of these", "None of these"],
+        correct: 2,
+        exp: "Cloud providers operate on a one-to-many architecture, serving shared infrastructure to multiple clients."
     },
     {
-        q: "21. Cloud service like Rackspace's is also known as __________.",
-        options: ["Cloud server", "Cloud on demand", "Web cloud service", "E-commerce based cloud"],
-        ans: 0,
-        exp: "Rackspace provides infrastructure and managed hosting, commonly referred to as Cloud Server services."
+        q: "Q.21. Cloud service like Rackspace's is also known as ___________ ?",
+        options: ["Cloud server", "Cloud on demand", "Web cloud service", "E-commerce based cloud", "All of these"],
+        correct: 0,
+        exp: "Rackspace provides managed cloud server hosting infrastructure to enterprise clients."
     },
     {
-        q: "22. Which of the following are the examples of IaaS cloud computing?",
-        options: ["DigitalOcean", "Linode", "Rackspace", "All of these"],
-        ans: 3,
-        exp: "DigitalOcean, Linode, and Rackspace provide raw infrastructure resources (compute, storage, networking) as IaaS."
+        q: "Q.22. Which of the following are the examples of IaaS cloud computing.?",
+        options: ["Digital ocean", "Linode", "RackSpace", "All of these", "None of these"],
+        correct: 3,
+        exp: "DigitalOcean, Linode, and Rackspace all provision raw virtual machines and cloud server infrastructure (IaaS)."
     },
     {
-        q: "23. Which is the highest hierarchy of cloud computing product service?",
-        options: ["IaaS", "PaaS", "SaaS", "SaaP"],
-        ans: 2,
-        exp: "SaaS represents the top tier of abstraction where complete end-user applications are delivered without user management of lower layers."
+        q: "Q.23. Which is the highest hierarchy of cloud computing product service.?",
+        options: ["IaaS", "PaaS", "SaaS", "SaaP", "None of these"],
+        correct: 2,
+        exp: "SaaS sits at the top layer of the cloud stack hierarchy as it directly interfaces with end users."
     },
     {
-        q: "24. Cloud Service consists of __________.",
-        options: ["Platform, Software, Infrastructure", "Software, Hardware, Infrastructure", "Platform, Hardware, Infrastructure", "All of these"],
-        ans: 0,
-        exp: "The three core Cloud Service models are Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS)."
+        q: "Q.24. Cloud Service consists of.?",
+        options: ["Platform, Software, Infrastructure", "Software, Hardware, Infrastructure", "Platform, Hardware, Infrastructure", "All of these", "None of these"],
+        correct: 0,
+        exp: "The three primary cloud service models are SaaS (Software), PaaS (Platform), and IaaS (Infrastructure)."
     },
     {
-        q: "25. Which of the following is true about cloud computing?",
-        options: ["Cloud computing is platform dependent", "Cloud Computing provides access over computer only", "Cloud Computing makes our business applications mobile and collaborative", "All of these"],
-        ans: 2,
-        exp: "Cloud computing allows business tools to be accessible from any device anywhere, fostering collaboration and mobility."
+        q: "Q.25. Which of the following is true about cloud computing.?",
+        options: ["Cloud computing is platform dependent", "Cloud Computing provides us means of accessing the applications as utilities over computer only.", "Cloud Computing makes our business applications mobile and collaborative.", "All of the above", "None of these"],
+        correct: 2,
+        exp: "Cloud computing allows users to access collaborative applications remotely from any location or device."
     },
     {
-        q: "26. Which of the following is not a type of cloud server?",
-        options: ["Public Cloud Servers", "Private Cloud Servers", "Dedicated Cloud Servers", "Merged Cloud Servers"],
-        ans: 3,
-        exp: "'Merged Cloud Server' is not a standard industry cloud deployment or server model."
+        q: "Q.26. Which of the following is not a type of cloud server.?",
+        options: ["Public Cloud Servers", "Private Cloud Servers", "Dedicated Cloud Servers", "Merged Cloud Servers", "None of these"],
+        correct: 3,
+        exp: "'Merged Cloud Server' is not a standard industry term or classification in cloud architecture."
     },
     {
-        q: "27. Applications and services that run on a distributed network using virtualized resources is known as __________.",
-        options: ["Parallel computing", "Soft computing", "Distributed computing", "Cloud computing"],
-        ans: 3,
-        exp: "Cloud computing delivers virtualized, distributed computing resources and applications over the network."
+        q: "Q.27. Applications and services that run on a distributed network using virtualized resources is known as.?",
+        options: ["Parallel computing", "Soft computing", "Distributed computing", "Cloud computing", "None of these"],
+        correct: 3,
+        exp: "Cloud computing leverages distributed virtualized resources to run web application services."
     },
     {
-        q: "28. Which of the following is the correct statement about cloud computing?",
-        options: ["Cloud computing abstracts systems by pooling and sharing resources", "Cloud computing is nothing more than the Internet", "The use of word 'cloud' makes reference to two essential concepts", "None of these"],
-        ans: 0,
-        exp: "Cloud computing abstracts complex underlying infrastructure by pooling resources for dynamic multi-tenant sharing."
+        q: "Q.28. Which of the following is the correct statement about cloud computing.?",
+        options: ["Cloud computing abstracts systems by pooling and sharing resources", "Cloud computing is nothing more than the Internet", "The use of the word \"cloud\" makes reference to the two essential concepts", "All of the mentioned", "None of these"],
+        correct: 0,
+        exp: "Cloud computing relies on abstraction to hide physical system details while sharing pooled hardware resources."
     },
     {
-        q: "29. Which of the following model attempts to categorize a cloud network based on four dimensional factors?",
-        options: ["Cloud Cube", "Cloud Square", "Cloud Service", "Cloud Sphere"],
-        ans: 0,
-        exp: "The Cloud Cube Model categorizes cloud formations based on four dimensions: Internal/External, Proprietary/Open, Perimeterized/De-perimeterized, and In-sourced/Outsourced."
+        q: "Q.29. Which of the following model attempts to categorize a cloud network based on four dimensional factors.?",
+        options: ["Cloud Cube", "Cloud Square", "Cloud Service", "All of the mentioned", "None of these"],
+        correct: 0,
+        exp: "The Cloud Cube Model uses 4 dimensional boundaries (Internal/External, Proprietary/Open, Perimeterized/De-perimeterized, In-sourced/Out-sourced)."
     },
     {
-        q: "30. Cloud computing is a concept that involves pooling physical resources and offering them as which sort of resource?",
-        options: ["Cloud", "Real", "Virtual", "All of these"],
-        ans: 2,
-        exp: "Physical infrastructure is virtualized into shared pools of compute, storage, and networking resources."
+        q: "Q.30. Cloud computing is a concept that involves pooling physical resources and offering them as which sort of resource.?",
+        options: ["Cloud", "Real", "Virtual", "All of these", "None of the mentioned"],
+        correct: 2,
+        exp: "Physical resources (CPU, RAM, Storage) are pooled and delivered dynamically as virtualized resources."
     },
     {
-        q: "31. Which of the following is the most important area of concern in cloud computing?",
-        options: ["Scalability", "Storage", "Security", "All of these"],
-        ans: 2,
-        exp: "Security and data protection remain the highest concern for organizations moving data into the cloud."
+        q: "Q.31. Which of the following is the most important area of concern in cloud computing.?",
+        options: ["Scalability", "Storage", "Security", "All of the mentioned", "None of these"],
+        correct: 2,
+        exp: "Security remains the top concern for organizations migrating sensitive data to remote cloud environments."
     },
     {
-        q: "32. Which of the following is not a property of cloud computing?",
-        options: ["Virtualization", "Composability", "Scalability", "Elasticity"],
-        ans: 1,
-        exp: "Composability is a general software design property, whereas Virtualization and Scalability are core properties of Cloud Computing."
+        q: "Q.32. Which of the following is not a property of cloud computing.?",
+        options: ["virtualization", "composability", "scalability", "1 & 2", "2 & 3"],
+        correct: 1,
+        exp: "Composability is an architectural design choice rather than an inherent required property of cloud infrastructure."
     },
     {
-        q: "33. How many phases are there in Cloud Computing Planning?",
-        options: ["1", "5", "3", "6"],
-        ans: 2,
-        exp: "Cloud planning generally comprises 3 main phases: Strategy/Assessment, Planning/Design, and Implementation/Migration."
+        q: "Q.33. How many phases are there in Cloud Computing Planning.?",
+        options: ["1", "5", "3", "6", "4"],
+        correct: 2,
+        exp: "Cloud computing planning is traditionally divided into 3 primary phases: Strategy, Architecture, and Execution/Deployment."
     },
     {
-        q: "34. In which of the following service models the hardware is virtualized in the cloud?",
-        options: ["NaaS", "PaaS", "CaaS", "IaaS"],
-        ans: 3,
-        exp: "Infrastructure as a Service (IaaS) virtualizes raw hardware components including servers, storage, and networking."
+        q: "Q.34. In which of the following service models the hardware is virtualized in the cloud.?",
+        options: ["NaaS", "PaaS", "CaaS", "IaaS", "All of these"],
+        correct: 3,
+        exp: "Infrastructure as a Service (IaaS) virtualizes raw underlying physical servers, storage, and networking hardware."
     },
     {
-        q: "35. An application that provides for transaction overflow in a reservation system is an example of __________.",
-        options: ["Cloud bursting", "Cloud provisioning", "Cloud servicing", "Cloud scaling"],
-        ans: 0,
-        exp: "Cloud bursting dynamically offloads spikes in application demand from private clouds to public clouds."
+        q: "Q.35. An application that provides for transaction overflow in a reservation system is an example of _________ ?",
+        options: ["cloud bursting", "cloud provisioning", "cloud servicing", "All of the mentioned", "None of these"],
+        correct: 0,
+        exp: "Cloud bursting dynamically redirects extra traffic or computational spikes from a local private cloud to a public cloud."
     },
     {
-        q: "36. Which one of the following options can be best considered as the Cloud?",
-        options: ["Hadoop", "Intranet", "Web Applications", "Local Database"],
-        ans: 0,
-        exp: "Hadoop is a distributed framework frequently used in cloud architectures to handle large distributed datasets."
+        q: "Q.36. Which one of the following options can be best considered as the Cloud?",
+        options: ["Hadoop", "Intranet", "Web Applications", "All of the mentioned", "None of these"],
+        correct: 0,
+        exp: "Hadoop provides distributed computing framework clusters that serve as distributed cloud infrastructure."
     },
     {
-        q: "37. Which of the Following Offers Virtual Machines (VMs) in the Cloud?",
-        options: ["PaaS", "IaaS", "SaaS", "All of the above"],
-        ans: 1,
-        exp: "IaaS gives users direct access to virtualized compute instances (Virtual Machines)."
+        q: "Q.37. Which of the Following Offers Virtual Machines (VMs) in the Cloud?",
+        options: ["PaaS", "IaaS", "SaaS", "All of the above", "None of these"],
+        correct: 1,
+        exp: "IaaS providers give users direct management access to virtualized machine (VM) instances."
     },
     {
-        q: "38. Which of the Following Services is Built on Cloud Computing technology?",
-        options: ["Skype", "Twitter", "Gmail", "All of the above"],
-        ans: 3,
-        exp: "Skype, Twitter, and Gmail all utilize cloud infrastructure and distributed services to run globally."
+        q: "Q.38. Which of the Following Services is Built on Cloud Computing technology.?",
+        options: ["Skype", "Twitter", "Gmail", "All of the above", "None of these"],
+        correct: 3,
+        exp: "Skype, Twitter, and Gmail are internet applications completely hosted and powered by cloud infrastructure."
     },
     {
-        q: "39. __________ is Associated with Services Offered by Cloud.",
-        options: ["PaaS", "Ownership", "Reliability", "Sourcing"],
-        ans: 3,
-        exp: "Sourcing relates directly to how cloud services are procured and provisioned from cloud service providers."
+        q: "Q.39. _________ is Associated with Services Offered by Cloud.?",
+        options: ["PaaS", "Ownership", "Reliability", "Sourcing", "All of these"],
+        correct: 3,
+        exp: "Sourcing defines how cloud service deliverables are procured, provisioned, and managed from third-party vendors."
     },
     {
-        q: "40. Disadvantages of Cloud Computing Include?",
-        options: ["Limited control", "Vendor lock-in", "Internet connectivity reliance", "All of the above"],
-        ans: 3,
-        exp: "Potential drawbacks of cloud computing include dependence on stable internet, limited root control, and vendor lock-in."
+        q: "Q.40. Disadvantages of Cloud Computing Include?",
+        options: ["Limited control", "Vendor lock-in", "Internet connectivity", "All of the above", "None of these"],
+        correct: 3,
+        exp: "Major cloud challenges include mandatory internet dependency, vendor lock-in risks, and limited underlying infrastructure control."
     },
     {
-        q: "41. PaaS in Cloud Computing Offers?",
-        options: ["Run time environment", "System time", "Software time", "All of the above"],
-        ans: 0,
-        exp: "Platform as a Service (PaaS) provides developers with a complete runtime environment to build and execute code."
+        q: "Q.41. PaaS in Cloud Computing Offers?",
+        options: ["Run time environment", "System time", "Software time", "All of the above", "None of these"],
+        correct: 0,
+        exp: "Platform as a Service (PaaS) provides developers with an execution framework runtime environment."
     },
     {
-        q: "42. AWS Cloud Formation is Purposely Used for?",
-        options: ["Automating and deploying infrastructure as code", "Storing and managing virtual services", "Configuring network security groups", "Analyzing and deploying datasets"],
-        ans: 0,
-        exp: "AWS CloudFormation allows developers to model and provision AWS infrastructure resources through code templates."
+        q: "Q.42. AWS Cloud Formation is Purposely Used for?",
+        options: ["Automating and deploying infrastructure as code", "Storing and managing virtual services", "Configuring network security groups", "Analyzing and deploying datasets", "None of these"],
+        correct: 0,
+        exp: "AWS CloudFormation allows users to model and automate infrastructure deployment using Infrastructure as Code (IaC) templates."
     },
     {
-        q: "43. Google App Engine Follows __________ cloud Computing Model.",
-        options: ["PaaS", "IaaS", "SaaS", "All of the above"],
-        ans: 0,
-        exp: "Google App Engine is a Platform-as-a-Service (PaaS) offering for deploying web applications."
+        q: "Q.43. Google App Engine Follows __________ cloud Computing Model.?",
+        options: ["PaaS", "IaaS", "SaaS", "All of the above", "None of these"],
+        correct: 0,
+        exp: "Google App Engine is a managed Platform as a Service (PaaS) for building web applications."
     },
     {
-        q: "44. Which of the following is a primary characteristic of cloud computing?",
-        options: ["On-demand self-service", "High latency", "Fixed storage", "Manual resource allocation"],
-        ans: 0,
-        exp: "On-demand self-service allows users to provision computing capabilities as needed without human interaction from providers."
+        q: "Q.44. Which of the following is a primary characteristic of cloud computing.?",
+        options: ["On-demand self-service", "High latency", "Fixed storage", "Manual resource allocation", "All of these"],
+        correct: 0,
+        exp: "On-demand self-service allows users to provision compute resources automatically without human intervention."
     },
     {
-        q: "45. What does cloud computing primarily aim to reduce?",
-        options: ["Security", "Cost", "Speed", "Reliability"],
-        ans: 1,
-        exp: "Cloud computing reduces capital expenditure (CapEx) and operational costs by converting hardware costs into pay-as-you-go expenses."
+        q: "Q.45. What does cloud computing primarily aim to reduce.?",
+        options: ["Security", "Cost", "Speed", "Reliability", "All of these"],
+        correct: 1,
+        exp: "A core business motivation for migrating to cloud computing is reducing upfront hardware capital expenses (CapEx)."
     },
     {
-        q: "46. Which of the following is not a type of cloud computing deployment model?",
-        options: ["Public cloud", "Private cloud", "Hybrid cloud", "Local cloud"],
-        ans: 3,
-        exp: "Standard deployment models are Public, Private, Hybrid, and Community cloud; 'Local cloud' is not a standard deployment classification."
+        q: "Q.46. Which of the following is not a type of cloud computing deployment model.?",
+        options: ["Public cloud", "Private cloud", "Hybrid cloud", "Local cloud", "All of these"],
+        correct: 3,
+        exp: "Standard NIST cloud deployment models are Public, Private, Hybrid, and Community. 'Local cloud' is not a standard model."
     },
     {
-        q: "47. Cloud computing allows for which of the following?",
-        options: ["Fixed capacity", "Unlimited scalability", "Local-only access", "Hardware dependence"],
-        ans: 1,
-        exp: "Cloud infrastructure allows resources to scale up or down dynamically based on application demand."
+        q: "Q.47. Cloud computing allows for which of the following.?",
+        options: ["Fixed capacity", "Unlimited scalability", "Local-only access", "Hardware dependence", "None of these"],
+        correct: 1,
+        exp: "Cloud computing provides elastic scaling, allowing users to scale resources up or down dynamically."
     },
     {
-        q: "48. What key factor distinguishes cloud computing from traditional IT infrastructures?",
-        options: ["Decentralization", "Centralized hardware", "On-site management", "Manual updates"],
-        ans: 0,
-        exp: "Decentralized access and distributed virtual resources distinguish cloud systems from traditional on-premise IT."
+        q: "Q.48. What key factor distinguishes cloud computing from traditional IT infrastructures.?",
+        options: ["Decentralization", "Centralized hardware", "On-site management", "Manual updates", "None of these"],
+        correct: 0,
+        exp: "Decentralized remote infrastructure access over networks distinguishes cloud platforms from localized on-premises servers."
     },
     {
-        q: "49. Which type of cloud service primarily offers virtualized hardware resources?",
-        options: ["SaaS", "IaaS", "PaaS", "DaaS"],
-        ans: 1,
-        exp: "IaaS offers virtualized hardware infrastructure, including virtual servers, storage, and networking interfaces."
+        q: "Q.49. Which type of cloud service primarily offers virtualized hardware resources.?",
+        options: ["SaaS", "IaaS", "PaaS", "DaaS", "None of these"],
+        correct: 1,
+        exp: "IaaS (Infrastructure as a Service) provisions raw virtualized compute, storage, and networking hardware."
     },
     {
-        q: "50. Which of the following technologies is most commonly used in cloud computing?",
-        options: ["Virtualization", "Blockchain", "Quantum computing", "Augmented reality"],
-        ans: 0,
-        exp: "Virtualization is the foundational technology enabling cloud computing by abstracting physical hardware."
+        q: "Q.50. Which of the following technologies is most commonly used in cloud computing.?",
+        options: ["Virtualization", "Blockchain", "Quantum computing", "Augmented reality", "None of these"],
+        correct: 0,
+        exp: "Virtualization is the foundational technology that enables multi-tenancy and resource abstraction in cloud environments."
     },
     {
-        q: "51. Which command in AWS CLI can you use to configure a default profile for cloud access?",
-        options: ["aws configure", "aws init", "aws setup", "aws create-user"],
-        ans: 0,
-        exp: "Running 'aws configure' sets up AWS CLI credentials, region, and output formats."
+        q: "Q.51. Which command in AWS CLI can you use to configure a default profile for cloud access.?",
+        options: ["aws configure", "aws init", "aws setup", "aws create-user", "None of these"],
+        correct: 0,
+        exp: "`aws configure` sets up your credentials, default region, and output format in AWS Command Line Interface."
     },
     {
-        q: "52. Which of the following is an example of Software as a Service (SaaS)?",
-        options: ["Microsoft Azure", "Amazon EC2", "Google Docs", "VMware"],
-        ans: 2,
-        exp: "Google Docs is a cloud-based software application accessed via web browsers (SaaS)."
+        q: "Q.52. Which of the following is an example of Software as a Service (SaaS).?",
+        options: ["Microsoft Azure", "Amazon EC2", "Google Docs", "VMware", "None of these"],
+        correct: 2,
+        exp: "Google Docs is a cloud-hosted web application delivered directly to end users, making it SaaS."
     },
     {
-        q: "53. In which cloud service model does the provider manage everything from hardware to applications?",
-        options: ["IaaS", "PaaS", "SaaS", "DaaS"],
-        ans: 2,
-        exp: "In SaaS, the provider manages all underlying hardware, middleware, operating systems, and application software."
+        q: "Q.53. In which cloud service model does the provider manage everything from hardware to applications?",
+        options: ["IaaS", "PaaS", "SaaS", "DaaS", "None of these"],
+        correct: 2,
+        exp: "In SaaS, the vendor manages the infrastructure, OS, runtime environment, and application codebase completely."
     },
     {
-        q: "54. Which of the following is a key benefit of Platform as a Service (PaaS)?",
-        options: ["Full hardware control", "Faster development", "Manual scaling", "Increased hardware flexibility"],
-        ans: 1,
-        exp: "PaaS accelerates development cycles by providing pre-configured development frameworks and middleware."
+        q: "Q.54. Which of the following is a key benefit of Platform as a Service (PaaS)?",
+        options: ["Full hardware control", "Faster development", "Manual scaling", "Increased hardware flexibility", "All of these"],
+        correct: 1,
+        exp: "PaaS abstracts backend infrastructure, allowing developers to focus purely on coding and fast-tracking application releases."
     },
     {
-        q: "55. In the IaaS model, which of the following is the responsibility of the user?",
-        options: ["Networking", "Physical Hardware", "Operating System", "Datacenter Security"],
-        ans: 2,
-        exp: "In IaaS, users manage the Operating System, middleware, and applications, while the provider manages physical hardware."
+        q: "Q.55. In the IaaS model, which of the following is the responsibility of the user?",
+        options: ["Application updates", "Networking", "Operating system", "Data backup", "All of these"],
+        correct: 2,
+        exp: "In IaaS, users manage the Operating System, software installations, application logic, and custom data configuration."
     },
     {
-        q: "56. Which cloud service model is best suited for developers who want to build custom applications without managing infrastructure?",
-        options: ["SaaS", "PaaS", "IaaS", "FaaS"],
-        ans: 1,
-        exp: "PaaS allows developers to focus purely on application logic without configuring servers or operating systems."
+        q: "Q.56. Which cloud service model is best suited for developers who want to build custom applications without managing infrastructure?",
+        options: ["SaaS", "PaaS", "IaaS", "FaaS", "None of these"],
+        correct: 1,
+        exp: "PaaS provides built-in development tools and execution platforms so developers don't have to manage underlying servers."
     },
     {
-        q: "57. Which of the following is typically not a responsibility of the cloud provider in an IaaS model?",
-        options: ["Networking", "Physical Security", "Applications", "Virtualization"],
-        ans: 2,
-        exp: "In IaaS, the customer/user is responsible for installing and managing applications."
+        q: "Q.57. Which of the following is typically not a responsibility of the cloud provider in an IaaS model?",
+        options: ["Networking", "Security", "Applications", "Virtualization", "None of these"],
+        correct: 2,
+        exp: "Application code, execution, and user management fall under the customer's responsibility in the IaaS shared model."
     },
     {
-        q: "58. Which service model allows customers to rent virtualized computing resources over the internet?",
-        options: ["SaaS", "IaaS", "PaaS", "DBaaS"],
-        ans: 1,
-        exp: "IaaS enables users to rent virtualized servers, storage, and networking components over the web."
+        q: "Q.58. Which service model allows customers to rent virtualized computing resources over the internet?",
+        options: ["SaaS", "IaaS", "PaaS", "DBaaS", "None of these"],
+        correct: 1,
+        exp: "IaaS allows clients to rent virtualized IT infrastructure like virtual servers, network routers, and storage space."
     },
     {
-        q: "59. Which AWS service is an example of Infrastructure as a Service (IaaS)?",
-        options: ["AWS Lambda", "Amazon EC2", "AWS S3", "AWS CloudFormation"],
-        ans: 1,
-        exp: "Amazon EC2 provides virtual servers (compute instances) on demand, making it an IaaS offering."
+        q: "Q.59. Which AWS service is an example of Infrastructure as a Service (IaaS)?",
+        options: ["AWS Lambda", "Amazon EC2", "AWS S3", "AWS CloudFormation", "None of these"],
+        correct: 1,
+        exp: "Amazon EC2 provides virtual virtual machine instances, making it AWS's flagship IaaS offering."
     },
     {
-        q: "60. Which of the following is a public cloud deployment model?",
-        options: ["AWS", "VMware Private", "Microsoft Azure", "Both AWS and Microsoft Azure"],
-        ans: 3,
-        exp: "AWS and Microsoft Azure are prominent public cloud platform providers."
+        q: "Q.60. Which of the following is a public cloud deployment model?",
+        options: ["AWS", "VMware", "Microsoft Azure", "Both AWS and Microsoft Azure", "None of these"],
+        correct: 3,
+        exp: "AWS and Microsoft Azure are public cloud providers offering multi-tenant cloud services worldwide."
     },
     {
-        q: "61. Which deployment model combines both private and public cloud features?",
-        options: ["Public cloud", "Hybrid cloud", "Private cloud", "Community cloud"],
-        ans: 1,
-        exp: "A hybrid cloud integrates on-premise/private cloud infrastructure with public cloud services."
+        q: "Q.61. Which deployment model combines both private and public cloud features?",
+        options: ["Public cloud", "Hybrid cloud", "Private cloud", "Community cloud", "None of these"],
+        correct: 1,
+        exp: "Hybrid cloud connects private on-premises infrastructure with public cloud environments."
     },
     {
-        q: "62. Which of the following scenarios is best suited for a hybrid cloud model?",
-        options: ["A government agency hosting sensitive data", "A startup hosting a simple blog", "A large enterprise with varying workloads", "A personal portfolio site"],
-        ans: 2,
-        exp: "Hybrid cloud is ideal for enterprises that need private cloud security for sensitive data alongside public cloud scalability for burst workloads."
+        q: "Q.62. Which of the following scenarios is best suited for a hybrid cloud model?",
+        options: ["A government agency hosting sensitive data", "A startup hosting a website", "A large enterprise with varying workloads", "A personal blog", "None of these"],
+        correct: 2,
+        exp: "Large enterprises benefit from hybrid clouds by maintaining secure private clouds while bursting fluctuating traffic to public clouds."
     },
     {
-        q: "63. What is the primary benefit of a community cloud over a public cloud?",
-        options: ["Higher security", "Lower cost", "No need for maintenance", "More scalability"],
-        ans: 0,
-        exp: "Community clouds are shared by organizations with common compliance needs, providing stricter security controls than public clouds."
+        q: "Q.63. What is the primary benefit of a community cloud over a public cloud?",
+        options: ["Higher security", "Lower cost", "No need for maintenance", "More scalability", "All of these"],
+        correct: 0,
+        exp: "Community clouds are shared among specific organizations with shared requirements, offering greater domain security than open public clouds."
     },
     {
-        q: "64. A company using a public cloud environment is facing data security concerns. What could be a possible solution?",
-        options: ["Move to a hybrid cloud", "Upgrade public cloud security", "Use more encryption", "Migrate to local hard drives"],
-        ans: 0,
-        exp: "Migrating to a hybrid cloud allows sensitive data to stay on a secure private cloud while less sensitive workloads run on public cloud."
+        q: "Q.64. A company using a public cloud environment is facing data security concerns. What could be a possible solution?",
+        options: ["Move to a hybrid cloud", "Upgrade public cloud security", "Use more encryption", "Migrate to private cloud", "All of these"],
+        correct: 0,
+        exp: "Transitioning to a hybrid cloud lets companies keep sensitive data on isolated private infrastructure while utilizing public clouds for non-sensitive tasks."
     },
     {
-        q: "65. What is the primary benefit of virtualization in cloud computing?",
-        options: ["Increased physical servers", "Resource optimization", "Lower bandwidth usage", "Faster network speeds"],
-        ans: 1,
-        exp: "Virtualization allows multiple virtual machines to run on a single physical host, drastically improving hardware resource utilization."
+        q: "Q.65. What is the primary benefit of virtualization in cloud computing?",
+        options: ["Increased physical servers", "Resource optimization", "Lower bandwidth usage", "Faster network speeds", "All of these"],
+        correct: 1,
+        exp: "Virtualization maximizes physical hardware utilization by running multiple virtual machines on a single physical server."
     },
     {
-        q: "66. XaaS means in cloud computing is?",
-        options: ["Everything-As-A-Service", "Anything-As-A-Service", "Something-As-A-Service", "Nothing-As-A-Service"],
-        ans: 1,
-        exp: "XaaS stands for Anything-as-a-Service (or Everything-as-a-Service), representing all types of services delivered over the cloud."
+        q: "Q.66. XaaS means in cloud computing is?",
+        options: ["Everything-As-A-Service", "Anything-As-A-Service", "Something-As-A-Service", "Nothing-As-A-Service", "None of these"],
+        correct: 1,
+        exp: "XaaS stands for Anything-as-a-Service (or Everything-as-a-Service), describing the expanding range of cloud service delivery models."
     },
     {
-        q: "67. __________ relies heavily on a remote server for processing power and data storage, meaning most of the work is done on the server.",
-        options: ["Thick Client", "Thin Client", "Computer Workstation", "All of these"],
-        ans: 1,
-        exp: "A Thin Client relies on remote servers for processing and storage, performing minimal computation locally."
+        q: "Q.67. _____ relies heavily on a remote server for processing power and data storage, meaning most of the work is done on the server?",
+        options: ["Thick Client", "Thin Client", "Computer", "All of these", "None of these"],
+        correct: 1,
+        exp: "A Thin Client has minimal local processing hardware and relies on a remote cloud server to perform computational tasks."
     },
     {
-        q: "68. __________ performs most of its processing locally on the user's device, allowing it to function with minimal reliance on a server.",
-        options: ["Thick Client", "Thin Client", "Workstation Terminal", "Cloud Node"],
-        ans: 0,
-        exp: "A Thick Client handles processing locally on the hardware device and requires minimal server interaction."
+        q: "Q.68. _____ performs most of its processing locally on the user's device, allowing it to function with minimal reliance on a server?",
+        options: ["Thick Client", "Thin Client", "Workstation", "All of these", "None of these"],
+        correct: 0,
+        exp: "A Thick (Fat) Client runs applications locally on its own powerful CPU and hardware, minimizing server dependence."
     },
     {
-        q: "69. Among these which is/are types of Cloud Computing?",
-        options: ["Public Cloud Computing", "Private Cloud Computing", "Hybrid Cloud Computing", "All of these"],
-        ans: 3,
-        exp: "Public, Private, and Hybrid clouds are all official deployment types of cloud computing."
+        q: "Q.69. Among these which is/are types of Cloud Computing?",
+        options: ["Public Cloud Computing", "Private Cloud Computing", "Hybrid Cloud Computing", "Community Cloud Computing", "All of these"],
+        correct: 4,
+        exp: "Public, Private, Hybrid, and Community clouds represent the four official deployment categories."
     },
     {
-        q: "70. What does AWS Offer?",
-        options: ["Virtual Servers (EC2)", "Storage (S3)", "Databases (RDS)", "All of these"],
-        ans: 3,
-        exp: "AWS offers compute (EC2), storage (S3), databases (RDS), and dozens of other cloud services."
+        q: "Q.70. What does AWS Offers?",
+        options: ["Virtual Servers (EC2)", "Storage (S3)", "Databases (RDS)", "All of these", "None of these"],
+        correct: 3,
+        exp: "AWS offers a complete range of cloud compute (EC2), scalable object storage (S3), and managed databases (RDS)."
     }
 ];
 
-// Function to shuffle options dynamically on page reload
-function prepareQuizData() {
-    return rawQuizData.map(item => {
-        let optionsCopy = [...item.options];
-        let correctText = optionsCopy[item.ans];
-        
-        // Fisher-Yates Shuffle algorithm
-        for (let i = optionsCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [optionsCopy[i], optionsCopy[j]] = [optionsCopy[j], optionsCopy[i]];
-        }
-        
-        let newAnsIdx = optionsCopy.indexOf(correctText);
-        
-        return {
-            q: item.q,
-            options: optionsCopy,
-            ans: newAnsIdx,
-            exp: item.exp
-        };
-    });
+// Fisher-Yates Shuffle Algorithm to randomize options on page reload
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
 }
 
-function renderQuiz() {
-    const quizData = prepareQuizData();
-    const quizContainer = document.getElementById('quiz');
-    
-    quizData.forEach((item, index) => {
-        const qCard = document.createElement('div');
-        qCard.className = 'question-card';
+function buildQuiz() {
+    const quizContainer = document.getElementById('quiz-body');
+    quizContainer.innerHTML = '';
 
-        const qTitle = document.createElement('div');
-        qTitle.className = 'question-text';
-        qTitle.innerText = item.q;
-        qCard.appendChild(qTitle);
-
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options';
-
-        item.options.forEach((opt, optIdx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = (optIdx + 1) + ") " + opt;
-            btn.onclick = () => checkAnswer(btn, index, optIdx, item.ans);
-            optionsContainer.appendChild(btn);
+    rawQuestions.forEach((item, qIndex) => {
+        // Map original options with correctness state
+        let optionsObj = item.options.map((optText, origIndex) => {
+            return {
+                text: optText,
+                isCorrect: origIndex === item.correct
+            };
         });
 
-        qCard.appendChild(optionsContainer);
+        // Shuffle options dynamically on reload
+        optionsObj = shuffle(optionsObj);
 
-        const expDiv = document.createElement('div');
-        expDiv.id = `exp-${index}`;
-        expDiv.className = 'explanation';
-        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
-        qCard.appendChild(expDiv);
+        // Build question card
+        const card = document.createElement('div');
+        card.className = 'question-card';
 
-        quizContainer.appendChild(qCard);
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation';
+        expBox.id = `exp-${qIndex}`;
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+
+        optionsObj.forEach((opt) => {
+            const li = document.createElement('li');
+            li.className = 'option-item';
+
+            const link = document.createElement('a');
+            link.href = 'javascript:void(0)';
+            link.className = 'option-link';
+            link.textContent = opt.text;
+
+            link.onclick = function() {
+                // Prevent re-clicking options for this question
+                const allLinks = optionsList.querySelectorAll('.option-link');
+                allLinks.forEach(l => l.classList.add('disabled'));
+
+                if (opt.isCorrect) {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                    // Show correct option in green
+                    allLinks.forEach(l => {
+                        if (l.dataset.correct === "true") {
+                            l.classList.add('correct');
+                        }
+                    });
+                }
+                // Display explanation
+                expBox.style.display = 'block';
+            };
+
+            if (opt.isCorrect) {
+                link.dataset.correct = "true";
+            }
+
+            li.appendChild(link);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
     });
 }
 
-function checkAnswer(selectedBtn, qIndex, selectedIdx, correctIdx) {
-    const card = selectedBtn.closest('.question-card');
-    const buttons = card.querySelectorAll('.btn');
-
-    buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        if (idx === correctIdx) {
-            btn.classList.add('correct');
-        }
-    });
-
-    if (selectedIdx !== correctIdx) {
-        selectedBtn.classList.add('incorrect');
-    }
-
-    const expDiv = document.getElementById(`exp-${qIndex}`);
-    expDiv.style.display = 'block';
-}
-
-window.onload = renderQuiz;
+// Build quiz on page load
+window.onload = buildQuiz;
 </script>
 
 </body>
