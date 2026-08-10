@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineering Quiz - Interactive Practice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            margin: 8px 0;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 15px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-link:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .option-link.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+            font-weight: bold;
+        }
+        .option-link.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.95em;
+            color: #1e40af;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Software Engineering Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    const questionsData = [
+        {
+            q: "Q.1. In which model, software is developed in a series of incremental releases.?",
+            options: [
+                { text: "Concurrent", correct: false },
+                { text: "RAD", correct: false },
+                { text: "Spiral", correct: true },
+                { text: "Sequential", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The Spiral model combines iterative nature with systematic aspects, developing software in a series of incremental releases."
+        },
+        {
+            q: "Q.2. What is the full form of CASE tool in software engineering.?",
+            options: [
+                { text: "Code Aided Software Engineering", correct: false },
+                { text: "Computer Application Software Engineering", correct: false },
+                { text: "Control Application Software Engineering", correct: false },
+                { text: "Computer Aided Software Engineering", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: CASE stands for Computer-Aided Software Engineering, representing software used for automated software development."
+        },
+        {
+            q: "Q.3. What is the full form of SQA in software engineering.?",
+            options: [
+                { text: "Service Quality Activity", correct: false },
+                { text: "Software Quality Activity", correct: false },
+                { text: "Software Quality Assurance", correct: true },
+                { text: "System Quality Assurance", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: SQA stands for Software Quality Assurance, a set of activities designed to ensure quality in software engineering processes."
+        },
+        {
+            q: "Q.4. Which model is a 'high speed' adaption of the linear sequential model in software engineering.?",
+            options: [
+                { text: "Prototype model", correct: false },
+                { text: "Rapid Application development model", correct: true },
+                { text: "Waterfall model", correct: false },
+                { text: "Spiral model", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Rapid Application Development (RAD) is a high-speed adaptation of the linear sequential model using a component-based approach."
+        },
+        {
+            q: "Q.5. What is COHESION in software design.?",
+            options: [
+                { text: "Cohesion is a measure of complexity of module of a software", correct: false },
+                { text: "Cohesion is a measure of efficiency of a module of a software", correct: false },
+                { text: "Cohesion is a measure of functional weakness of a module of a software", correct: false },
+                { text: "Cohesion is a measure of functional strength of a module of a software", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Cohesion measures the relative functional strength of a module, indicating how closely related its internal elements are."
+        },
+        {
+            q: "Q.6. What is the other name of software updates.?",
+            options: [
+                { text: "Patching", correct: true },
+                { text: "Sandboxing", correct: false },
+                { text: "Dropping", correct: false },
+                { text: "Gaining", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Software patching involves applying patches or updates to fix bugs, security vulnerabilities, or improve functionality."
+        },
+        {
+            q: "Q.7. Which of the following software development model is also referred to as the linear sequential model.?",
+            options: [
+                { text: "Spiral model", correct: false },
+                { text: "Iterative model", correct: false },
+                { text: "Waterfall model", correct: true },
+                { text: "Incremental model", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The Waterfall model is known as the linear sequential model because phases flow downward like a waterfall."
+        },
+        {
+            q: "Q.8. What is the full form of IDE in software development.?",
+            options: [
+                { text: "Integration development environment", correct: false },
+                { text: "Integrated drive electronics", correct: false },
+                { text: "Integrated development electronics", correct: false },
+                { text: "Integrated development environment", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: IDE stands for Integrated Development Environment, providing comprehensive facilities to programmers for software development."
+        },
+        {
+            q: "Q.9. Which of the following categories stand opposite to Free and Open Source Software.?",
+            options: [
+                { text: "Proprietary Software", correct: false },
+                { text: "Secondary Software", correct: false },
+                { text: "Closed Source Software", correct: false },
+                { text: "Both 1 & 3", correct: true },
+                { text: "All 1,2 & 3", correct: false }
+            ],
+            explanation: "Explanation: Proprietary and Closed Source software are restricted and stand opposite to open-source software principles."
+        },
+        {
+            q: "Q.10. Which one of the following models is not suitable for accommodating any change.?",
+            options: [
+                { text: "Build & Fix Model", correct: false },
+                { text: "Prototyping Model", correct: false },
+                { text: "RAD Model", correct: false },
+                { text: "Waterfall Model", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The Waterfall model is rigid and strict, making it difficult to accommodate changes once a phase is completed."
+        },
+        {
+            q: "Q.11. RAD model has how many phases.?",
+            options: [
+                { text: "2 phases", correct: false },
+                { text: "3 phase", correct: false },
+                { text: "5 phases", correct: true },
+                { text: "6 phases", correct: false },
+                { text: "7 phases", correct: false }
+            ],
+            explanation: "Explanation: The Rapid Application Development (RAD) model typically consists of 5 main phases: Business modeling, Data modeling, Process modeling, Application generation, and Testing/turnover."
+        },
+        {
+            q: "Q.12. What is the major drawback of using RAD Model.?",
+            options: [
+                { text: "Highly specialized & skilled developers/designers are required", correct: false },
+                { text: "Increases reusability of components", correct: false },
+                { text: "Encourages customer/client feedback", correct: false },
+                { text: "Increases reusability of components, Highly specialized & skilled developers/designers are required", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: RAD requires highly skilled developers and tight team coordination, which can be a significant constraint."
+        },
+        {
+            q: "Q.13. Which model can be selected if user is involved in all the phases of SDLC.?",
+            options: [
+                { text: "Waterfall Model", correct: false },
+                { text: "Prototyping Model", correct: false },
+                { text: "RAD Model", correct: false },
+                { text: "both Prototyping Model & RAD Model", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Both Prototyping and RAD models heavily rely on continuous user involvement throughout the development phases."
+        },
+        {
+            q: "Q.14. Which of the following are valid step in SDLC framework.?",
+            options: [
+                { text: "Requirement Gathering", correct: false },
+                { text: "System Analysis", correct: false },
+                { text: "Software Design", correct: false },
+                { text: "All of the above", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Requirement gathering, system analysis, and software design are all foundational steps within the SDLC framework."
+        },
+        {
+            q: "Q.15. Which of the following is not correct model in Software Development Paradigm.?",
+            options: [
+                { text: "Waterfall Model", correct: false },
+                { text: "P model", correct: true },
+                { text: "Spiral Model", correct: false },
+                { text: "V model", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: 'P model' is not a recognized standard software development life cycle model among the standard paradigms."
+        },
+        {
+            q: "Q.16. Waterfall model is not suitable for.?",
+            options: [
+                { text: "Small projects", correct: false },
+                { text: "Complex projects", correct: false },
+                { text: "Accommodating changes", correct: true },
+                { text: "Maintenance Projects", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Waterfall model performs poorly when requirements change frequently during the lifecycle of the project."
+        },
+        {
+            q: "Q.17. In the maintenance phase the product must be tested against previous test cases. This is known as________ testing.?",
+            options: [
+                { text: "Unit", correct: false },
+                { text: "Regression", correct: true },
+                { text: "Acceptance", correct: false },
+                { text: "Integration", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Regression testing ensures that changes or bug fixes in maintenance have not broken existing functionality."
+        },
+        {
+            q: "Q.18. In a college, students are asked to develop a software. Which model would be preferable.?",
+            options: [
+                { text: "Waterfall model", correct: false },
+                { text: "Spiral model", correct: false },
+                { text: "Agile model", correct: false },
+                { text: "Code and fix model", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: For small academic projects or assignments, Code and Fix is often utilized due to its simplicity."
+        },
+        {
+            q: "Q.19. Which of the following model put much more emphasis on testing.?",
+            options: [
+                { text: "Waterfall model", correct: false },
+                { text: "Agile model", correct: false },
+                { text: "Rapid action development model", correct: false },
+                { text: "V-V model", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The V-Model (Validation and Verification model) correlates every development phase directly with a corresponding testing phase."
+        },
+        {
+            q: "Q.20. Validation is responsibility of.?",
+            options: [
+                { text: "Developer", correct: false },
+                { text: "Designer", correct: false },
+                { text: "Tester", correct: true },
+                { text: "QA Team", correct: false },
+                { text: "All the stakeholders", correct: false }
+            ],
+            explanation: "Explanation: Validation ensures that the built software fulfills the intended user requirements, typically evaluated by testers and users."
+        },
+        {
+            q: "Q.21. Verification is responsibility of.?",
+            options: [
+                { text: "Developer", correct: false },
+                { text: "Designer", correct: false },
+                { text: "Tester", correct: false },
+                { text: "QA Team", correct: true },
+                { text: "All the stakeholders", correct: false }
+            ],
+            explanation: "Explanation: Verification checks whether the software conforms to specified requirements and design standards."
+        },
+        {
+            q: "Q.22. Build & Fix Model is suitable for programming exercises of ________ LOC (Lines of Code).?",
+            options: [
+                { text: "100-200", correct: true },
+                { text: "200-400", correct: false },
+                { text: "400-1000", correct: false },
+                { text: "Above 1000", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Build & Fix is only manageable for extremely small programs (100-200 LOC) without formal specifications."
+        },
+        {
+            q: "Q.23. The Waterfall Model was the _________Process Model.?",
+            options: [
+                { text: "First", correct: true },
+                { text: "Second", correct: false },
+                { text: "Third", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The Waterfall model, introduced by Winston Royce, was chronologically the first formal software process model."
+        },
+        {
+            q: "Q.24. The SDLC involves _________ phases as explained.?",
+            options: [
+                { text: "Two phases", correct: false },
+                { text: "Seven phases", correct: true },
+                { text: "Six phases", correct: false },
+                { text: "Eight phases", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Standard SDLC frameworks commonly outline seven major phases from planning to maintenance."
+        },
+        {
+            q: "Q.25. A System life cycle model describes _________ criteria for each phase.?",
+            options: [
+                { text: "Up and down", correct: false },
+                { text: "Pull and push", correct: false },
+                { text: "Entry and exit", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Life cycle models specify entry criteria (when to start) and exit criteria (when a phase is complete)."
+        },
+        {
+            q: "Q.26. System Development Life Cycle (SDLC) aims to produce a _________ software.?",
+            options: [
+                { text: "Low quality", correct: false },
+                { text: "Average Quality", correct: false },
+                { text: "High-quality", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The primary aim of SDLC is to deliver high-quality software that meets customer expectations within budget."
+        },
+        {
+            q: "Q.27. _________ of the system gives long life to the new system.?",
+            options: [
+                { text: "Implementation", correct: false },
+                { text: "Maintenance", correct: true },
+                { text: "Testing", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Effective maintenance ensures a software system remains functional, adaptable, and relevant over a long lifespan."
+        },
+        {
+            q: "Q.28. Which of the following is the most important phase of SDLC.?",
+            options: [
+                { text: "Requirements analysis", correct: true },
+                { text: "Design", correct: false },
+                { text: "Testing", correct: false },
+                { text: "Coding", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Requirements analysis sets the foundation; errors here propagate through all subsequent phases."
+        },
+        {
+            q: "Q.29. Which step of SDLC performs cost/benefit analysis.?",
+            options: [
+                { text: "Feasibility study", correct: true },
+                { text: "Analysis", correct: false },
+                { text: "Design", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Feasibility studies evaluate financial, operational, and technical viability through cost/benefit analysis."
+        },
+        {
+            q: "Q.30. The detailed study of existing system is referred to as.?",
+            options: [
+                { text: "System Planning", correct: false },
+                { text: "System Analysis", correct: true },
+                { text: "Feasibility Study", correct: false },
+                { text: "Design DFD", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: System analysis examines the current system's workflow and bottlenecks to understand requirements for the new system."
+        },
+        {
+            q: "Q.31. Enhancements, upgrades, and bug fixes are done during the _________ step in the SDLC.?",
+            options: [
+                { text: "Maintenance and Evaluation", correct: true },
+                { text: "Problem/Opportunity Identification", correct: false },
+                { text: "Design", correct: false },
+                { text: "Development and Documentation", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Maintenance and evaluation handle ongoing software upgrades, patches, and modifications after deployment."
+        },
+        {
+            q: "Q.32. The _________ determines whether the project should go forward.?",
+            options: [
+                { text: "feasibility assessment", correct: true },
+                { text: "opportunity identification", correct: false },
+                { text: "system evaluation", correct: false },
+                { text: "program specification", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A feasibility assessment determines if a proposed project is practical and financially viable before resource commitment."
+        },
+        {
+            q: "Q.33. Which one of the following is not a phase of Prototyping Model.?",
+            options: [
+                { text: "Requirement Gathering", correct: false },
+                { text: "Coding", correct: true },
+                { text: "Design", correct: false },
+                { text: "Prototype", correct: false },
+                { text: "Customer Evaluation", correct: false }
+            ],
+            explanation: "Explanation: Coding of the final production software is not a core phase of building the preliminary prototype."
+        },
+        {
+            q: "Q.34. A descriptive and diagrammatic representation of software life cycle is called.?",
+            options: [
+                { text: "software descriptive model", correct: false },
+                { text: "software life cycle model", correct: true },
+                { text: "software plan", correct: false },
+                { text: "software phases", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: A software life cycle model visually and descriptively outlines the stages of software development."
+        },
+        {
+            q: "Q.35. This phase of the SDLC is known as the 'ongoing phase' where the system is periodically evaluated and updated as needed.?",
+            options: [
+                { text: "preliminary investigation", correct: false },
+                { text: "system design", correct: false },
+                { text: "system implementation", correct: false },
+                { text: "system maintenance", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: System maintenance continues indefinitely throughout the operational life of the software product."
+        },
+        {
+            q: "Q.36. Which of the following testing in which Internal system design is not considered.?",
+            options: [
+                { text: "White box and black box testing", correct: false },
+                { text: "White-box testing", correct: false },
+                { text: "Black box testing", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Black-box testing evaluates functionality based on inputs and outputs without knowing the internal code structure."
+        },
+        {
+            q: "Q.37. White box testing techniques are also known as.?",
+            options: [
+                { text: "Code is visible to the tester", correct: false },
+                { text: "Open Box Testing", correct: false },
+                { text: "Glass Box Testing", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: White-box testing is also called glass-box or open-box testing because the internal code is visible to the tester."
+        },
+        {
+            q: "Q.38. In which environment can Alpha testing be performed.?",
+            options: [
+                { text: "User's end", correct: false },
+                { text: "Developer's end", correct: true },
+                { text: "User's and developer's end", correct: false },
+                { text: "Customer End", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Alpha testing is performed internally at the developer's site by internal employees or a dedicated QA team."
+        },
+        {
+            q: "Q.39. In which testing does the Software Testing team validate the build first.?",
+            options: [
+                { text: "Smoke Testing", correct: true },
+                { text: "Integration Testing", correct: false },
+                { text: "Unit Testing", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Smoke testing is a quick preliminary test to check whether the critical functions of a build work properly."
+        },
+        {
+            q: "Q.40. In which environment can Beta testing be performed.?",
+            options: [
+                { text: "Client end", correct: false },
+                { text: "Developer's end", correct: false },
+                { text: "Group of Customers", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Beta testing is conducted at the end-user or customer environment with external users."
+        },
+        {
+            q: "Q.41. Which of the below testing is executed without documentation and planning.?",
+            options: [
+                { text: "Regression Testing", correct: false },
+                { text: "Adhoc Testing", correct: true },
+                { text: "Unit Testing", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Adhoc testing is performed informally without structured planning or formal test cases to find quick defects."
+        },
+        {
+            q: "Q.42. Which testing is used to check the internal code structure.?",
+            options: [
+                { text: "Grey box testing", correct: false },
+                { text: "Black box testing", correct: false },
+                { text: "White-box testing", correct: true },
+                { text: "Red box testing", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: White-box testing directly examines and tests the internal logic, paths, and code structure."
+        },
+        {
+            q: "Q.43. What is the full form of SRS.?",
+            options: [
+                { text: "Software respond system", correct: false },
+                { text: "Software requirements specification", correct: true },
+                { text: "System responds software", correct: false },
+                { text: "System requirements specification", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: SRS stands for Software Requirements Specification, detailing the complete functional and non-functional requirements."
+        },
+        {
+            q: "Q.44. _________ is a measure of the degree of interdependence between modules.?",
+            options: [
+                { text: "Cohesion", correct: false },
+                { text: "Coupling", correct: true },
+                { text: "Moduling", correct: false },
+                { text: "1 & 2", correct: false },
+                { text: "2 & 3", correct: false }
+            ],
+            explanation: "Explanation: Coupling measures how closely connected or dependent separate software modules are on one another."
+        },
+        {
+            q: "Q.45. What stores all changes and info related to the project from development through maintenance in CASE tools.?",
+            options: [
+                { text: "Database", correct: false },
+                { text: "Repository", correct: true },
+                { text: "Registers", correct: false },
+                { text: "All of these", correct: false },
+                { text: "More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: A CASE repository is a centralized database storing all project artifacts, diagrams, and metadata."
+        },
+        {
+            q: "Q.46. Which of the following is a drawback of using CASE tool.?",
+            options: [
+                { text: "Standardization of notations and diagrams", correct: false },
+                { text: "Communication between development team member", correct: false },
+                { text: "Costs associated with the use of the tool", correct: true },
+                { text: "Reduction of time and effort", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: High licensing, training, and maintenance costs are major drawbacks associated with adopting CASE tools."
+        },
+        {
+            q: "Q.47. Software is defined as.?",
+            options: [
+                { text: "Set of programs", correct: false },
+                { text: "Set of instructions", correct: false },
+                { text: "Documentation and configuration of data", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Software comprises programs, instructions, and associated data documentation."
+        },
+        {
+            q: "Q.48. What is Software Engineering.?",
+            options: [
+                { text: "Designing a software", correct: false },
+                { text: "Testing a software", correct: false },
+                { text: "Application of engineering principles to the design a software", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the above", correct: false }
+            ],
+            explanation: "Explanation: Software engineering applies systematic engineering principles to build reliable software efficiently."
+        },
+        {
+            q: "Q.49. Who is the father of Software Engineering.?",
+            options: [
+                { text: "Margaret Hamilton", correct: false },
+                { text: "Watts S. Humphrey", correct: true },
+                { text: "Alan Turing", correct: false },
+                { text: "Boris Beizer", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Watts S. Humphrey is widely recognized as the father of software engineering process improvement."
+        },
+        {
+            q: "Q.50. What are the features of Software Code.?",
+            options: [
+                { text: "Simplicity", correct: false },
+                { text: "Accessibility", correct: false },
+                { text: "Modularity", correct: true },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Modularity is a primary feature ensuring code is broken into manageable, independent components."
+        },
+        {
+            q: "Q.51. _________ is a software development activity that is not a part of software processes.?",
+            options: [
+                { text: "Validation", correct: false },
+                { text: "Specification", correct: false },
+                { text: "Development", correct: false },
+                { text: "Dependence", correct: true },
+                { text: "More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: 'Dependence' is not a core software development activity, whereas specification, development, and validation are."
+        },
+        {
+            q: "Q.52. _________ is defined as the process of generating analysis and designing documents.?",
+            options: [
+                { text: "Re-engineering", correct: false },
+                { text: "Reverse engineering", correct: true },
+                { text: "Software re-engineering", correct: false },
+                { text: "Science and engineering", correct: false },
+                { text: "More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: Reverse engineering analyzes existing code to recreate design and analysis documentation."
+        },
+        {
+            q: "Q.53. What is a Functional Requirement.?",
+            options: [
+                { text: "Specifies the tasks the program must complete", correct: true },
+                { text: "Specifies the tasks the program should not complete", correct: false },
+                { text: "Specifies the tasks the program must not work", correct: false },
+                { text: "All of the mentioned", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Functional requirements define what a system must do and the specific behaviors or functions it must perform."
+        },
+        {
+            q: "Q.54. Why do bugs and failures occur in software.?",
+            options: [
+                { text: "Because of Developers", correct: false },
+                { text: "Because of companies", correct: false },
+                { text: "Because of both companies and Developers", correct: true },
+                { text: "None of these", correct: false },
+                { text: "Either 1 or 2", correct: false }
+            ],
+            explanation: "Explanation: Failures can stem from human error by developers, tight organizational deadlines, or flawed requirements set by management."
+        },
+        {
+            q: "Q.55. Attributes of good software include.?",
+            options: [
+                { text: "Development", correct: false },
+                { text: "Maintainability & functionality", correct: false },
+                { text: "Functionality", correct: true },
+                { text: "Maintainability", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Functionality and maintainability form the core attributes expected from high-grade software."
+        },
+        {
+            q: "Q.56. The Cleanroom philosophy was proposed by _________.?",
+            options: [
+                { text: "Linger", correct: false },
+                { text: "Mills", correct: false },
+                { text: "Dyer", correct: false },
+                { text: "All of the Mentioned", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The Cleanroom software engineering approach was developed by Harlan Mills, J. Cleano Dyer, and Richard Linger."
+        },
+        {
+            q: "Q.57. Who proposed the spiral model.?",
+            options: [
+                { text: "Barry Boehm", correct: true },
+                { text: "Pressman", correct: false },
+                { text: "Royce", correct: false },
+                { text: "IBM", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Barry Boehm formally proposed the Spiral Model in 1988 to incorporate risk management into software engineering."
+        },
+        {
+            q: "Q.58. Which of the following are CASE tools.?",
+            options: [
+                { text: "Central Repository", correct: false },
+                { text: "Integrated Case Tools", correct: false },
+                { text: "Upper Case Tools", correct: false },
+                { text: "Lower Case Tools", correct: false },
+                { text: "All of these", correct: true }
+            ],
+            explanation: "Explanation: Repositories, Upper/Lower CASE tools, and integrated tools all fall under the broader umbrella of CASE tools."
+        },
+        {
+            q: "Q.59. Software patch is defined as.?",
+            options: [
+                { text: "Daily or routine Fix", correct: false },
+                { text: "Required or Critical Fix", correct: false },
+                { text: "Emergency Fix", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Patches are typically deployed as emergency or targeted fixes for vulnerabilities or critical bugs."
+        },
+        {
+            q: "Q.60. _________ is a software development life cycle model that is chosen if the development team has less experience on similar projects.?",
+            options: [
+                { text: "Iterative Enhancement Model", correct: false },
+                { text: "RAD", correct: false },
+                { text: "Spiral", correct: true },
+                { text: "Waterfall", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The Spiral model is ideal for unfamiliar or high-risk projects because it evaluates and mitigates risk iteratively."
+        },
+        {
+            q: "Q.61. Quality Management is known as.?",
+            options: [
+                { text: "SQI", correct: false },
+                { text: "SQA", correct: true },
+                { text: "SQM", correct: false },
+                { text: "SQA and SQM", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Software Quality Assurance (SQA) governs quality management processes in software engineering."
+        },
+        {
+            q: "Q.62. Software Debugging is known as.?",
+            options: [
+                { text: "identifying the task to be computerized", correct: false },
+                { text: "creating program code", correct: false },
+                { text: "creating the algorithm", correct: false },
+                { text: "finding and correcting errors in the program code", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Debugging is the systematic process of identifying, isolating, and correcting bugs or defects in source code."
+        },
+        {
+            q: "Q.63. The word which describes the importance of software design is.?",
+            options: [
+                { text: "Complexity", correct: false },
+                { text: "Quality", correct: true },
+                { text: "Efficiency", correct: false },
+                { text: "Accuracy", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Design is the place where quality is fostered, establishing the architecture and blueprint for the system."
+        },
+        {
+            q: "Q.64. Which of the following is a software development life cycle model.?",
+            options: [
+                { text: "(A) Waterfall model", correct: false },
+                { text: "(B) Agile model", correct: false },
+                { text: "(C) Spiral model", correct: false },
+                { text: "(D) More than one of the above", correct: true },
+                { text: "(E) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Waterfall, Agile, and Spiral are all recognized software development lifecycle models."
+        },
+        {
+            q: "Q.65. Which of the following is NOT a software development requirement.?",
+            options: [
+                { text: "(A) Functional requirements", correct: false },
+                { text: "(B) System requirements", correct: false },
+                { text: "(C) Physical requirements", correct: true },
+                { text: "(D) More than one of the above", correct: false },
+                { text: "(E) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Physical requirements are hardware-centric and not standard software requirement types."
+        },
+        {
+            q: "Q.66. What is the main difference between verification and validation in software testing.?",
+            options: [
+                { text: "(A) Verification ensures that the software is bug-free, while validation ensures that it meets the requirements", correct: false },
+                { text: "(B) Verification is done before coding, while validation is done after coding.", correct: false },
+                { text: "(C) Verification checks if the software is built right, while validation checks if the right software is built.", correct: true },
+                { text: "(D) More than one of the above", correct: false },
+                { text: "(E) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Verification answers 'Are we building the product right?' and validation answers 'Are we building the right product?'."
+        },
+        {
+            q: "Q.67. What is the purpose of a software prototype.?",
+            options: [
+                { text: "(A) To serve as the final version of the software", correct: false },
+                { text: "(B) To replace detailed documentation", correct: false },
+                { text: "(C) To speed up the software development process", correct: false },
+                { text: "(D) More than one of the above", correct: true },
+                { text: "(E) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Prototypes help clarify requirements, speed up communication, and validate designs."
+        },
+        {
+            q: "Q.68. What is the primary goal of software engineering.?",
+            options: [
+                { text: "(A) To write code efficiently", correct: false },
+                { text: "(B) To develop software that meets user requirements within budget and schedule constraints", correct: true },
+                { text: "(C) To develop software with the latest technologies", correct: false },
+                { text: "(D) More than one of the above", correct: false },
+                { text: "(E) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Delivering quality software meeting user requirements on time and within budget is the primary goal."
+        },
+        {
+            q: "Q.69. Which software life cycle model allows for iterative development and incorporates risk analysis.?",
+            options: [
+                { text: "(A) Waterfall model", correct: false },
+                { text: "(B) Prototype model", correct: false },
+                { text: "(C) Spiral model", correct: true },
+                { text: "(D) Agile model", correct: false }
+            ],
+            explanation: "Explanation: The Spiral model explicitly combines iterative development loops with structured risk analysis."
+        },
+        {
+            q: "Q.70. What is the main goal of software quality assurance.?",
+            options: [
+                { text: "(A) To eliminate all defects from the software", correct: false },
+                { text: "(B) To ensure the software is defect-free before release", correct: false },
+                { text: "(C) To establish and enforce standards and processes to improve software quality", correct: true },
+                { text: "(D) To test software under different conditions", correct: false }
+            ],
+            explanation: "Explanation: SQA focuses on setting and enforcing standards and process improvement rather than just testing."
+        },
+        {
+            q: "Q.71. Reverse engineering is primarily used for.?",
+            options: [
+                { text: "(A) Creating new software from scratch", correct: false },
+                { text: "(B) Improving software performance", correct: false },
+                { text: "(C) Understanding and documenting existing software", correct: true },
+                { text: "(D) Testing software components", correct: false }
+            ],
+            explanation: "Explanation: Reverse engineering extracts design and architecture from existing source code."
+        },
+        {
+            q: "Q.72. Which testing approach involves testing individual components or units of code.?",
+            options: [
+                { text: "(A) Integration Testing", correct: false },
+                { text: "(B) System Testing", correct: false },
+                { text: "(C) Unit Testing", correct: true },
+                { text: "(D) Acceptance Testing", correct: false }
+            ],
+            explanation: "Explanation: Unit testing validates individual units or modules of source code in isolation."
+        },
+        {
+            q: "Q.73. What is the main goal of System Testing.?",
+            options: [
+                { text: "(A) Testing individual components in isolation", correct: false },
+                { text: "(B) Testing the integration between different software components", correct: false },
+                { text: "(C) Testing software functionality from the user's perspective", correct: true },
+                { text: "(D) Identifying defects in the source code", correct: false }
+            ],
+            explanation: "Explanation: System testing evaluates the complete, integrated software system against specified requirements."
+        },
+        {
+            q: "Q.74. Which metric is used for estimating the size of a software project.?",
+            options: [
+                { text: "(A) Cyclomatic Complexity", correct: false },
+                { text: "(B) Function Points (FP)", correct: true },
+                { text: "(C) Defect Density", correct: false },
+                { text: "(D) Software Reliability Index", correct: false }
+            ],
+            explanation: "Explanation: Function Points measure software size based on functionality delivered to the user."
+        },
+        {
+            q: "Q.75. What is the purpose of staffing level estimation in software project management.?",
+            options: [
+                { text: "(A) To determine the number of hardware components required", correct: false },
+                { text: "(B) To identify potential risks in the project", correct: false },
+                { text: "(C) To allocate appropriate resources to the project", correct: true },
+                { text: "(D) To estimate the maintenance costs of the software", correct: false }
+            ],
+            explanation: "Explanation: Staffing estimation helps project managers allocate and schedule human resources efficiently."
+        },
+        {
+            q: "Q.76. Which of the following refers to creating products tailored to individual customers.?",
+            options: [
+                { text: "(A) Customization", correct: true },
+                { text: "(B) Adaptation", correct: false },
+                { text: "(C) Direct material", correct: false },
+                { text: "(D) Auction", correct: false }
+            ],
+            explanation: "Explanation: Customization tailors standard products to fit exact individual customer specifications."
+        },
+        {
+            q: "Q.77. Which software life cycle model is based on iterative prototyping.?",
+            options: [
+                { text: "(A) Waterfall model", correct: false },
+                { text: "(B) Spiral model", correct: true },
+                { text: "(C) Agile model", correct: false },
+                { text: "(D) Prototype model", correct: false }
+            ],
+            explanation: "Explanation: The Spiral model builds prototypes iteratively across successive loops."
+        },
+        {
+            q: "Q.78. In the context of software project management, what is LOC an acronym for.?",
+            options: [
+                { text: "(A) Line of Change", correct: false },
+                { text: "(B) Level of Complexity", correct: false },
+                { text: "(C) Lines of Code", correct: true },
+                { text: "(D) List of Components", correct: false }
+            ],
+            explanation: "Explanation: LOC stands for Lines of Code, a traditional metric for measuring software size."
+        },
+        {
+            q: "Q.79. ISO 9000 and SEI CMM are both frameworks related to.?",
+            options: [
+                { text: "(A) Software testing", correct: false },
+                { text: "(B) Software documentation", correct: false },
+                { text: "(C) Software quality assurance and process improvement", correct: true },
+                { text: "(D) Software design principles", correct: false }
+            ],
+            explanation: "Explanation: ISO 9000 and SEI CMM establish standards for quality assurance and process maturity improvement."
+        },
+        {
+            q: "Q.80. Which type of maintenance involves adding new features to existing software.?",
+            options: [
+                { text: "(A) Corrective Maintenance", correct: false },
+                { text: "(B) Perfective Maintenance", correct: true },
+                { text: "(C) Adaptive Maintenance", correct: false },
+                { text: "(D) Preventive Maintenance", correct: false }
+            ],
+            explanation: "Explanation: Perfective maintenance adds new features and enhancements requested by users after delivery."
+        }
+    ];
+
+    // Shuffle function (Fisher-Yates)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function renderQuiz() {
+        const quizContainer = document.getElementById('quiz-container');
+        quizContainer.innerHTML = '';
+
+        questionsData.forEach((qItem, qIndex) => {
+            // Shuffle options for each question on page load/reload
+            let shuffledOptions = shuffleArray([...qItem.options]);
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const title = document.createElement('div');
+            title.className = 'question-title';
+            title.innerText = qItem.q;
+            card.appendChild(title);
+
+            const ul = document.createElement('ul');
+            ul.className = 'options-list';
+
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'explanation';
+            explanationDiv.innerText = qItem.explanation;
+
+            shuffledOptions.forEach((opt) => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'option-link';
+                link.innerText = opt.text;
+                link.href = '#';
+
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Prevent multiple clicks once answered
+                    if (card.getAttribute('data-answered') === 'true') return;
+                    card.setAttribute('data-answered', 'true');
+
+                    // Highlight options
+                    const allLinks = ul.querySelectorAll('.option-link');
+                    allLinks.forEach(l => {
+                        // Find matching option data
+                        const matchingOpt = shuffledOptions.find(o => o.text === l.innerText);
+                        if (matchingOpt.correct) {
+                            l.classList.add('correct');
+                        }
+                    });
+
+                    if (!opt.correct) {
+                        link.classList.add('incorrect');
+                    }
+
+                    // Show explanation
+                    explanationDiv.style.display = 'block';
+                });
+
+                li.appendChild(link);
+                ul.appendChild(li);
+            });
+
+            card.appendChild(ul);
+            card.appendChild(explanationDiv);
+            quizContainer.appendChild(card);
+        });
+    }
+
+    window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
