@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Programming Interactive Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #1a365d;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3182ce;
+            padding-bottom: 10px;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 600px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .btn {
+            background-color: #ffffff;
+            border: 2px solid #cbd5e0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95em;
+            color: #4a5568;
+            transition: all 0.2s ease;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #edf2f7;
+            border-color: #cbd5e0;
+        }
+        .btn.correct {
+            background-color: #38a169 !important;
+            color: white !important;
+            border-color: #38a169 !important;
+        }
+        .btn.incorrect {
+            background-color: #e53e3e !important;
+            color: white !important;
+            border-color: #e53e3e !important;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            border-radius: 4px;
+            display: none;
+            font-size: 0.95em;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>C++ Programming Practice Quiz</h1>
+    <div id="quiz"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "1. Who is the developer of C++?",
+        options: ["Brendan Eich", "Dennis Ritchie", "Bjarne Stroustrup", "Rasmus Lerdorf", "None of these"],
+        ans: 2,
+        exp: "C++ भाषा का विकास Bjarne Stroustrup द्वारा किया गया था।"
+    },
+    {
+        q: "2. In which year was C++ developed?",
+        options: ["1972", "1979", "1983", "1995", "None of these"],
+        ans: 1,
+        exp: "Bjarne Stroustrup ने 1979 में Bell Labs में C++ पर काम शुरू किया था।"
+    },
+    {
+        q: "3. What was the old name of C++?",
+        options: ["CPP", "C Advanced", "C with Classes", "C with Programming", "None of these"],
+        ans: 2,
+        exp: "C++ का शुरुआती नाम 'C with Classes' रखा गया था।"
+    },
+    {
+        q: "4. In which Lab was C++ developed?",
+        options: ["ANSI", "SDL", "IBM", "Bell Lab", "None of these"],
+        ans: 3,
+        exp: "C++ का विकास AT&T Bell Laboratories (USA) में हुआ था।"
+    },
+    {
+        q: "5. In C++, cin & cout are pre-defined stream?",
+        options: ["Operator", "Function", "Object", "Datatype", "None of these"],
+        ans: 2,
+        exp: "cin और cout क्रमशः istream तथा ostream क्लास के Pre-defined Objects हैं।"
+    },
+    {
+        q: "6. What is the size of int datatype in C++?",
+        options: ["2 Bytes", "4 Bytes", "1 Byte", "Depends on Compiler", "None of these"],
+        ans: 3,
+        exp: "int डेटा टाइप का साइज कंपाइलर तथा सिस्टम आर्किटेक्चर (16-bit, 32-bit या 64-bit) पर निर्भर करता है।"
+    },
+    {
+        q: "7. C++ is a language?",
+        options: ["Object Oriented Programming", "Semi Object Oriented Programming", "Procedural", "All of these", "None of these"],
+        ans: 1,
+        exp: "C++ एक Semi Object-Oriented भाषा है क्योंकि इसमें बिना Class बनाए भी main() के जरिए प्रोग्राम चलाया जा सकता है।"
+    },
+    {
+        q: "8. Which loop is faster in C++?",
+        options: ["For", "While", "Do while", "All work at same speed", "None of these"],
+        ans: 3,
+        exp: "मशीन लेवल (Assembly code) पर सभी loops समान स्पीड से कार्य करते हैं।"
+    },
+    {
+        q: "9. Size of Turbo C/C++ Compiler?",
+        options: ["16 Bit", "32 Bit", "64 Bit", "All of these", "None of these"],
+        ans: 0,
+        exp: "पारंपरिक Turbo C/C++ कंपाइलर 16-bit का आर्किटेक्चर सपोर्ट करता है।"
+    },
+    {
+        q: "10. ASCII value of '\\0' character is?",
+        options: ["0", "48", "32", "65", "1"],
+        ans: 0,
+        exp: "Null character ('\\0') का ASCII मान 0 होता है।"
+    },
+    {
+        q: "11. Do-While loop is also known as?",
+        options: ["Entry Control", "Pre Tested", "Exit Control", "All of these", "None of these"],
+        ans: 2,
+        exp: "Do-While लूप में स्थिति (condition) की जाँच लूप के अंत में होती है, इसलिए इसे Exit Control कहते हैं।"
+    },
+    {
+        q: "12. Range of signed char?",
+        options: ["0 to 255", "-128 to 127", "127 to -128", "0 to 127", "None of these"],
+        ans: 1,
+        exp: "1 Byte signed char की रेंज -128 से +127 तक होती है।"
+    },
+    {
+        q: "13. Which of the following is the address operator?",
+        options: ["@", "#", "&", "%", "None of these"],
+        ans: 2,
+        exp: "& (Ampersand) ऑपरेटर का उपयोग किसी वेरिएबल का मेमोरी एड्रेस प्राप्त करने के लिए किया जाता है।"
+    },
+    {
+        q: "14. Which loop is guaranteed to execute at least once?",
+        options: ["For loop", "While loop", "Do while loop", "All of these", "None of these"],
+        ans: 2,
+        exp: "Do-While लूप कम से कम एक बार जरूर चलता है क्योंकि कंडीशन अंत में चेक होती है।"
+    },
+    {
+        q: "15. Array index starts at?",
+        options: ["1", "0", "-1", "2", "None of these"],
+        ans: 1,
+        exp: "C++ में ऐरे का इंडेक्स हमेशा 0 से शुरू होता है।"
+    },
+    {
+        q: "16. Tool used for program design?",
+        options: ["Flowchart", "Pseudocode", "Algorithm", "All of these", "None of these"],
+        ans: 3,
+        exp: "Flowchart, Pseudocode, और Algorithm तीनों ही प्रोग्राम डिजाइन के महत्वपूर्ण टूल्स हैं।"
+    },
+    {
+        q: "17. The word came from the Persian mathematician Abu Jafar Mohammed ibn-i Musa al Khowarizmi?",
+        options: ["Flowchart", "Pseudocode", "Algorithm", "All of these", "None of these"],
+        ans: 2,
+        exp: "'Algorithm' शब्द की उत्पत्ति गणितज्ञ अल-ख्वारिज्मी के नाम से हुई है।"
+    },
+    {
+        q: "18. The graphical representation of an algorithm is?",
+        options: ["Flowchart", "Pseudocode", "Algorithm", "All of these", "None of these"],
+        ans: 0,
+        exp: "अल्गोरिदम का चित्रात्मक या आरेखीय प्रदर्शन Flowchart कहलाता है।"
+    },
+    {
+        q: "19. A flowchart that outlines the main segments of a program?",
+        options: ["Queue", "Macro", "Micro", "Union", "None of these"],
+        ans: 1,
+        exp: "Macro Flowchart प्रोग्राम के केवल मुख्य-मुख्य खंडों (Outline) को दर्शाता है।"
+    },
+    {
+        q: "20. Which of the following is NOT an advantage of a flowchart?",
+        options: ["Better communication", "Efficient coding", "Systematic testing", "Improper documentation", "All of these"],
+        ans: 3,
+        exp: "Improper documentation फ्लोचार्ट की कमी/दोष है, लाभ नहीं।"
+    },
+    {
+        q: "21. A detailed flowchart is called?",
+        options: ["Stack", "Macro", "Micro", "Union", "All of these"],
+        ans: 2,
+        exp: "विस्तृत विवरण वाले फ्लोचार्ट को Micro Flowchart कहा जाता है।"
+    },
+    {
+        q: "22. A box that can represent two different conditions?",
+        options: ["Rectangle", "Diamond", "Circle", "Parallelogram", "None of these"],
+        ans: 1,
+        exp: "Decision Making (शर्त जाँच) के लिए Diamond Shape का प्रयोग होता है।"
+    },
+    {
+        q: "23. The process of drawing a flowchart for an algorithm is called?",
+        options: ["Performance", "Evaluation", "Algorithmic Representation", "Flowcharting", "None of these"],
+        ans: 3,
+        exp: "फ्लोचार्ट बनाने की प्रक्रिया को 'Flowcharting' कहा जाता है।"
+    },
+    {
+        q: "24. Which of the following is the default return value/type of a function in C?",
+        options: ["Void", "Char", "Float", "Int", "All of these"],
+        ans: 3,
+        exp: "यदि फंक्शन का रिटर्न टाइप न दिया जाए, तो डिफ़ॉल्ट रिटर्न टाइप int माना जाता है।"
+    },
+    {
+        q: "25. Which of the following will not return a value?",
+        options: ["Empty", "Null", "Int", "Void", "All of these"],
+        ans: 3,
+        exp: "void कीवर्ड यह दर्शाता है कि फंक्शन कोई वैल्यू रिटर्न नहीं करेगा।"
+    },
+    {
+        q: "26. The value 20.58 can be represented using which datatype?",
+        options: ["Int", "Double", "Void", "All of these", "None of these"],
+        ans: 1,
+        exp: "दशमलव वाली संख्याओं (floating point values) को double या float में स्टोर किया जाता है।"
+    },
+    {
+        q: "27. From which function the execution of C++ program starts?",
+        options: ["Start()", "New()", "Main()", "Sqrt()", "None of these"],
+        ans: 2,
+        exp: "प्रोग्राम का निष्पादन हमेशा main() फ़ंक्शन से प्रारंभ होता है।"
+    },
+    {
+        q: "28. Which of the following is important in a function?",
+        options: ["Return type", "Function Name", "Parameter", "All of these", "Both 1 & 2"],
+        ans: 4,
+        exp: "फंक्शन डिक्लेरेशन में Return Type तथा Function Name अनिवार्य घटक हैं।"
+    },
+    {
+        q: "29. The constants are also called as?",
+        options: ["Pre-processor", "Const", "Literals", "All of these", "None of these"],
+        ans: 2,
+        exp: "फिक्स्ड वैल्यूज/कांस्टेंट को C++ में Literals भी कहा जाता है।"
+    },
+    {
+        q: "30. An exception in C++ can be generated using which keyword?",
+        options: ["Throws", "Threw", "Catch", "Throw", "All of these"],
+        ans: 3,
+        exp: "Exception फ़ेंकने (generate) के लिए throw कीवर्ड का प्रयोग किया जाता है।"
+    },
+    {
+        q: "31. Int a[] = {5,6,7,8,9}; what is the value of a[3]?",
+        options: ["7", "6", "8", "9", "All of these"],
+        ans: 2,
+        exp: "a[0]=5, a[1]=6, a[2]=7, a[3]=8 है।"
+    },
+    {
+        q: "32. Void occupies how many bytes in memory?",
+        options: ["0", "1", "2", "4", "All of these"],
+        ans: 0,
+        exp: "void एक इनकम्प्लीट टाइप है, जो कोई मेमोरी साइज (0 Bytes) नहीं लेता।"
+    },
+    {
+        q: "33. Which symbol is used to denote a pre-processor statement?",
+        options: ["%", "$", "#", "@", "All of these"],
+        ans: 2,
+        exp: "Pre-processor Directives की शुरुआत # (जैसे #include, #define) से होती है।"
+    },
+    {
+        q: "34. C++ statement ends with?",
+        options: [":", ",", ";", "$", "None of these"],
+        ans: 2,
+        exp: "C++ में प्रत्येक सामान्य स्टेटमेंट के अंत में Semicolon (;) लगाया जाता है।"
+    },
+    {
+        q: "35. Comments are used to?",
+        options: ["To help others read & understand the program", "Make the program run faster", "Make a program compile easier", "Increase the size of code", "All of these"],
+        ans: 0,
+        exp: "कमेंट्स कोड की पठनीयता (Readability) और समझ बढ़ाने के लिए लिखे जाते हैं।"
+    },
+    {
+        q: "36. Syntax refers to?",
+        options: ["Rules used to create a program", "Saving program on Hard Disk", "Both 1 & 2", "All of these", "None of these"],
+        ans: 0,
+        exp: "Syntax किसी प्रोग्रामिंग भाषा में कोड लिखने के व्याकरण संबंधी नियमों (Rules) का सेट है।"
+    },
+    {
+        q: "37. How many types of errors are there in C++?",
+        options: ["1", "2", "3", "4", "0"],
+        ans: 2,
+        exp: "मुख्यतः 3 प्रकार के एरर होते हैं: Syntax Error, Runtime Error, और Logical Error।"
+    },
+    {
+        q: "38. Which storage class has global visibility?",
+        options: ["Auto", "Extern", "Register", "Static", "All of these"],
+        ans: 1,
+        exp: "extern स्टोरेज क्लास वाले वेरिएबल्स का स्कोप ग्लोबल (Global Visibility) होता है।"
+    },
+    {
+        q: "39. How many types of constructors are there in C++?",
+        options: ["1", "2", "3", "All of these", "None of these"],
+        ans: 2,
+        exp: "मुख्य प्रकार: Default, Parameterized, और Copy Constructor।"
+    },
+    {
+        q: "40. C++ class holds?",
+        options: ["Data", "Function", "1 & 2", "Arrays", "None of these"],
+        ans: 2,
+        exp: "Class के अंदर Data Members और Member Functions दोनों होते हैं।"
+    },
+    {
+        q: "41. Which of the following is a valid class declaration?",
+        options: ["Class A {}", "Class A {};", "Class A", "All of these", "None of these"],
+        ans: 1,
+        exp: "Class डिक्लेरेशन के अंत में Semicolon (;) अनिवार्य है।"
+    },
+    {
+        q: "42. The data members & member functions of a class are by default?",
+        options: ["Protected", "Private", "Public", "Both 2 & 3", "None of these"],
+        ans: 1,
+        exp: "C++ Class के मेंबर्स डिफ़ॉल्ट रूप से private होते हैं।"
+    },
+    {
+        q: "43. Base class & Derived class relationship comes under?",
+        options: ["Inheritance", "Polymorphism", "Encapsulation", "Abstraction", "None of these"],
+        ans: 0,
+        exp: "Base Class और Derived Class का संबंध Inheritance (इनहेरिटेंस) के अंतर्गत आता है।"
+    },
+    {
+        q: "44. Which of the following is correct syntax to print a message in C++?",
+        options: ["cout <<\"Hello world!\";", "Cout << Hello world!;", "Out <<\"Hello world!;", "All of these", "None of the above"],
+        ans: 0,
+        exp: "आउटपुट के लिए cout << \"...\" ऑपरेटर का सही इस्तेमाल होता है।"
+    },
+    {
+        q: "45. Which comment syntax is correct for a single-line comment?",
+        options: ["//Comment", "/Comment/", "Comment//", "All of these", "None of the above"],
+        ans: 0,
+        exp: "सिंगल-लाइन कमेंट्स के लिए // सिंबल का उपयोग किया जाता है।"
+    },
+    {
+        q: "46. Which syntax refers to the first element of an array?",
+        options: ["array[0];", "array[1];", "array[2];", "All of these", "None of the above"],
+        ans: 0,
+        exp: "प्रथम एलिमेंट का इंडेक्स हमेशा 0 होता है (array[0])।"
+    },
+    {
+        q: "47. An exception is a?",
+        options: ["Compile Time Error", "Runtime Error", "Logical Error", "All of these", "None of these"],
+        ans: 1,
+        exp: "Exception प्रोग्राम के निष्पादन (execution) के दौरान आने वाली Runtime Error है।"
+    },
+    {
+        q: "48. Which feature must be supported to become Object Oriented?",
+        options: ["Encapsulation", "Inheritance", "Polymorphism", "All of the above", "None of these"],
+        ans: 3,
+        exp: "OOP के तीनों मुख्य स्तंभ: Encapsulation, Inheritance, तथा Polymorphism।"
+    },
+    {
+        q: "49. Which syntax reads a single character from console in C++?",
+        options: ["Read ch()", "Getline vh()", "get(ch)", "Scanf(ch)", "All of these"],
+        ans: 2,
+        exp: "cin.get(ch) या get(ch) का प्रयोग सिंगल कैरेक्टर इनपुट के लिए होता है।"
+    },
+    {
+        q: "50. For inserting a new line in C++, which statement can be used?",
+        options: ["\\n", "\\r", "\\a", "All of these", "None of these"],
+        ans: 0,
+        exp: "'\\n' एस्केप सीक्वेंस का उपयोग नई लाइन (New Line) के लिए किया जाता है।"
+    },
+    {
+        q: "51. Which represents Horizontal Tab?",
+        options: ["\\r", "\\t", "\\n", "All of these", "None of the above"],
+        ans: 1,
+        exp: "'\\t' एस्केप सीक्वेंस का प्रयोग Tab स्पेस देने के लिए होता है।"
+    },
+    {
+        q: "52. Which gives the 4th element of an array?",
+        options: ["Array[0];", "Array[1];", "Array[3];", "All of these", "None of the above"],
+        ans: 2,
+        exp: "इंडेक्स 0 से शुरू होने के कारण चौथा एलिमेंट Array[3] होता है।"
+    },
+    {
+        q: "53. What is an exception in C++ program?",
+        options: ["A problem that arises during execution", "A problem during compilation", "Syntax error", "Semantic error", "More than one of the above"],
+        ans: 0,
+        exp: "प्रोग्राम रन होने के दौरान पैदा होने वाली रुकावट या समस्या ही Exception कहलाती है।"
+    },
+    {
+        q: "54. By default, what does a program do when an unhandled exception occurs?",
+        options: ["Continue running", "Results in termination of program", "Calls other functions", "Removes exception automatically", "More than one of the above"],
+        ans: 1,
+        exp: "यदि Exception हैंडल न किया जाए तो प्रोग्राम अबॉर्मली बंद (terminate) हो जाता है।"
+    },
+    {
+        q: "55. How is Exception Handling implemented in C++?",
+        options: ["Using Exception keyword", "Using try-catch block", "Using Exception block", "Using Error handling schedules", "More than one of the above"],
+        ans: 1,
+        exp: "Exception handling के लिए try, throw और catch ब्लॉक्स का इस्तेमाल किया जाता है।"
+    },
+    {
+        q: "56. Which block contains code to catch errors?",
+        options: ["try part", "catch part", "finally part", "throw part", "More than one of the above"],
+        ans: 2,
+        exp: "दिए गए विकल्पों में प्रोग्राम स्ट्रक्चर के हिस्से के रूप में फ़ाइनली ब्लॉक/कैच का उपयोग होता है।"
+    },
+    {
+        q: "57. Which of the following is an example of a runtime exception?",
+        options: ["Divide by zero", "Semicolon not written", "Variable not declared", "Expression wrongly written", "None of these"],
+        ans: 0,
+        exp: "किसी संख्या को 0 से भाग देना (Divide by Zero) एक क्लासिक Runtime Exception है।"
+    },
+    {
+        q: "58. What is the difference between error and exception?",
+        options: ["Both are same", "Errors handled at runtime but exceptions not", "Exceptions can be handled at runtime but errors cannot", "Both can be handled", "None of these"],
+        ans: 2,
+        exp: "Exceptions को कोड के जरिए हैंडल किया जा सकता है जबकि fatal System Errors अप्राप्य होते हैं।"
+    },
+    {
+        q: "59. Which keyword is used to throw an exception?",
+        options: ["try", "throw", "throws", "Except", "finally"],
+        ans: 1,
+        exp: "Exception फ़ेंकने के लिए 'throw' कीवर्ड प्रयोग किया जाता है।"
+    },
+    {
+        q: "60. We use the ______ block to test code for errors?",
+        options: ["try", "throw", "catch", "except", "finally"],
+        ans: 0,
+        exp: "'try' ब्लॉक में वह कोड रखा जाता है जिसमें एरर आने की संभावना होती है।"
+    },
+    {
+        q: "61. In the ______ block, we catch the error and handle it?",
+        options: ["try", "throw", "catch", "except", "finally"],
+        ans: 2,
+        exp: "'catch' ब्लॉक थ्रो किए गए एक्सेप्शन को हैंडल करता है।"
+    },
+    {
+        q: "62. The ______ & ______ keywords come in pairs?",
+        options: ["Try & Catch", "Throw & Try", "Catch & Throw", "1 & 2", "None of these"],
+        ans: 0,
+        exp: "Exception handling में मुख्य जोड़ी try और catch ब्लॉक्स की होती है।"
+    },
+    {
+        q: "63. In C++, ______ stores the memory address of another variable?",
+        options: ["Array", "Function", "Object", "Class", "Pointers"],
+        ans: 4,
+        exp: "पॉइंटर (Pointer) एक ऐसा वेरिएबल है जो दूसरे वेरिएबल का मेमोरी एड्रेस स्टोर करता है।"
+    },
+    {
+        q: "64. In C++, which symbol is used to declare a pointer?",
+        options: ["*", "&", "^", "$", "@"],
+        ans: 0,
+        exp: "पॉइंटर वेरिएबल घोषित (Declare) करने के लिए * (Asterisk) सिंबल का उपयोग होता है।"
+    },
+    {
+        q: "65. In C++, the '*' symbol used with pointers is called?",
+        options: ["Dereference operator", "Multi function operator", "Array Operator", "String Operator", "More than one of the above"],
+        ans: 0,
+        exp: "* को Dereference ऑपरेटर (या Indirection Operator) भी कहा जाता है।"
+    },
+    {
+        q: "66. In C++, this symbol returns the memory address of a variable?",
+        options: ["*", "&", "^", "$", "@"],
+        ans: 1,
+        exp: "& (Address-of) ऑपरेटर वेरिएबल का मेमोरी एड्रेस लौटाता है।"
+    },
+    {
+        q: "67. In C++, 'new' operator is used for?",
+        options: ["Dynamic memory allocation", "Static memory allocation", "Contiguous memory allocation", "All of these", "None of these"],
+        ans: 0,
+        exp: "new ऑपरेटर का प्रयोग रन-टाइम पर Dynamic Memory Allot करने के लिए होता है।"
+    },
+    {
+        q: "68. How many basic structural types of arrays are there in C++?",
+        options: ["3 Types", "2 Types", "4 Types", "5 Types", "None of these"],
+        ans: 1,
+        exp: "मुख्यतः 2 प्रकार: Single-Dimensional (1D) और Multi-Dimensional (2D/3D) Arrays।"
+    },
+    {
+        q: "69. Which type of array is always linear?",
+        options: ["Single-dimensional", "2 dimensional", "Multi-dimensional", "Both 1 and 2", "None of the above"],
+        ans: 0,
+        exp: "Single-dimensional (1D) ऐरे एक लीनियर डेटा स्ट्रक्चर है।"
+    },
+    {
+        q: "70. What type of elements can an array store?",
+        options: ["Same types of elements", "Char and int type combined", "Only char types", "All of the above", "None of these"],
+        ans: 0,
+        exp: "ऐरे समान डेटा टाइप (Homogeneous) के डेटा का संग्रह होता है।"
+    },
+    {
+        q: "71. Which data type is best to store a person's age?",
+        options: ["Int", "Double", "Bool", "Char", "All of these"],
+        ans: 0,
+        exp: "आयु एक पूर्ण संख्या होती है, अतः इसके लिए int सबसे उपयुक्त डेटा टाइप है।"
+    },
+    {
+        q: "72. What is the output of the expression 5 + 3 * 2 in C++?",
+        options: ["16", "11", "10", "8", "32"],
+        ans: 1,
+        exp: "ऑपरेटर प्रेसिडेंस में * का मान + से अधिक है: (3 * 2 = 6) -> (5 + 6 = 11)।"
+    },
+    {
+        q: "73. Which operator is used for Logical AND in C++?",
+        options: ["&&", "&", "~~", "==", "%%"],
+        ans: 0,
+        exp: "लॉजिकल AND के लिए '&&' का प्रयोग किया जाता है।"
+    },
+    {
+        q: "74. In C++, what is the difference between == and = ?",
+        options: ["== is assignment, = is comparison", "== is comparison, = is assignment", "Both are assignment", "Both are comparison", "More than one of the above"],
+        ans: 1,
+        exp: "== तुलना (Comparison) करता है, जबकि = वैल्यू असाइन (Assignment) करता है।"
+    },
+    {
+        q: "75. What type of error is a missing semicolon in C++?",
+        options: ["Syntax Error", "Run Time Error", "Logical Error", "Semantic Error", "All of these"],
+        ans: 0,
+        exp: "Semicolon छोड़ना भाषा के नियमों का उल्लंघन है, जिसे Syntax Error कहते हैं।"
+    },
+    {
+        q: "76. What is the purpose of the 'if' statement in C++?",
+        options: ["To execute code multiple times", "To stop execution", "To make a decision", "To declare a variable", "None of these"],
+        ans: 2,
+        exp: "'if' स्टेटमेंट का उपयोग शर्त (Condition) के आधार पर निर्णय लेने (Decision making) के लिए होता है।"
+    },
+    {
+        q: "77. What is Function Overloading in C++?",
+        options: ["Calling function multiple times", "Defining functions with same name but different parameters", "Function inside function", "Default arguments in function", "All of these"],
+        ans: 1,
+        exp: "एक ही नाम से अलग-अलग पैरामीटर्स वाले कई फंक्शन बनाना Function Overloading कहलाता है।"
+    },
+    {
+        q: "78. Which of the following is NOT supported natively in C++?",
+        options: ["Automatic Garbage Collection", "Multiple Inheritance", "Smart Pointer", "Virtual destructor", "All of these"],
+        ans: 0,
+        exp: "C++ में Java की तरह स्वचलित Garbage Collection नहीं होता, इसमें मैन्युअल मेमोरी मैनेजमेंट होता है।"
+    },
+    {
+        q: "79. What character encoding options does C++ support?",
+        options: ["UTF-8", "UTF-16", "UTF-32", "All of these", "None of these"],
+        ans: 3,
+        exp: "आधुनिक C++ मानको में UTF-8, UTF-16 और UTF-32 सभी प्रकार की एनकोडिंग समर्थित हैं।"
+    }
+];
+
+function renderQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    quizData.forEach((item, index) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'question-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-text';
+        qTitle.innerText = item.q;
+        qCard.appendChild(qTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'options';
+
+        item.options.forEach((opt, optIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = (optIdx + 1) + ") " + opt;
+            btn.onclick = () => checkAnswer(btn, index, optIdx);
+            optionsContainer.appendChild(btn);
+        });
+
+        qCard.appendChild(optionsContainer);
+
+        const expDiv = document.createElement('div');
+        expDiv.id = `exp-${index}`;
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        qCard.appendChild(expDiv);
+
+        quizContainer.appendChild(qCard);
+    });
+}
+
+function checkAnswer(selectedBtn, qIndex, selectedIdx) {
+    const card = selectedBtn.closest('.question-card');
+    const buttons = card.querySelectorAll('.btn');
+    const correctIdx = quizData[qIndex].ans;
+
+    buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === correctIdx) {
+            btn.classList.add('correct');
+        }
+    });
+
+    if (selectedIdx !== correctIdx) {
+        selectedBtn.classList.add('incorrect');
+    }
+
+    const expDiv = document.getElementById(`exp-${qIndex}`);
+    expDiv.style.display = 'block';
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
