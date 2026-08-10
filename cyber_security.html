@@ -3,86 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Security Practice Quiz</title>
+    <title>Cyber Security Quiz</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 20px;
+            color: #333;
         }
         .quiz-container {
-            max-width: 900px;
+            max-width: 850px;
             margin: 0 auto;
             background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
             color: #1a365d;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #3182ce;
+            border-bottom: 2px solid #e2e8f0;
             padding-bottom: 10px;
         }
         .question-card {
             margin-bottom: 25px;
-            padding: 20px;
-            background: #f8fafc;
+            padding: 15px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
+            background-color: #fafafa;
         }
-        .question-text {
-            font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #2d3748;
+        .question-title {
+            font-weight: bold;
+            font-size: 1.05em;
+            margin-bottom: 12px;
         }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
+        .options-list {
+            list-style-type: none;
+            padding: 0;
         }
-        @media (min-width: 600px) {
-            .options {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .btn {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e0;
-            padding: 12px 16px;
-            border-radius: 6px;
-            cursor: pointer;
+        .option-btn {
+            display: block;
+            width: 100%;
             text-align: left;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 0.95em;
-            color: #4a5568;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease;
         }
-        .btn:hover:not(:disabled) {
-            background-color: #edf2f7;
-            border-color: #cbd5e0;
+        .option-btn:hover:not([disabled]) {
+            background-color: #e2e8f0;
         }
-        .btn.correct {
-            background-color: #38a169 !important;
-            color: white !important;
-            border-color: #38a169 !important;
+        .option-btn.correct {
+            background-color: #22c55e !important;
+            color: #ffffff;
+            border-color: #16a34a;
         }
-        .btn.incorrect {
-            background-color: #e53e3e !important;
-            color: white !important;
-            border-color: #e53e3e !important;
+        .option-btn.incorrect {
+            background-color: #ef4444 !important;
+            color: #ffffff;
+            border-color: #dc2626;
         }
         .explanation {
-            margin-top: 15px;
-            padding: 12px 15px;
-            background-color: #ebf8ff;
-            border-left: 4px solid #3182ce;
-            border-radius: 4px;
             display: none;
-            font-size: 0.95em;
-            color: #2b6cb0;
+            margin-top: 10px;
+            padding: 10px 12px;
+            background-color: #e0f2fe;
+            border-left: 4px solid #0284c7;
+            font-size: 0.9em;
+            color: #0369a1;
+            border-radius: 0 4px 4px 0;
         }
     </style>
 </head>
@@ -90,534 +84,530 @@
 
 <div class="quiz-container">
     <h1>Cyber Security Practice Quiz</h1>
-    <div id="quiz"></div>
+    <div id="quiz-body"></div>
 </div>
 
 <script>
-const rawQuizData = [
+const quizData = [
     {
         q: "Q.1. Name the recent spyware that can stealthily enter a smartphone and gain access to everything on it, including its camera and microphone.?",
-        options: ["Ransomware", "Trojan Horse", "Wannacry", "Pegasus"],
-        ans: 3,
-        exp: "Pegasus is a highly sophisticated spyware developed to covertly gain full control over smartphones."
+        options: ["Ransomware", "Trojan Horse", "Wannacry", "Pegasus", "All of these"],
+        correctIndex: 3,
+        explanation: "Pegasus is a zero-click spyware developed by NSO Group that secretly accesses cameras, microphones, and data on mobile phones."
     },
     {
         q: "Q.2. Pegasus spyware enters in which Operating System.?",
-        options: ["Android", "Blackberry", "iOS", "All of these"],
-        ans: 3,
-        exp: "Pegasus was designed to target and compromise multiple mobile platforms including iOS, Android, and Blackberry."
+        options: ["Android", "Blackberry", "iOS", "All of these", "None of these"],
+        correctIndex: 3,
+        explanation: "Pegasus is capable of targeting multiple mobile operating systems including iOS, Android, and BlackBerry."
     },
     {
         q: "Q.3. Who developed Pegasus spyware.?",
-        options: ["DARPA", "ISO", "NSO Group", "CERT"],
-        ans: 2,
-        exp: "Pegasus is zero-click spyware developed by the Israeli cyber-intelligence company NSO Group."
+        options: ["DARPA", "ISO", "NSO", "CER", "None of these"],
+        correctIndex: 2,
+        explanation: "NSO Group, an Israeli cyber intelligence technology firm, developed the Pegasus spyware."
     },
     {
         q: "Q.4. Pegasus spyware was discovered in which year.?",
-        options: ["2014", "2015", "2016", "2019"],
-        ans: 2,
-        exp: "Pegasus was first discovered in August 2016 after a failed installation attempt on an iPhone."
+        options: ["2014", "2015", "2016", "2019", "2020"],
+        correctIndex: 2,
+        explanation: "Pegasus was first discovered in August 2016 after a failed installation attempt on an iPhone."
     },
     {
         q: "Q.5. These are called Unethical Hacker or a Security Cracker.?",
-        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker"],
-        ans: 0,
-        exp: "Black Hat Hackers break into computer networks with malicious intent to steal, destroy, or modify data."
+        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker", "All of these"],
+        correctIndex: 0,
+        explanation: "Black Hat Hackers break into computer networks with malicious intent or for personal gain."
     },
     {
         q: "Q.6. These are called Ethical Hackers or a Penetration Tester & they are legal & have permission to hack the system.?",
-        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker"],
-        ans: 1,
-        exp: "White Hat Hackers use their skills legally to find vulnerabilities and improve system security."
+        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker", "All of these"],
+        correctIndex: 1,
+        explanation: "White Hat Hackers use their skills ethically to identify and fix security vulnerabilities with official permission."
     },
     {
         q: "Q.7. They can hack any system even if they don't have permission to test the security of the system but they will never steal money or damage the system.?",
-        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker"],
-        ans: 2,
-        exp: "Grey Hat Hackers fall between ethical and unethical hackers; they may bypass security without consent but without malicious intent."
+        options: ["Black Hat Hacker", "White Hat Hacker", "Grey Hat Hacker", "Orange Hat Hacker", "All of these"],
+        correctIndex: 2,
+        explanation: "Grey Hat Hackers may violate security ethics without malicious intent, often exposing flaws without permission."
     },
     {
         q: "Q.8. Which of the following malware do not replicate or reproduce.?",
-        options: ["Worms", "Trojans", "Viruses", "Rootkits"],
-        ans: 1,
-        exp: "Trojan horses disguise themselves as legitimate software and do not self-replicate like viruses or worms."
+        options: ["Worms", "Trojans", "Viruses", "Rootkits", "All of these"],
+        correctIndex: 1,
+        explanation: "Unlike viruses and worms, Trojan Horses do not self-replicate or reproduce on infected systems."
     },
     {
         q: "Q.9. Key logger is a .?",
-        options: ["Firmware", "Antivirus", "Spyware", "Hardware device"],
-        ans: 2,
-        exp: "Keyloggers are a form of spyware that secretly record keystrokes to gather sensitive info like passwords."
+        options: ["Firmware", "Antivirus", "Spyware", "Firmware", "All of these"],
+        correctIndex: 2,
+        explanation: "A Keylogger is a type of spyware that monitors and records keystrokes entered on a keyboard."
     },
     {
         q: "Q.10. Firewalls are used to protect against,",
-        options: ["Data driven attacks", "Fire attacks", "Virus attacks", "Unauthorized access"],
-        ans: 3,
-        exp: "Firewalls monitor incoming and outgoing network traffic to block unauthorized access."
+        options: ["Data driven attacks", "Fire attacks", "Virus attacks", "Unauthorized access", "All of these"],
+        correctIndex: 3,
+        explanation: "Firewalls block unauthorized traffic from accessing or leaving a secure internal network."
     },
     {
         q: "Q.11. When a logic bomb is activated by a time related event, it is known as.?",
-        options: ["Virus", "Trojan horse", "Hacking", "Time bomb"],
-        ans: 3,
-        exp: "A time bomb is a logic bomb designed to execute its malicious payload on a specific date or time."
+        options: ["Virus", "Trojan horse", "Hacking", "Time bomb", "None of these"],
+        correctIndex: 3,
+        explanation: "A Time Bomb is a malicious code configured to execute its payload at a specific date or time."
     },
     {
         q: "Q.12. The altering of data so that it is not usable unless the changes are undone is .?",
-        options: ["Ergonomics", "Compression", "Biometrics", "Encryption"],
-        ans: 3,
-        exp: "Encryption transforms readable plaintext into unreadable format until decrypted."
+        options: ["Ergonomics", "Compression", "Biometrics", "Encryption", "None of these"],
+        correctIndex: 3,
+        explanation: "Encryption converts readable plain text into encoded ciphertext to prevent unauthorized access."
     },
     {
         q: "Q.13. VIRUS stands for.?",
-        options: ["Very Intelligent Result Until Source", "Very Interchanged Resource Under Search", "Vital Information Resource Under Seize", "Viral Important Record User Searched"],
-        ans: 2,
-        exp: "VIRUS stands for Vital Information Resource Under Seize."
+        options: ["Very Intelligent Result Until Source", "Very Interchanged Resource Under Search", "Vital Information Resource Under Seize", "Viral Important Record User Searched", "None of these"],
+        correctIndex: 2,
+        explanation: "VIRUS stands for Vital Information Resource Under Seize."
     },
     {
         q: "Q.14. Which of the following is not a cloud based storage solutions.?",
-        options: ["Dropbox", "Google Drive", "OneDrive", "McAfee"],
-        ans: 3,
-        exp: "McAfee is a cybersecurity antivirus company, not a cloud storage platform."
+        options: ["Dropbox", "Google Drive", "OneDrive", "McAfee", "None of these"],
+        correctIndex: 3,
+        explanation: "McAfee is an antivirus/cybersecurity software provider, not a cloud storage platform."
     },
     {
         q: "Q.15. It is stealing ideas or creations of others.?",
-        options: ["Plagiarism", "Intellectual property rights", "Piracy", "Trojan"],
-        ans: 0,
-        exp: "Plagiarism involves presenting someone else's original work or ideas as your own."
+        options: ["Plagiarism", "Intellectual property rights", "Piracy", "Trojan", "All of these"],
+        correctIndex: 0,
+        explanation: "Plagiarism involves presenting someone else's original work or ideas as your own without credit."
     },
     {
         q: "Q.16. Which of the following is the type of software that has self-replicating software that causes damage to files and system.?",
-        options: ["Viruses", "Trojan horses", "Bots", "Worms"],
-        ans: 3,
-        exp: "Worms are standalone self-replicating programs that spread automatically across networks."
+        options: ["Viruses", "Trojan horses", "Bots", "Worms", "None of these"],
+        correctIndex: 3,
+        explanation: "Worms are standalone self-replicating programs that spread across networks without human interaction."
     },
     {
-        q: "Q.17. Which of the following is a software that tracks your internet browsing habits and sends popups.?",
-        options: ["Backdoors", "Adware", "Malware", "Bots"],
-        ans: 1,
-        exp: "Adware automatically displays or downloads unwanted advertising material when online."
+        q: "Q.17. Which of the following is a software that, once installed on your computer, tracks your internet browsing habits and sends you popups containing advertisements related to the sites and topics you've visited.?",
+        options: ["Backdoors", "Adware", "Malware", "Bots", "None of these"],
+        correctIndex: 1,
+        explanation: "Adware automatically generates advertisements on screen while tracking browsing behavior."
     },
     {
-        q: "Q.18. What is the software called that's designed to exploit a computer user and is a broad term covering viruses, worms, etc.?",
-        options: ["Backdoors", "Key-logger", "Malware", "Bots"],
-        ans: 2,
-        exp: "Malware (Malicious Software) is an umbrella term for all harmful computer software."
+        q: "Q.18. What is the software called that's designed to exploit a computer user and is a broad term covering computer viruses, worms, Trojan, adware, etc.?",
+        options: ["Backdoors", "Key-logger", "Malware", "Bots", "None of these"],
+        correctIndex: 2,
+        explanation: "Malware (Malicious Software) is an umbrella term for viruses, ransomware, spyware, and worms."
     },
     {
-        q: "Q.19. They are computer programs designed by attackers to gain administrative access to your computer.?",
-        options: ["Backdoors", "Rootkits", "Malware", "Antiware"],
-        ans: 1,
-        exp: "Rootkits provide privileged/administrative access to a computer while hiding their presence."
+        q: "Q.19. They are computer programs that are designed by attackers to gain administrative access to your computer.?",
+        options: ["Backdoors", "Rootkits", "Malware", "Antiware", "None of these"],
+        correctIndex: 1,
+        explanation: "Rootkits provide unauthorized high-level administrative or root access to targeted computers."
     },
     {
         q: "Q.20. The attack that focuses on capturing small packets from the network transmitted by other computers.?",
-        options: ["Phishing", "Eavesdropping", "Scams", "Exploits"],
-        ans: 1,
-        exp: "Eavesdropping (or sniffing) secretly intercepts private real-time communication/packets."
+        options: ["Phishing", "Eavesdropping", "Scams", "Exploits", "None of these"],
+        correctIndex: 1,
+        explanation: "Eavesdropping (or Sniffing) involves intercepting and viewing network packets transmitted between hosts."
     },
     {
         q: "Q.21. To protect yourself from computer hacker, you should turn on a.?",
-        options: ["Firewall", "Script", "Antivirus", "VLC"],
-        ans: 0,
-        exp: "Enabling a firewall helps filter unauthorized network connections from hackers."
+        options: ["Firewall", "Script", "Antivirus", "VLC", "None of these"],
+        correctIndex: 0,
+        explanation: "A active Firewall monitors incoming/outgoing network traffic to block malicious hacker connections."
     },
     {
         q: "Q.22. Secret words or numbers used for protection of devices is called.?",
-        options: ["Biometrics Data", "Backup", "Passwords", "Private Words"],
-        ans: 2,
-        exp: "Passwords are secret authentication credentials used to protect accounts and systems."
+        options: ["Biometrics Data", "Backup", "Passwords", "Private Words", "None of these"],
+        correctIndex: 2,
+        explanation: "Passwords are secret authentication strings used to grant authorized device/system access."
     },
     {
         q: "Q.23. Person who gains illegal access to a computer system is known as.?",
-        options: ["Hacker", "Cracker", "Pirate", "Thief"],
-        ans: 0,
-        exp: "A hacker gains unauthorized or illegal access to computer systems and networks."
+        options: ["Hacker", "Cracker", "Pirate", "Thief", "None of these"],
+        correctIndex: 0,
+        explanation: "In general terms, a hacker (specifically black-hat) breaks into computer systems illegally."
     },
     {
-        q: "Q.24. Which malware has Short for 'robot network'.?",
-        options: ["Ronets", "Botnets", "Botwork", "Rowork"],
-        ans: 1,
-        exp: "Botnet is short for 'robot network', a network of infected devices controlled remotely."
+        q: "Q.24. Which malware has Short for \"robot network\".?",
+        options: ["Ronets", "Botnets", "Botwork", "Rowork", "None of these"],
+        correctIndex: 1,
+        explanation: "Botnet is short for 'robot network', which consists of infected devices controlled by a central server."
     },
     {
         q: "Q.25. When a person is harassed repeatedly by being followed, called or be written to he/she is a target of.?",
-        options: ["Bullying", "Stalking", "Identity theft", "Phishing"],
-        ans: 1,
-        exp: "Cyberstalking involves using digital tools to persistently harass or stalk an individual."
+        options: ["Bullying", "Stalking", "Identity theft", "Phishing", "None of these"],
+        correctIndex: 1,
+        explanation: "Stalking (or Cyberstalking) involves persistent, unwanted online or physical monitoring and harassment."
     },
     {
         q: "Q.26. WPA2 is used for security in.?",
-        options: ["Ethernet", "Bluetooth", "Wi-Fi", "LAN"],
-        ans: 2,
-        exp: "Wi-Fi Protected Access 2 (WPA2) is a security protocol used to secure Wi-Fi networks."
+        options: ["Ethernet", "Bluetooth", "Wi-Fi", "LAN", "None of these"],
+        correctIndex: 2,
+        explanation: "WPA2 (Wi-Fi Protected Access 2) is a security protocol used to secure wireless Wi-Fi networks."
     },
     {
         q: "Q.27. Pretty good privacy (PGP) is used in.?",
-        options: ["Browser Security", "Email Security", "FTP Security", "Search Engine"],
-        ans: 1,
-        exp: "PGP (Pretty Good Privacy) is an encryption program used primarily for email security."
+        options: ["Browser Security", "Email Security", "FTP Security", "Search Engine", "All of these"],
+        correctIndex: 1,
+        explanation: "PGP (Pretty Good Privacy) is an encryption program widely used for securing email communication."
     },
     {
         q: "Q.28. When was IT act notified.?",
-        options: ["2008", "1999", "2000", "1997"],
-        ans: 2,
-        exp: "India's Information Technology (IT) Act was enacted/notified in the year 2000."
+        options: ["2008", "1999", "2000", "1997", "None of these"],
+        correctIndex: 2,
+        explanation: "India's Information Technology Act was passed and notified in October 2000."
     },
     {
         q: "Q.29. IT act amended in which year.?",
-        options: ["2008", "1999", "2000", "1997"],
-        ans: 0,
-        exp: "A major amendment to the IT Act of India was made in 2008."
+        options: ["2008", "1999", "2000", "1997", "None of these"],
+        correctIndex: 0,
+        explanation: "Major amendments to India's IT Act were passed in 2008 (effective from October 2009)."
     },
     {
         q: "Q.30. CFAA stands for .?",
-        options: ["Computer Fraud and Abuse Act", "Cyber Fraud and Abuse Act", "Cyber Fraud Activity Analysis", "Cyber Fraud Activity Act"],
-        ans: 0,
-        exp: "CFAA stands for Computer Fraud and Abuse Act (a U.S. federal cybersecurity law)."
+        options: ["Computer Fraud and Abuse Act", "Cyber Fraud and Abuse Act", "Cyber Fraud Activity Analysis", "Cyber Fraud Activity Act", "None of these"],
+        correctIndex: 0,
+        explanation: "CFAA stands for Computer Fraud and Abuse Act, a primary cybersecurity law in the US."
     },
     {
-        q: "Q.31. Which is an automated software program.?",
-        options: ["IRC", "P2P", "Fos", "Bots"],
-        ans: 3,
-        exp: "Bots are automated software programs that perform repetitive automated tasks over networks."
+        q: "Q.31. Which is an automated software program.",
+        options: ["IRC", "P2P", "Fos", "Bots", "None of these"],
+        correctIndex: 3,
+        explanation: "Bots are automated software applications that run repetitive scripts over the internet."
     },
     {
         q: "Q.32. DDOS is.?",
-        options: ["Distribution of service", "Duplication of work", "Cyber attack", "Distributed Denial of service"],
-        ans: 3,
-        exp: "DDoS stands for Distributed Denial of Service."
+        options: ["Distribution of service", "Duplication of work", "Cyber attack", "Distributed Denial of service", "None of these"],
+        correctIndex: 3,
+        explanation: "DDoS stands for Distributed Denial of Service, an attack disrupting normal network server operations."
     },
     {
         q: "Q.33. Systems in a botnet are also called as.?",
-        options: ["Robots", "Firewall", "Malware", "Zombies"],
-        ans: 3,
-        exp: "Infected machines controlled remotely within a botnet are called Zombies."
+        options: ["Robots", "Firewall", "Malware", "Zombies", "None of these"],
+        correctIndex: 3,
+        explanation: "Infected machines co-opted into a botnet without the owner's knowledge are referred to as Zombies."
     },
     {
         q: "Q.34. It is a discipline that combines elements of law and computer science to collect and analyze information ?",
-        options: ["Cyber crime", "Cyber forensics", "Cyber for science", "Ethical hacking"],
-        ans: 1,
-        exp: "Cyber forensics involves collecting, analyzing, and preserving digital evidence legally."
+        options: ["Cyber crime", "Cyber forensics", "Cyber for science", "Ethical hacking", "None of these"],
+        correctIndex: 1,
+        explanation: "Cyber Forensics focuses on collecting, preserving, and analyzing digital evidence for legal cases."
     },
     {
         q: "Q.35. Electronic transfer of illegally obtained money with the goal of hiding its source & destination.?",
-        options: ["Cyber laundering", "Assault by a threat", "Cyber contraband", "Cyber stalking"],
-        ans: 0,
-        exp: "Cyber laundering refers to digital money laundering techniques."
+        options: ["Cyber laundering", "Assault by a threat", "Cyber contraband", "Cyber stalking", "More than one of the above"],
+        correctIndex: 0,
+        explanation: "Cyber Laundering refers to using digital financial tools to hide the illicit origin of money."
     },
     {
         q: "Q.36. The use of computer networks to create, distribute or access materials that sexually exploit underage children is known as.?",
-        options: ["Assault by a threat", "Cyber contraband", "Cyber stalking", "Child pornography"],
-        ans: 3,
-        exp: "Child pornography involves the illegal exploitation of underage individuals online."
+        options: ["Assault by a threat", "Cyber contraband", "Cyber stalking", "Child pornography", "None of these"],
+        correctIndex: 3,
+        explanation: "Child Pornography refers to online creation or sharing of explicit exploitation materials involving minors."
     },
     {
         q: "Q.37. Attempt to gain or change IP Address or DNS is called.?",
-        options: ["Sniffing", "Spoofing", "Phishing", "Spooling"],
-        ans: 1,
-        exp: "IP or DNS Spoofing involves forging headers or entries to masquerade as another address."
+        options: ["Sniffing", "Spoofing", "Phishing", "Spooling", "None of these"],
+        correctIndex: 1,
+        explanation: "Spoofing involves impersonating or altering IP addresses or DNS records to deceive systems."
     },
     {
         q: "Q.38. Among these Name the Antivirus.?",
-        options: ["Norton", "AVG", "Panda", "All of these"],
-        ans: 3,
-        exp: "Norton, AVG, and Panda are all popular commercial antivirus software."
+        options: ["Norton", "AVG", "Panda", "All of these", "None of these"],
+        correctIndex: 3,
+        explanation: "Norton, AVG, and Panda are all popular commercial cybersecurity and antivirus software brands."
     },
     {
         q: "Q.39. Name the First Ransomware.?",
-        options: ["AIDS Trojan", "PC Cyborg", "Both AIDS / PC Cyborg", "Wanna Cry"],
-        ans: 2,
-        exp: "The AIDS Trojan (also known as PC Cyborg) released in 1989 was the first known ransomware."
+        options: ["AIDS", "PC Cyborg", "Both of these", "Wanna Cry", "ILoveYou"],
+        correctIndex: 2,
+        explanation: "The AIDS Trojan (also known as PC Cyborg) created in 1989 is considered the first ransomware."
     },
     {
         q: "Q.40. Type of Virus that keeps changing type & signature of VIRUS.?",
-        options: ["Ransomware", "Polymorphic", "Boot Sector", "WORM"],
-        ans: 1,
-        exp: "Polymorphic viruses alter their code/signature each time they infect to evade detection."
+        options: ["Ransomware", "Polymorphic", "Boot Sector", "WORM", "None of these"],
+        correctIndex: 1,
+        explanation: "Polymorphic viruses dynamically alter their signatures to evade detection by traditional antivirus tools."
     },
     {
         q: "Q.41. Which of the following is known as Malicious software.?",
-        options: ["Illegal ware", "Bad ware", "Malware", "Malicious ware"],
-        ans: 2,
-        exp: "Malware is the short form of 'Malicious Software'."
+        options: ["Illegal ware", "Bad ware", "Malware", "Malicious ware", "None of these"],
+        correctIndex: 2,
+        explanation: "Malware is the abbreviated term for Malicious Software."
     },
     {
         q: "Q.42. What is the first computer worm.?",
-        options: ["The Morris worm", "The Babbage worm", "The Tomlinson worm", "The Big worm"],
-        ans: 0,
-        exp: "The Morris Worm (1988) was one of the first computer worms distributed via the Internet."
+        options: ["The Morris worm", "The Babbage worm", "The Tomlinson worm", "The Big worm", "None of these"],
+        correctIndex: 0,
+        explanation: "The Morris Worm, released in 1988, was the first computer worm distributed widely via the internet."
     },
     {
         q: "Q.43. Name the First VIRUS.?",
-        options: ["Creeper", "Reaper", "Brain", "Trojan Horse"],
-        ans: 0,
-        exp: "Creeper (1971) is widely considered the first experimental computer virus."
+        options: ["Creeper", "Reaper", "Brain", "Trojan Horse", "None of these"],
+        correctIndex: 0,
+        explanation: "Creeper, created in 1971 on ARPANET, is widely recognized as the first computer virus/experimental program."
     },
     {
         q: "Q.44. Name the First Boot Sector VIRUS.?",
-        options: ["Creeper", "Reaper", "Brain", "Ransomware"],
-        ans: 2,
-        exp: "Brain (1986) was the first boot sector virus created for IBM PC compatible systems."
+        options: ["Creeper", "Reaper", "Brain", "Ransomware", "None of these"],
+        correctIndex: 2,
+        explanation: "Brain was created in 1986 and is recognized as the first boot sector virus for IBM PC compatibles."
     },
     {
-        q: "Q.45. McAfee is an example of .?",
-        options: ["Photo editing software", "Quick heal", "Virus", "Antivirus"],
-        ans: 3,
-        exp: "McAfee is a widely recognized antivirus program."
+        q: "Q.45. MacAfee is an example of .?",
+        options: ["Photo editing software", "Quick heal", "Virus", "Antivirus", "All of these"],
+        correctIndex: 3,
+        explanation: "McAfee is a widely known security and Antivirus software program."
     },
     {
         q: "Q.46. Software pretend to be useful but actually not.?",
-        options: ["Trojans", "Viruses", "Worm", "Adware"],
-        ans: 0,
-        exp: "Trojan horses trick users by masquerading as legitimate, useful applications."
+        options: ["Trojans", "Viruses", "Worm", "Adware", "None of these"],
+        correctIndex: 0,
+        explanation: "Trojan Horses disguise themselves as legitimate/useful software while executing malicious actions."
     },
     {
         q: "Q.47. Unsolicited commercial email is.?",
-        options: ["Spyware", "Malware", "Virus", "Spam"],
-        ans: 3,
-        exp: "Spam refers to unwanted bulk commercial emails."
+        options: ["Spyware", "Malware", "Virus", "Spam", "None of these"],
+        correctIndex: 3,
+        explanation: "Spam refers to unsolicited junk or commercial messages sent via email in bulk."
     },
     {
-        q: "Q.48. Viruses which executes when computer starts is.?",
-        options: ["Macro", "File Infector", "Boot Sector", "Macro Virus"],
-        ans: 2,
-        exp: "Boot Sector viruses execute during the system boot sequence."
+        q: "Q.48. Viruses which executes when computer starts is .?",
+        options: ["Macro", "File Infector", "Boot Sector", "Macro Virus", "None of these"],
+        correctIndex: 2,
+        explanation: "Boot Sector viruses infect the Master Boot Record (MBR) and execute whenever the system boots up."
     },
     {
         q: "Q.49. The virus that spread in application software is called as.?",
-        options: ["Boot virus", "Macro virus", "File virus", "Anti virus"],
-        ans: 1,
-        exp: "Macro viruses target applications that support macros like Microsoft Word or Excel."
+        options: ["Boot virus", "Macro virus", "File virus", "Anti virus", "None of these"],
+        correctIndex: 1,
+        explanation: "Macro viruses are embedded in application documents (like Word or Excel) using macro languages."
     },
     {
         q: "Q.50. Name the self replicating software.?",
-        options: ["VIRUS", "WORM", "Antivirus", "Brain"],
-        ans: 1,
-        exp: "Worms are autonomous programs that self-replicate through networks."
+        options: ["VIRUS", "WORM", "Antivirus", "Brain", "None of these"],
+        correctIndex: 1,
+        explanation: "Worms are autonomous programs designed to self-replicate without needing a host file."
     },
     {
         q: "Q.51. Name the VIRUS that deploy & stay in RAM.?",
-        options: ["Resident Virus", "Non Resident Virus", "Crypto Virus", "Defacto Virus"],
-        ans: 0,
-        exp: "Resident viruses hide and remain active in system RAM until the system powers off."
+        options: ["Resident Virus", "Non Resident Virus", "Crypto Virus", "Defacto Virus", "None of these"],
+        correctIndex: 0,
+        explanation: "Resident Viruses load into primary memory (RAM) and remain active until system shutdown."
     },
     {
         q: "Q.52. Name the VIRUS that deploy in RAM but not stay in RAM.?",
-        options: ["Resident Virus", "Non Resident Virus", "Crypto Virus", "Defacto Virus"],
-        ans: 1,
-        exp: "Non-resident viruses execute, infect files, and exit without staying permanently in RAM."
+        options: ["Resident Virus", "Non Resident Virus", "Crypto Virus", "Defacto Virus", "None of these"],
+        correctIndex: 1,
+        explanation: "Non-Resident Viruses execute when opened, infect targets, and then terminate memory residency."
     },
     {
         q: "Q.53. Name that Malware technique which take credit card or debit card information.?",
-        options: ["Phishing", "Trojan", "Ransom", "Bitcoin"],
-        ans: 0,
-        exp: "Phishing tricks users into revealing confidential financial and personal details."
+        options: ["Phishing", "Trojan", "Ransom", "Bitcoin", "None of these"],
+        correctIndex: 0,
+        explanation: "Phishing tricks users into revealing payment card data via fake forms and spoofed web portals."
     },
     {
         q: "Q.54. Name the attack in which attackers overload computing or network resources.?",
-        options: ["Distribution of service", "Duplication of work", "Cyber attack", "Denial of service"],
-        ans: 3,
-        exp: "Denial of Service (DoS) attacks flood resources to crash services for legitimate users."
+        options: ["Distribution of service", "Duplication of work", "Cyber attack", "Denial of service", "None of these"],
+        correctIndex: 3,
+        explanation: "A Denial of Service (DoS) attack floods systems with traffic to exhaust resources and deny access."
     },
     {
-        q: "Q.55. What monitors user activity on internet and transmits information in background?",
-        options: ["Malware", "Adware", "Trojan", "Sniffer / Spyware"],
-        ans: 3,
-        exp: "Sniffers/Spyware monitor user browsing habits and secretly send collected data."
+        q: "Q.55. ________ monitor the user activity on internet and transmit the information in the background someone else.?",
+        options: ["Malware", "Adware", "Trojan", "Sniffer", "None of these"],
+        correctIndex: 3,
+        explanation: "A Sniffer (or network monitoring tool) captures and logs traffic passing across network connections."
     },
     {
         q: "Q.56. It is the action of recording the keys struck on a keyboard.?",
-        options: ["Denial of service", "Exploits", "Scams", "Key logging"],
-        ans: 3,
-        exp: "Keylogging is the practice of tracking and recording keystrokes on a device."
+        options: ["Denial of service", "Exploits", "Scams", "Key logging", "None of these"],
+        correctIndex: 3,
+        explanation: "Key logging is the covert act of recording every key pressed on a keyboard."
     },
     {
-        q: "Q.57. What kind of attempts is made by individuals to obtain confidential information by falsifying identity.?",
-        options: ["Computer Viruses", "Spyware Scams", "Phishing Scams", "Trojan Horse"],
-        ans: 2,
-        exp: "Phishing scams impersonate legitimate entities to steal credentials."
+        q: "Q.57. What kind of attempts is made by individuals to obtain confidential information from a person by falsifying their identity.?",
+        options: ["Computer Viruses", "Spyware Scams", "Phishing Scams", "Trojan Horse", "None of these"],
+        correctIndex: 2,
+        explanation: "Phishing Scams use fake identities to fool individuals into disclosing sensitive info."
     },
     {
         q: "Q.58. Which of the following is/are the common targets of Injection Vulnerabilities.?",
-        options: ["SQL", "XML parsers", "Program arguments", "BOTS"],
-        ans: 0,
-        exp: "SQL databases are prime targets for SQL injection vulnerabilities."
+        options: ["SQL", "XML parsers", "Program arguments", "BOTS", "None of these"],
+        correctIndex: 0,
+        explanation: "SQL injection targets database queries, allowing attackers to access backend database records."
     },
     {
-        q: "Q.59. It is a type of malware that takes your data hostage until you pay a fee to release it.?",
-        options: ["Ransomware", "Phishing software", "Hacking software", "Kidnapping software"],
-        ans: 0,
-        exp: "Ransomware encrypts victim files and demands payment to restore access."
+        q: "Q.59. ________ is a type of malware that takes your data hostage until you pay a fee to release it.?",
+        options: ["Ransomware", "Phishing software", "Hacking software", "Kidnapping software", "None of these"],
+        correctIndex: 0,
+        explanation: "Ransomware encrypts victim files and demands ransom payment for decryption keys."
     },
     {
-        q: "Q.60. It was a computer worm observed on the Internet on July 15, 2001 attacking Microsoft's IIS server.?",
-        options: ["Creeper", "I Love You", "Ransomware", "Code Red"],
-        ans: 3,
-        exp: "Code Red worm targeted web servers running Microsoft IIS in July 2001."
+        q: "Q.60. It was a computer worm observed on the Internet on July 15, 2001. It attacked computers running Microsoft's IIS web server.?",
+        options: ["Creeper", "I Love You", "Ransomware", "Code Red", "None of these"],
+        correctIndex: 3,
+        explanation: "Code Red was a computer worm that attacked Microsoft IIS web servers in mid-2001."
     },
     {
         q: "Q.61. It is the practice of protecting systems, networks, and programs from digital attacks.?",
-        options: ["Rootkits", "Polymorphism", "Dethering", "Cybersecurity"],
-        ans: 3,
-        exp: "Cybersecurity is the discipline of safeguarding networks, hardware, and data from attacks."
+        options: ["Rootkits", "Polymorphism", "Dethering", "Cybersecurity", "None of these"],
+        correctIndex: 3,
+        explanation: "Cybersecurity encompasses all measures to defend systems, devices, and data from attacks."
     },
     {
         q: "Q.62. It is a code injection technique used to attack data-driven applications.?",
-        options: ["WORM Injection", "SQL Injection", "DDOS Injection", "Malware Injection"],
-        ans: 1,
-        exp: "SQL Injection inserts malicious SQL statements into entry fields for execution."
+        options: ["WORM Injection", "SQL Injection", "DDOS Injection", "Malware Injection", "None of these"],
+        correctIndex: 1,
+        explanation: "SQL Injection inserts malicious code into database queries to manipulate database systems."
     },
     {
         q: "Q.63. Viruses are.?",
-        options: ["Naturally occur", "Machine made", "Man made", "All of these"],
-        ans: 2,
-        exp: "Computer viruses are man-made software code written intentionally by programmers."
+        options: ["Naturally occur", "Machine made", "Man made", "All of these", "None of these"],
+        correctIndex: 2,
+        explanation: "Computer viruses are explicitly created and coded by human programmers (Man-made)."
     },
     {
         q: "Q.64. What are the common cyber-attacks which can be used by hackers to damage network.?",
-        options: ["Phishing & Password attacks", "Malware & Malvertising", "DDoS & Drive-by downloads", "All of these"],
-        ans: 3,
-        exp: "Hackers use a wide combination of vectors including Malware, DDoS, Phishing, and Drive-by downloads."
+        options: ["Phishing & Password attacks", "Malware & Malvertising", "DDoS & Drive-by downloads", "All of these", "None of these"],
+        correctIndex: 3,
+        explanation: "Phishing, malware, DDoS, password attacks, and drive-by downloads are all common cyber vectors."
     },
     {
         q: "Q.65. Phishing is a form of.?",
-        options: ["Impersonation", "Spamming", "Identity Theft", "Scanning"],
-        ans: 0,
-        exp: "Phishing relies heavily on impersonating trusted entities to dupe victims."
+        options: ["Impersonation", "Spamming", "Identify Theft", "Scanning", "None of these"],
+        correctIndex: 0,
+        explanation: "Phishing relies heavily on social engineering and impersonating trusted entities."
     },
     {
-        q: "Q.66. A form of malicious spam in Banks that attempts to steal personal information through text messages.?",
-        options: ["Skimming", "Phishing", "Smishing", "Ransomware"],
-        ans: 2,
-        exp: "Smishing is SMS Phishing—using fake text messages to scam recipients."
+        q: "Q.66. ________ a form of malicious spam in Banks that attempts to steal personal information through text messages.?",
+        options: ["Skimming", "Phishing", "Smishing", "Ransomware", "All of these"],
+        correctIndex: 2,
+        explanation: "Smishing (SMS Phishing) uses fraudulent text messages to deceive mobile users."
     },
     {
-        q: "Q.67. Copying credit or debit card data like account numbers, PINs, expiration dates during legitimate transactions in called.?",
-        options: ["Smishing", "Phishing", "Sniffing", "Skimming"],
-        ans: 3,
-        exp: "Skimming uses small hardware devices to steal card info during POS or ATM transactions."
+        q: "Q.67. Copying credit or debit card data like account numbers, PINs, expiration dates during legitimate transactions in called",
+        options: ["Smishing", "Phishing", "Sniffing", "Spoofing", "Skimming"],
+        correctIndex: 4,
+        explanation: "Skimming involves physical theft devices placed on ATMs/POS terminals to read card details."
     },
     {
-        q: "Q.68. Name the new mobile banking 'Trojan' virus which can stealthily encrypt an Android phone for ransom.?",
-        options: ["BANK WORM", "SNIFFER", "SOVA", "LOCKY"],
-        ans: 2,
-        exp: "SOVA is a notorious Android banking Trojan capable of encrypting user data."
+        q: "Q.68. Name the new mobile banking 'Trojan' virus which can stealthily encrypt an Android phone for ransom and is hard to uninstall.?",
+        options: ["BANK WORM", "SNIFFER", "SOVA", "LOCKY", "WANNACRY"],
+        correctIndex: 2,
+        explanation: "SOVA is a notable Android banking Trojan capable of credential theft and device locking."
     },
     {
         q: "Q.69. The process of trying multiple username and password combinations to find a valid login is termed as.?",
-        options: ["Phishing", "Sourcing", "Brute force attack", "DDoS"],
-        ans: 2,
-        exp: "A Brute Force Attack systematically guesses passwords until finding the correct one."
+        options: ["Phishing", "Sourcing", "Brute force attack", "DDoS", "Phishing"],
+        correctIndex: 2,
+        explanation: "A Brute Force Attack tests all possible password combinations until the correct key is found."
     },
     {
         q: "Q.70. It is software that uses an excessive amount of system resources.?",
-        options: ["Bloatware", "Malware", "Reduceware", "Hyperware"],
-        ans: 0,
-        exp: "Bloatware consumes unnecessary memory, CPU, and space on devices."
+        options: ["Bloatware", "Malware", "Reduceware", "Hyperware", "Firmware"],
+        correctIndex: 0,
+        explanation: "Bloatware consumes unnecessary disk space, CPU, and RAM resources."
     },
     {
-        q: "Q.71. Currently, most ATMs use a ________ security standard.?",
-        options: ["Advanced Encryption Standard", "Triple Data Encryption Standard (3DES)", "Blowfish", "Rivest-Shamir-Adleman"],
-        ans: 1,
-        exp: "Triple DES (3DES) has been the traditional encryption standard widely deployed in ATM networks."
+        q: "Q.71. Currently, most ATMs use a ______ security standard.?",
+        options: ["Advanced Encryption Standard", "Triple Data Encryption Standard", "Blowfish", "Rivest-Shamir-Adleman", "All of these"],
+        correctIndex: 1,
+        explanation: "Triple DES (3DES) has been the dominant encryption algorithm for ATM financial transactions."
     },
     {
-        q: "Q.72. Ransomware may also be referred to as a.?",
-        options: ["Crypto-Virus", "Crypto-Trojan", "Crypto-Worm", "All of these"],
-        ans: 3,
-        exp: "Ransomware can manifest as Crypto-Viruses, Crypto-Trojans, or Crypto-Worms depending on its propagation technique."
+        q: "Q.72. Ransomware may also be referred to as a ________.?",
+        options: ["Crypto-Virus", "Crypto-Trojan", "Crypto-Worm", "All of these", "None of these"],
+        correctIndex: 3,
+        explanation: "Ransomware takes various architectural forms, including crypto-viruses, crypto-trojans, and crypto-worms."
     },
     {
-        q: "Q.73. Is a Russian multinational cybersecurity and anti-virus provider headquartered in Moscow, Russia.?",
-        options: ["McAfee", "Avast", "Kaspersky", "Bitdefender"],
-        ans: 2,
-        exp: "Kaspersky Lab is a global cybersecurity company headquartered in Moscow, Russia."
+        q: "Q.73. ________ is a Russian multinational cybersecurity and anti- virus provider headquartered in Moscow, Russia.?",
+        options: ["McAfee", "Avast", "Kaspersky", "Bitdefender", "All of these"],
+        correctIndex: 2,
+        explanation: "Kaspersky Lab is a global cybersecurity provider headquartered in Moscow, Russia."
     },
     {
         q: "Q.74. This is an activity in which cyber fraudsters pretend to be trustworthy to win other people's trust.?",
-        options: ["Sniffing", "Spoofing", "Skimming", "Smishing"],
-        ans: 1,
-        exp: "Spoofing involves masquerading as a trusted entity to gain illicit trust and access."
+        options: ["Sniffing", "Spoofing", "Skimming", "Smishing", "All of these"],
+        correctIndex: 1,
+        explanation: "Spoofing is the practice of disguising a communication or identity from an unknown source as trusted."
     }
 ];
 
-function prepareQuizData() {
-    return rawQuizData.map(item => {
-        let optionsCopy = [...item.options];
-        let correctText = optionsCopy[item.ans];
-        
-        // Fisher-Yates shuffle to randomize options on reload
-        for (let i = optionsCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [optionsCopy[i], optionsCopy[j]] = [optionsCopy[j], optionsCopy[i]];
-        }
-        
-        let newAnsIdx = optionsCopy.indexOf(correctText);
-        
-        return {
-            q: item.q,
-            options: optionsCopy,
-            ans: newAnsIdx,
-            exp: item.exp
-        };
-    });
+// Utility function to shuffle an array (Fisher-Yates Shuffle)
+function shuffleArray(array) {
+    let curId = array.length;
+    while (0 !== curId) {
+        let randId = Math.floor(Math.random() * curId);
+        curId -= 1;
+        let tmp = array[curId];
+        array[curId] = array[randId];
+        array[randId] = tmp;
+    }
+    return array;
 }
 
 function renderQuiz() {
-    const quizData = prepareQuizData();
-    const quizContainer = document.getElementById('quiz');
-    
-    quizData.forEach((item, index) => {
+    const quizContainer = document.getElementById('quiz-body');
+
+    quizData.forEach((item, qIndex) => {
         const qCard = document.createElement('div');
         qCard.className = 'question-card';
 
-        const qTitle = document.createElement('div');
-        qTitle.className = 'question-text';
-        qTitle.innerText = item.q;
-        qCard.appendChild(qTitle);
+        const title = document.createElement('div');
+        title.className = 'question-title';
+        title.innerText = item.q;
+        qCard.appendChild(title);
 
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options';
-
-        item.options.forEach((opt, optIdx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = (optIdx + 1) + ") " + opt;
-            btn.onclick = () => checkAnswer(btn, index, optIdx, item.ans);
-            optionsContainer.appendChild(btn);
+        // Map options with their original index to preserve correct answer after shuffle
+        let mappedOptions = item.options.map((optText, origIndex) => {
+            return { text: optText, originalIndex: origIndex };
         });
 
-        qCard.appendChild(optionsContainer);
+        // Shuffle options on reload
+        mappedOptions = shuffleArray(mappedOptions);
 
-        const expDiv = document.createElement('div');
-        expDiv.id = `exp-${index}`;
-        expDiv.className = 'explanation';
-        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
-        qCard.appendChild(expDiv);
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
 
+        const explanationDiv = document.createElement('div');
+        explanationDiv.className = 'explanation';
+        explanationDiv.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        mappedOptions.forEach((optObj, displayIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `${displayIdx + 1}) ${optObj.text}`;
+
+            btn.onclick = function() {
+                const allButtons = optionsList.querySelectorAll('.option-btn');
+                allButtons.forEach(b => b.disabled = true);
+
+                if (optObj.originalIndex === item.correctIndex) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                    // Highlight the correct option
+                    mappedOptions.forEach((o, idx) => {
+                        if (o.originalIndex === item.correctIndex) {
+                            allButtons[idx].classList.add('correct');
+                        }
+                    });
+                }
+                explanationDiv.style.display = 'block';
+            };
+
+            optionsList.appendChild(btn);
+        });
+
+        qCard.appendChild(optionsList);
+        qCard.appendChild(explanationDiv);
         quizContainer.appendChild(qCard);
     });
 }
 
-function checkAnswer(selectedBtn, qIndex, selectedIdx, correctIdx) {
-    const card = selectedBtn.closest('.question-card');
-    const buttons = card.querySelectorAll('.btn');
-
-    buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        if (idx === correctIdx) {
-            btn.classList.add('correct');
-        }
-    });
-
-    if (selectedIdx !== correctIdx) {
-        selectedBtn.classList.add('incorrect');
-    }
-
-    const expDiv = document.getElementById(`exp-${qIndex}`);
-    expDiv.style.display = 'block';
-}
-
+// Execute on load
 window.onload = renderQuiz;
 </script>
 
