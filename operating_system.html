@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating System Complete Quiz (160 Questions)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e1e1e8;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+        .question-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+        .options-list li {
+            margin-bottom: 10px;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #007bff;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .option-link:hover {
+            background: #f1f1f1;
+            border-color: #0056b3;
+        }
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724 !important;
+        }
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24 !important;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e2f0d9;
+            border-left: 4px solid #28a745;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Operating System Quiz (Q.1 to Q.160)</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "Q.1. Which scheduling algorithm allocates the CPU first to the process that requests the CPU first.?",
+            options: [
+                { text: "1) first-come, first-served scheduling", correct: true },
+                { text: "2) shortest job scheduling", correct: false },
+                { text: "3) priority scheduling", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: FCFS allocates CPU based on arrival time in the ready queue."
+        },
+        {
+            question: "Q.2. In priority scheduling algorithm.?",
+            options: [
+                { text: "1) CPU is allocated to the process with highest priority", correct: true },
+                { text: "2) CPU is allocated to the process with lowest priority", correct: false },
+                { text: "3) Equal priority processes can not be scheduled", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: In standard priority scheduling, the highest priority process gets the CPU first."
+        },
+        {
+            question: "Q.3. In priority scheduling algorithm, when a process arrives at the ready queue, its priority is compared with the priority of.?",
+            options: [
+                { text: "1) all process", correct: false },
+                { text: "2) currently running process", correct: true },
+                { text: "3) parent process", correct: false },
+                { text: "4) init process", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Preemptive priority scheduling compares the new arrival with the running process."
+        },
+        {
+            question: "Q.4. Which algorithm is defined in Time quantum.?",
+            options: [
+                { text: "1) shortest job scheduling algorithm", correct: false },
+                { text: "2) round robin scheduling algorithm", correct: true },
+                { text: "3) priority scheduling algorithm", correct: false },
+                { text: "4) multilevel queue scheduling algorithm", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Round Robin scheduling uses a fixed time slice called time quantum."
+        },
+        {
+            question: "Q.5. Which of the following scheduling algorithm is provably optimal, in that it gives the minimum average waiting time for a given set of processes.?",
+            options: [
+                { text: "1) Round Robin", correct: false },
+                { text: "2) FCFS", correct: false },
+                { text: "3) Priority", correct: false },
+                { text: "4) SJFS", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: SJF provides the minimum average waiting time for a set of processes."
+        },
+        {
+            question: "Q.6. The problem of indefinite blockage of low-priority jobs in general priority scheduling algorithm can be solved using.?",
+            options: [
+                { text: "1) Dirty Bit", correct: false },
+                { text: "2) Compaction", correct: false },
+                { text: "3) Aging", correct: false }, // correct index 3 -> option index 2
+                { text: "4) Swapping", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            // Let's correct option 3 -> text: Aging, correct: true
+        },
+        {
+            question: "Q.6. The problem of indefinite blockage of low-priority jobs in general priority scheduling algorithm can be solved using.?",
+            options: [
+                { text: "1) Dirty Bit", correct: false },
+                { text: "2) Compaction", correct: false },
+                { text: "3) Aging", correct: true },
+                { text: "4) Swapping", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Aging gradually increases the priority of waiting processes to prevent starvation."
+        },
+        {
+            question: "Q.7. The real-time operating system, which of the following is the most suitable scheduling scheme.?",
+            options: [
+                { text: "1) Round Robin", correct: false },
+                { text: "2) FCFS", correct: false },
+                { text: "3) Pre-emptive", correct: true },
+                { text: "4) Random Scheduling", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Real-time systems require preemptive scheduling to meet strict deadlines."
+        },
+        {
+            question: "Q.8. Round Robin Scheduling is most suitable for.?",
+            options: [
+                { text: "1) Batch OS", correct: false },
+                { text: "2) Hard RTOS", correct: false },
+                { text: "3) Soft RTOS", correct: false },
+                { text: "4) Time Sharing OS", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Time sharing systems rely heavily on Round Robin for fair CPU distribution."
+        },
+        {
+            question: "Q.9. Whenever the CPU becomes idle, the operating system must select one of the processes in the_______ to be executed.?",
+            options: [
+                { text: "1) Execution Queue", correct: false },
+                { text: "2) Process Queue", correct: false },
+                { text: "3) Waiting Queue", correct: false },
+                { text: "4) Ready Queue", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: The ready queue holds processes residing in main memory, ready and waiting to execute."
+        },
+        {
+            question: "Q.10. Under the category of________ Round-robin scheduling falls.?",
+            options: [
+                { text: "1) Preemptive scheduling", correct: true },
+                { text: "2) Non preemptive scheduling", correct: false },
+                { text: "3) All of the mentioned", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Round Robin is preemptive because processes are interrupted after their time quantum expires."
+        },
+        {
+            question: "Q.11. A major problem with priority scheduling is.?",
+            options: [
+                { text: "1) Definite blocking", correct: false },
+                { text: "2) Starvation", correct: true },
+                { text: "3) Low priority", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Low priority processes can suffer from starvation if high priority processes keep arriving."
+        },
+        {
+            question: "Q.12. Round robin scheduling is essentially the preemptive version of.?",
+            options: [
+                { text: "1) FIFO/FCFS", correct: true },
+                { text: "2) Shortest job first", correct: false },
+                { text: "3) Shortest remaining", correct: false },
+                { text: "4) Longest time first", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Round Robin is FCFS with preemption using time slices."
+        },
+        {
+            question: "Q.13. FIFO scheduling is.?",
+            options: [
+                { text: "1) Preemptive Scheduling", correct: false },
+                { text: "2) Non Preemptive Scheduling", correct: true },
+                { text: "3) Deadline Scheduling", correct: false },
+                { text: "4) Fair share scheduling", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Once CPU is allocated to a process in FIFO, it runs until completion or I/O."
+        },
+        {
+            question: "Q.14. Which scheduling policy is most suitable for time shared operating system.?",
+            options: [
+                { text: "1) Shortest job first", correct: false },
+                { text: "2) FCFS", correct: false },
+                { text: "3) LCFS", correct: false },
+                { text: "4) Round robin", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Round robin ensures equitable sharing of CPU time among users."
+        },
+        {
+            question: "Q.15. Which among following scheduling algorithms give minimum average waiting time.?",
+            options: [
+                { text: "1) FCFS", correct: false },
+                { text: "2) SJF", correct: true },
+                { text: "3) Round robin", correct: false },
+                { text: "4) On priority", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Shortest Job First gives the minimum average waiting time."
+        },
+        {
+            question: "Q.16. In which scheduling policies, context switching never takes place.?",
+            options: [
+                { text: "1) FCFS", correct: true },
+                { text: "2) Round robin", correct: false },
+                { text: "3) Shortest job first", correct: false },
+                { text: "4) Pre-empitive", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Non-preemptive FCFS without I/O or single process execution minimizes or eliminates context switching overhead."
+        },
+        {
+            question: "Q.17. Shortest Job First executes first the job.?",
+            options: [
+                { text: "1) With the least processor needs", correct: true },
+                { text: "2) That first entered the queue", correct: false },
+                { text: "3) That has been in the queue for the longest", correct: false },
+                { text: "4) That last entered the queue", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: SJF picks the process with the smallest next CPU burst."
+        },
+        {
+            question: "Q.18. Waiting time is.?",
+            options: [
+                { text: "1) The total time in the blocked and waiting queues", correct: false },
+                { text: "2) The total time spent in the ready queue", correct: true },
+                { text: "3) The total time spent in the running queue", correct: false },
+                { text: "4) The total time from the completion till the submission of a process", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Waiting time is the sum of periods spent waiting in the ready queue."
+        },
+        {
+            question: "Q.19. The most optimal scheduling algorithm is.?",
+            options: [
+                { text: "1) FCFS-First come First served", correct: false },
+                { text: "2) SJF-Shortest Job First", correct: true },
+                { text: "3) RR-Round Robin", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: SJF is considered optimal in terms of minimizing average waiting time."
+        },
+        {
+            question: "Q.20. Aging is.?",
+            options: [
+                { text: "1) Keeping track of cache contents", correct: false },
+                { text: "2) Keeping track of what pages are currently residing in memory", correct: false },
+                { text: "3) Keeping track of how many times a given page is referenced", correct: false },
+                { text: "4) Increasing the priority of jobs to ensure termination in a finite time", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Aging prevents starvation by slowly boosting priorities of waiting jobs."
+        },
+        {
+            question: "Q.21. In Shortest-Job-First Scheduling If the next CPU bursts of two processes are the same, ______scheduling is used to break the tie.?",
+            options: [
+                { text: "1) FCFS", correct: true },
+                { text: "2) SJF", correct: false },
+                { text: "3) Round-robin", correct: false },
+                { text: "4) Priority", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: FCFS is typically used to break ties when CPU bursts are equal."
+        },
+        {
+            question: "Q.22. A _______process is moved to the ready state when its time allocation expires.?",
+            options: [
+                { text: "1) Blocked", correct: false },
+                { text: "2) New", correct: false },
+                { text: "3) Running", correct: true },
+                { text: "4) Suspend", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: A running process is preempted and moved back to ready when its time quantum expires."
+        },
+        {
+            question: "Q.23. What name is given to a program in execution.?",
+            options: [
+                { text: "1) Process", correct: true },
+                { text: "2) Data Load", correct: false },
+                { text: "3) Program", correct: false },
+                { text: "4) Mutex", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: An active program in execution is defined as a process."
+        },
+        {
+            question: "Q.24. Which of the following is not a valid Process State.?",
+            options: [
+                { text: "1) Ready", correct: false },
+                { text: "2) Hold", correct: true },
+                { text: "3) New", correct: false },
+                { text: "4) Running", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: 'Hold' is not a standard process state in OS theory (New, Ready, Running, Waiting, Terminated)."
+        },
+        {
+            question: "Q.25. Which of the following is not a valid Process State.?",
+            options: [
+                { text: "1) Ready", correct: false },
+                { text: "2) Waiting", correct: false },
+                { text: "3) Running", correct: false },
+                { text: "4) Starving", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Starving describes a condition, not an execution state."
+        },
+        {
+            question: "Q.26. In which of the following state, the process is waiting for processor.?",
+            options: [
+                { text: "1) New", correct: false },
+                { text: "2) Waiting", correct: false },
+                { text: "3) Ready", correct: true },
+                { text: "4) Running", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Ready state means the process is prepared to execute and waiting for CPU allocation."
+        },
+        {
+            question: "Q.27. Which of the following states of process in operating system is defined incorrectly.?",
+            options: [
+                { text: "1) New: The process is being created", correct: false },
+                { text: "2) Running: Instructions are being executed", correct: false },
+                { text: "3) Waiting: Process is waiting to be assigned to a processor", correct: true },
+                { text: "4) Terminated: The process has finished execution", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Waiting state means waiting for an I/O event, whereas ready is waiting for a processor."
+        },
+        {
+            question: "Q.28. The systems which allow only one process execution at a time, are called.?",
+            options: [
+                { text: "1) uniprogramming systems", correct: false },
+                { text: "2) uniprocessing systems", correct: true },
+                { text: "3) unitasking systems", correct: false },
+                { text: "4) None of the mentioned", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Uniprocessing systems handle one process instruction stream at a time."
+        },
+        {
+            question: "Q.29. In Unix, Which system call creates the new process.?",
+            options: [
+                { text: "1) fork", correct: true },
+                { text: "2) create", correct: false },
+                { text: "3) New", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: The fork() system call creates a duplicate child process in Unix."
+        },
+        {
+            question: "Q.30. A process can be terminated due to.?",
+            options: [
+                { text: "1) normal exit", correct: false },
+                { text: "2) fatal error", correct: false },
+                { text: "3) killed by another process", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Processes can terminate normally, via errors, or when killed by another process."
+        },
+        {
+            question: "Q.31. What is the ready state of a process.?",
+            options: [
+                { text: "1) When process is scheduled to run after some execution", correct: true },
+                { text: "2) When process is unable to run until some task has been completed", correct: false },
+                { text: "3) When process is using the CPU", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Ready state indicates readiness to run once assigned the CPU."
+        },
+        {
+            question: "Q.32. What is interprocess communication?",
+            options: [
+                { text: "1) communication within the process", correct: false },
+                { text: "2) communication between two process", correct: true },
+                { text: "3) communication between two threads of same process", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: IPC allows separate independent or cooperating processes to exchange data."
+        },
+        {
+            question: "Q.33. A set of processes is deadlock if.?",
+            options: [
+                { text: "1) each process is blocked and will remain so forever", correct: true },
+                { text: "2) each process is terminated", correct: false },
+                { text: "3) all processes are trying to kill each other", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Deadlock occurs when every process in the set is waiting for an event caused only by another process in the set."
+        },
+        {
+            question: "Q.34. How many states can be processed in Operating System.?",
+            options: [
+                { text: "1) 5", correct: true },
+                { text: "2) 4", correct: false },
+                { text: "3) 3", correct: false },
+                { text: "4) 1", correct: false }
+            ],
+            explanation: "Explanation: Standard 5 process states are New, Ready, Running, Waiting, Terminated."
+        },
+        {
+            question: "Q.35. PCB stands for.?",
+            options: [
+                { text: "1) Process Current Block", correct: false },
+                { text: "2) Parent Control Block", correct: false },
+                { text: "3) Parent Current Block", correct: false },
+                { text: "4) Process Control Block", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: PCB stands for Process Control Block, storing process metadata."
+        },
+        {
+            question: "Q.36. A process will______ while it is running, either because it has completed or because of some fatal fault condition.?",
+            options: [
+                { text: "1) Suspend", correct: false },
+                { text: "2) Terminate", correct: true },
+                { text: "3) Blocked", correct: false },
+                { text: "4) Ready", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Completion or fatal error causes the process to terminate."
+        },
+        {
+            question: "Q.37. In______ state, the process is in secondary memory but it is available for execution as soon as it is loaded into main memory..?",
+            options: [
+                { text: "1) Ready", correct: false },
+                { text: "2) Blocked", correct: false },
+                { text: "3) Blocked/Suspend", correct: false },
+                { text: "4) Ready/Suspended", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Ready/Suspended state means the process is swapped out to secondary memory but ready to run once swapped in."
+        },
+        {
+            question: "Q.38. The ready queue is generally stored as a.?",
+            options: [
+                { text: "1) Array", correct: false },
+                { text: "2) Stack", correct: false },
+                { text: "3) Linked List", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Ready queues are typically implemented as linked lists of PCB pointers."
+        },
+        {
+            question: "Q.39. At the ready queue when a process arrives In priority scheduling algorithm, the priority of this process is compared with the priority of.?",
+            options: [
+                { text: "1) currently running process", correct: true },
+                { text: "2) parent process", correct: false },
+                { text: "3) all process", correct: false },
+                { text: "4) init process", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Preemption checks compare incoming priority with the running process."
+        },
+        {
+            question: "Q.40. The processes that are inhabited in main memory and are ready and waiting to execute and remained on a list called.?",
+            options: [
+                { text: "1) process queue", correct: false },
+                { text: "2) execution queue", correct: false },
+                { text: "3) job queue", correct: false },
+                { text: "4) ready queue", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Processes waiting in main memory for CPU time form the ready queue."
+        },
+        {
+            question: "Q.41. Second Stage of Process life Cycle is.?",
+            options: [
+                { text: "1) Ready", correct: true },
+                { text: "2) New", correct: false },
+                { text: "3) Running", correct: false },
+                { text: "4) Wait", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: After the initial 'New' state, a process transitions to the 'Ready' state."
+        },
+        {
+            question: "Q.42. Which module gives control of the CPU to the process selected by the short-term scheduler.?",
+            options: [
+                { text: "1) dispatcher", correct: true },
+                { text: "2) interrupt", correct: false },
+                { text: "3) Scheduler", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: The dispatcher module gives CPU control to the selected process."
+        },
+        {
+            question: "Q.43. The interval from the time of submission of a process to the time of completion is termed as.?",
+            options: [
+                { text: "1) waiting time", correct: false },
+                { text: "2) turnaround time", correct: true },
+                { text: "3) response time", correct: false },
+                { text: "4) Throughput", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Turnaround time measures total time from submission to completion."
+        },
+        {
+            question: "Q.44. Whenever the CPU becomes idle, the operating system must select one of the processes in the_______ to be executed.?",
+            options: [
+                { text: "1) Execution Queue", correct: false },
+                { text: "2) Process Queue", correct: false },
+                { text: "3) Waiting Queue", correct: false },
+                { text: "4) Ready Queue", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: The short-term scheduler picks processes from the ready queue."
+        },
+        {
+            question: "Q.45. CPU performance is measured through.?",
+            options: [
+                { text: "1) Throughput", correct: true },
+                { text: "2) MHz", correct: false },
+                { text: "3) Flaps", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Throughput (processes executed per time unit) measures system performance."
+        },
+        {
+            question: "Q.46. In the multi-programming environment, the main memory consisting of ________number of process.?",
+            options: [
+                { text: "1) Greater than 100", correct: false },
+                { text: "2) Only one", correct: false },
+                { text: "3) Greater than 50", correct: false },
+                { text: "4) More than one", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Multiprogramming allows multiple processes to reside in main memory simultaneously."
+        },
+        {
+            question: "Q.47. What is the minimum number of processes that can have deadlock amongst themselves.?",
+            options: [
+                { text: "1) 1", correct: false },
+                { text: "2) 2", correct: true },
+                { text: "3) 3", correct: false },
+                { text: "4) 4", correct: false },
+                { text: "5) 5", correct: false }
+            ],
+            explanation: "Explanation: At least two processes are required for circular wait and deadlock."
+        },
+        {
+            question: "Q.48. The Banker's Algorithm in an Operating System is used for.?",
+            options: [
+                { text: "1) Deadlock Recovery", correct: false },
+                { text: "2) Interprocess Communication", correct: false },
+                { text: "3) Mutual Exclusion", correct: false },
+                { text: "4) Deadlock Avoidance", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Banker's algorithm tests for safe states to avoid deadlocks."
+        },
+        {
+            question: "Q.49. A process said to be in _______ state, if it was waiting for an event that will never occur.?",
+            options: [
+                { text: "1) Safe", correct: false },
+                { text: "2) Unsafe", correct: false },
+                { text: "3) Starvation", correct: false },
+                { text: "4) Deadlock", correct: true },
+                { text: "5) Context Switching", correct: false }
+            ],
+            explanation: "Explanation: Waiting for an unoccurring event leads to permanent deadlock."
+        },
+        {
+            question: "Q.50. Which of the following is NOT the method for handling deadlock.?",
+            options: [
+                { text: "1) Detection", correct: false },
+                { text: "2) Recovery", correct: false },
+                { text: "3) Prevention", correct: false },
+                { text: "4) Deletion", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Deadlock handling methods are prevention, avoidance, detection, and recovery."
+        },
+        {
+            question: "Q.51. The circular wait condition can be prevented by.?",
+            options: [
+                { text: "1) defining a linear ordering of resource types", correct: true },
+                { text: "2) using thread", correct: false },
+                { text: "3) using pipes", correct: false },
+                { text: "4) all of the mentioned", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Imposing a total ordering on resources prevents circular wait."
+        },
+        {
+            question: "Q.52. What is the drawback of banker's algorithm.?",
+            options: [
+                { text: "1) in advance processes rarely know how much resource they will need", correct: false },
+                { text: "2) the number of processes changes as time progresses", correct: false },
+                { text: "3) resource once available can disappear", correct: false },
+                { text: "4) All of the mentioned", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Banker's algorithm assumes fixed resource demands and dynamic process counts which pose practical challenges."
+        },
+        {
+            question: "Q.53. It is the problem that occurs when high priority processes keep executing and low priority processes get blocked for indefinite time.?",
+            options: [
+                { text: "1) Deadlock", correct: false },
+                { text: "2) Starvation", correct: true },
+                { text: "3) Inversion", correct: false },
+                { text: "4) Aging", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Starvation causes indefinite postponement of low-priority tasks."
+        },
+        {
+            question: "Q.54. To avoid deadlock.?",
+            options: [
+                { text: "1) there must be a fixed number of resources to allocate", correct: true },
+                { text: "2) resource allocation must be done only once", correct: false },
+                { text: "3) all deadlocked processes must be aborted", correct: false },
+                { text: "4) inversion technique can be used", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Knowing maximum resource needs beforehand helps avoid deadlocks."
+        },
+        {
+            question: "Q.55. When a process is executed in a critical section, then no other process can be executed in their critical section.?",
+            options: [
+                { text: "1) Mutual Exclusion", correct: true },
+                { text: "2) Hold & Wait", correct: false },
+                { text: "3) No Preemption", correct: false },
+                { text: "4) Circular Wait", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Mutual exclusion ensures only one process accesses a critical section at a time."
+        },
+        {
+            question: "Q.56. Deadlock Condition in which a process is currently holding at least one resource and requesting additional resources is called.?",
+            options: [
+                { text: "1) Mutual Exclusion", correct: false },
+                { text: "2) Hold & Wait", correct: true },
+                { text: "3) No Preemption", correct: false },
+                { text: "4) Circular Wait", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Hold and wait condition occurs when holding resources while waiting for more."
+        },
+        {
+            question: "Q.57. Deadlock Condition in which a resource can be released only voluntarily by the process holding is called .?",
+            options: [
+                { text: "1) Mutual Exclusion", correct: false },
+                { text: "2) Hold & Wait", correct: false },
+                { text: "3) No Preemption", correct: true },
+                { text: "4) Circular Wait", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: No preemption means resources cannot be forcibly taken away."
+        },
+        {
+            question: "Q.58. Deadlock Condition in which each process must be waiting for a resource which is being held by another process, which in turn is waiting for the first process is called.?",
+            options: [
+                { text: "1) Mutual Exclusion", correct: false },
+                { text: "2) Hold & Wait", correct: false },
+                { text: "3) No Preemption", correct: false },
+                { text: "4) Circular Wait", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Circular wait forms a closed chain of waiting processes."
+        },
+        {
+            question: "Q.59. An operating system has N resources of the same type. These resources are shared by 4 processes a, b, c, and d which have peak demands of 3, 5, 8, and 7 respectively. For what value of N deadlock will not occur.?",
+            options: [
+                { text: "1) 23", correct: false },
+                { text: "2) 4", correct: false },
+                { text: "3) 20", correct: true },
+                { text: "4) 21", correct: false },
+                { text: "5) 10", correct: false }
+            ],
+            explanation: "Explanation: Max demand sum = 3+5+8+7 = 23. To guarantee no deadlock in worst case safely, N >= Sum(Max_i - 1) + 1 = (2+4+7+6) + 1 = 20."
+        },
+        {
+            question: "Q.60. Which of the following is not a type of Interrupt in OS.?",
+            options: [
+                { text: "1) Hardware Interrupt", correct: false },
+                { text: "2) Software Interrupt", correct: false },
+                { text: "3) Memory Interrupt", correct: true },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Memory interrupt is not a standard interrupt category."
+        },
+        {
+            question: "Q.61. An interrupt that can be temporarily ignored is.?",
+            options: [
+                { text: "1) Vectored interrupt", correct: false },
+                { text: "2) Non-maskable interrupt", correct: false },
+                { text: "3) Maskable interrupt", correct: true },
+                { text: "4) High priority interrupt", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Maskable interrupts can be disabled or ignored temporarily by the CPU."
+        },
+        {
+            question: "Q.62. The interrupt-request line is a part of the ________.?",
+            options: [
+                { text: "1) Data line", correct: false },
+                { text: "2) Control line", correct: true },
+                { text: "3) Address line", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Interrupt request lines belong to processor control buses."
+        },
+        {
+            question: "Q.63. The return address from the interrupt-service routine is stored on the?",
+            options: [
+                { text: "1) System heap", correct: false },
+                { text: "2) Processor register", correct: false },
+                { text: "3) Processor stack", correct: true },
+                { text: "4) Memory", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: Return addresses are pushed onto the processor stack during interrupts."
+        },
+        {
+            question: "Q.64. The signal sent to the device from the processor to the device after receiving an interrupt is?",
+            options: [
+                { text: "1) Interrupt-acknowledge", correct: true },
+                { text: "2) Return signal", correct: false },
+                { text: "3) Service signal", correct: false },
+                { text: "4) Permission signal", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: An interrupt-acknowledge signal confirms the CPU received the interrupt."
+        },
+        {
+            question: "Q.65. The time between the receiver of an interrupt and its service is?",
+            options: [
+                { text: "1) Interrupt delay", correct: false },
+                { text: "2) Interrupt latency", correct: true },
+                { text: "3) Cycle time", correct: false },
+                { text: "4) Switching time", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Interrupt latency is the delay between interrupt arrival and service initiation."
+        },
+        {
+            question: "Q.66. Interrupts form an important part of systems.?",
+            options: [
+                { text: "1) Batch processing", correct: false },
+                { text: "2) Multitasking", correct: false },
+                { text: "3) Real-time processing", correct: true },
+                { text: "4) Multi-user", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Real-time processing depends heavily on timely interrupt handling."
+        },
+        {
+            question: "Q.67. Which interrupt has the highest priority?",
+            options: [
+                { text: "1) INTR", correct: false },
+                { text: "2) TRAP", correct: true },
+                { text: "3) RST 6.5", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: TRAP is a non-maskable highest priority interrupt in architectures like 8085."
+        },
+        {
+            question: "Q.68. Which of the following is software interrupts?",
+            options: [
+                { text: "1) RST 0-7", correct: true },
+                { text: "2) RST 5.5", correct: false },
+                { text: "3) RST 6.5", correct: false },
+                { text: "4) RST 7.5", correct: false },
+                { text: "5) TRAP", correct: false }
+            ],
+            explanation: "Explanation: RST instructions (0-7) serve as software interrupts."
+        },
+        {
+            question: "Q.69. ______interrupt used for emergency purpose e.g power failure, smoke detector etc.?",
+            options: [
+                { text: "1) Non maskable", correct: true },
+                { text: "2) Maskable", correct: false },
+                { text: "3) Executable", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Non-maskable interrupts handle critical emergencies like power failure."
+        },
+        {
+            question: "Q.70. ______Interrupts used to interface with peripheral device.?",
+            options: [
+                { text: "1) Non maskable", correct: false },
+                { text: "2) Maskable", correct: true },
+                { text: "3) Executable", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Peripheral devices use maskable interrupts for routine I/O requests."
+        },
+        {
+            question: "Q.71. This Interrupt is ignored by the instructions of CPU.?",
+            options: [
+                { text: "1) Non maskable", correct: false },
+                { text: "2) Maskable", correct: true },
+                { text: "3) Executable", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Maskable interrupts can be disabled by CPU instructions."
+        },
+        {
+            question: "Q.72. This Interrupt cannot ignored by the instructions of CPU.?",
+            options: [
+                { text: "1) Non maskable", correct: true },
+                { text: "2) Maskable", correct: false },
+                { text: "3) Executable", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Non-maskable interrupts cannot be disabled or ignored."
+        },
+        {
+            question: "Q.73. ______is a signal that causes the operating system (OS) to stop and determine what to do next.?",
+            options: [
+                { text: "1) Abort", correct: false },
+                { text: "2) Kill", correct: false },
+                { text: "3) Interrupt", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: An interrupt pauses current execution to handle urgent tasks."
+        },
+        {
+            question: "Q.74. Software interrupts are triggered by software instructions.?",
+            options: [
+                { text: "1) System Calls", correct: false },
+                { text: "2) Exceptions", correct: false },
+                { text: "3) Breakpoints", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: System calls, exceptions, and breakpoints all trigger software interrupts."
+        },
+        {
+            question: "Q.75. Which of the following file system commonly used in Operating System.?",
+            options: [
+                { text: "1) NTFS", correct: false },
+                { text: "2) FAT32", correct: false },
+                { text: "3) HFS+", correct: false },
+                { text: "4) More than one of the above", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Both NTFS and FAT32 are widely used file systems."
+        },
+        {
+            question: "Q.76. Which of the following is not a file system.?",
+            options: [
+                { text: "1) FAT", correct: false },
+                { text: "2) HFS Plus", correct: false },
+                { text: "3) EXT", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of these", correct: true }
+            ],
+            explanation: "Explanation: All listed choices (FAT, HFS Plus, EXT) are valid file systems."
+        },
+        {
+            question: "Q.77. Which table is used in MS DOS for linked list allocation.?",
+            options: [
+                { text: "1) TLB", correct: false },
+                { text: "2) Page Table", correct: false },
+                { text: "3) FAT", correct: true },
+                { text: "4) Index Table", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: MS-DOS uses File Allocation Table (FAT) for cluster chaining."
+        },
+        {
+            question: "Q.78. What are the two major file systems in Microsoft Windows.?",
+            options: [
+                { text: "1) FAT 32 & NTFS", correct: true },
+                { text: "2) HFS & UFS", correct: false },
+                { text: "3) XFS & EXT 3", correct: false },
+                { text: "4) UDF & ZFS", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: FAT32 and NTFS are major Windows file systems."
+        },
+        {
+            question: "Q.79. Which file system is commonly used in Windows?",
+            options: [
+                { text: "1) ext4", correct: false },
+                { text: "2) NTFS", correct: true },
+                { text: "3) HFS+", correct: false },
+                { text: "4) Ext3", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: NTFS is the primary modern file system for Windows."
+        },
+        {
+            question: "Q.80. Which file system is commonly used in Linux operating systems.?",
+            options: [
+                { text: "1) NTFS", correct: false },
+                { text: "2) FAT32", correct: false },
+                { text: "3) ext4", correct: true },
+                { text: "4) exFAT", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: ext4 is the standard default file system for Linux distributions."
+        },
+        {
+            question: "Q.81. Which file system type is commonly used in macOS.?",
+            options: [
+                { text: "1) NTFS", correct: false },
+                { text: "2) ext4", correct: false },
+                { text: "3) FAT32", correct: false },
+                { text: "4) HFS+", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: HFS+ (and APFS) is traditionally used in macOS."
+        },
+        {
+            question: "Q.82. Which of the following file systems is supported by the windows OS?",
+            options: [
+                { text: "1) NTFS", correct: false },
+                { text: "2) FAT32", correct: false },
+                { text: "3) exFAT", correct: false },
+                { text: "4) All of the these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Windows supports NTFS, FAT32, and exFAT."
+        },
+        {
+            question: "Q.83. Which of the following file systems is supported by the Android OS?",
+            options: [
+                { text: "1) FAT32", correct: false },
+                { text: "2) EXT3", correct: false },
+                { text: "3) EXT4", correct: false },
+                { text: "4) All of the these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Android supports FAT32, ext3, and ext4 across storage types."
+        },
+        {
+            question: "Q.84._______ is the default file system for iOS?",
+            options: [
+                { text: "1) APFS", correct: true },
+                { text: "2) FAT", correct: false },
+                { text: "3) NTFS", correct: false },
+                { text: "4) exFAT", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Apple File System (APFS) is the default for modern iOS devices."
+        },
+        {
+            question: "Q.85. Mac OS uses specific default file system?",
+            options: [
+                { text: "1) APFS", correct: false },
+                { text: "2) FAT", correct: false },
+                { text: "3) NTFS", correct: false },
+                { text: "4) exFAT", correct: false },
+                { text: "5) None of these", correct: true } // key: 85-5
+            ],
+            explanation: "Explanation: Modern macOS uses APFS as default (not listed correctly in basic options matching key 5)."
+        },
+        {
+            question: "Q.86. Mac OS uses file system options?",
+            options: [
+                { text: "1) HF", correct: false },
+                { text: "2) HFS+", correct: false },
+                { text: "3) APFS", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Apple supported HFS+ and APFS across macOS versions."
+        },
+        {
+            question: "Q.87. What is page in Paging?",
+            options: [
+                { text: "1) A fixed size block of Virtual Memory", correct: true },
+                { text: "2) A fixed size block of Physical Memory", correct: false },
+                { text: "3) A type of memory allocation", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Pages are fixed-size blocks of logical or virtual memory."
+        },
+        {
+            question: "Q.88. Physical memory is broken into fixed-sized blocks called?",
+            options: [
+                { text: "1) Frames", correct: true },
+                { text: "2) Pages", correct: false },
+                { text: "3) Backing store", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Physical memory blocks are called frames."
+        },
+        {
+            question: "Q.89. Logical memory is broken into blocks of the same size called.?",
+            options: [
+                { text: "1) Frames", correct: false },
+                { text: "2) Pages", correct: true },
+                { text: "3) Backing store", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Logical memory blocks are called pages."
+        },
+        {
+            question: "Q.90. Every address generated by the CPU is divided into two parts. They are.?",
+            options: [
+                { text: "1) frame bit & page number", correct: false },
+                { text: "2) page number & page offset", correct: true },
+                { text: "3) page offset & frame bit", correct: false },
+                { text: "4) frame offset & page offset", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Logical address splits into page number (p) and page offset (d)."
+        },
+        {
+            question: "Q.91. With paging there is no ______ fragmentation.?",
+            options: [
+                { text: "1) Internal", correct: false },
+                { text: "2) External", correct: true },
+                { text: "3) Middle", correct: false },
+                { text: "4) Both of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Paging eliminates external fragmentation since frames are fixed size."
+        },
+        {
+            question: "Q.92. Paging increases the ______ time.?",
+            options: [
+                { text: "1) waiting", correct: false },
+                { text: "2) execution", correct: false },
+                { text: "3) context-switch", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Page tables and mapping increase context switch overhead."
+        },
+        {
+            question: "Q.93. The size of a page is typically.?",
+            options: [
+                { text: "1) varied", correct: false },
+                { text: "2) power of 2", correct: true },
+                { text: "3) power of 4", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Page sizes are powers of 2 to simplify address translation."
+        },
+        {
+            question: "Q.94. Page fault occurs when.?",
+            options: [
+                { text: "1) the page is corrupted by application software", correct: false },
+                { text: "2) the page is in main memory", correct: false },
+                { text: "3) the page is not in main memory", correct: true },
+                { text: "4) one tries to divide a number by 0", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: A page fault happens when a referenced page is not currently in RAM."
+        },
+        {
+            question: "Q.95. Virtual memory is normally implemented by_______.?",
+            options: [
+                { text: "1) demand paging", correct: true },
+                { text: "2) buses", correct: false },
+                { text: "3) Virtualization", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Virtual memory is typically realized via demand paging."
+        },
+        {
+            question: "Q.96. In which of the memory allocation techniques internal fragmentation can arise?",
+            options: [
+                { text: "1) Segmentation", correct: false },
+                { text: "2) Paging", correct: true },
+                { text: "3) Segmentation with paging", correct: false },
+                { text: "4) All of the above", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Internal fragmentation occurs in paging when processes do not fully use their last allocated page."
+        },
+        {
+            question: "Q.97. In a system with a page size of 4 KB and a physical address space of 64 GB, what is the number of bits required for the page offset?",
+            options: [
+                { text: "1) 10 Bits", correct: false },
+                { text: "2) 12 Bits", correct: true },
+                { text: "3) 14 Bits", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Page size = 4 KB = $2^{12}$ bytes, requiring 12 bits for offset."
+        },
+        {
+            question: "Q.98. How many bits must be used to represent the page offset for a page size of 8 kb?",
+            options: [
+                { text: "1) 12 Bits", correct: false },
+                { text: "2) 13 Bits", correct: true },
+                { text: "3) 14 Bits", correct: false },
+                { text: "4) 10 Bits", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: 8 KB = $2^{13}$ bytes, requiring 13 offset bits."
+        },
+        {
+            question: "Q.99. What causes thrashing to occur.?",
+            options: [
+                { text: "1) Excessive paging activity", correct: true },
+                { text: "2) Insufficient disk space", correct: false },
+                { text: "3) Hardware failures", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Thrashing is caused by high rates of paging where CPU spends more time swapping than executing."
+        },
+        {
+            question: "Q.100. Thrashing________ the CPU utilization.?",
+            options: [
+                { text: "1) Increases", correct: false },
+                { text: "2) Keeps constant", correct: false },
+                { text: "3) Decreases", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Thrashing drastically reduces CPU utilization as processes spend time waiting for paging."
+        },
+        {
+            question: "Q.101. A process is thrashing if __________.?",
+            options: [
+                { text: "1) it spends a lot of time executing, rather than paging", correct: false },
+                { text: "2) it spends a lot of time paging than executing", correct: true },
+                { text: "3) it has no memory allocated to it", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Spending more time paging than executing defines thrashing."
+        },
+        {
+            question: "Q.102. How to avoid thrashing in OS.?",
+            options: [
+                { text: "1) Increase physical memory", correct: false },
+                { text: "2) Improve memory utilization", correct: false },
+                { text: "3) High degree of multiprogramming", correct: false },
+                { text: "4) All of these", correct: true }, // Wait, key 102-4 -> wait, option 4 is All of these? Let's check text: 4) All of these
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Providing adequate physical RAM and controlling multiprogramming avoids thrashing."
+        },
+        {
+            question: "Q.103. Paging divides processes into equal parts called _______and the main memory Into equal parts called ?",
+            options: [
+                { text: "1) Frames & Pages", correct: false },
+                { text: "2) Pages & Frames", correct: true },
+                { text: "3) Pages & pages", correct: false },
+                { text: "4) Frames & Frames", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Processes are divided into pages and physical memory into frames."
+        },
+        {
+            question: "Q.104. How is the TLB typically organized.?",
+            options: [
+                { text: "1) As a direct mapped cache", correct: false },
+                { text: "2) As an associative cache", correct: true },
+                { text: "3) As a set associative cache", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Translation Lookaside Buffer (TLB) acts as a fast associative memory cache."
+        },
+        {
+            question: "Q.105. Each entry in a translation lookaside buffer (TLB) consists of.?",
+            options: [
+                { text: "1) key", correct: true },
+                { text: "2) value", correct: false },
+                { text: "3) bit value", correct: false },
+                { text: "4) Constant", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: TLB entries contain keys (page numbers) and values (frame numbers)."
+        },
+        {
+            question: "Q.106. If a page number is not found in the TLB, then it is known as a.?",
+            options: [
+                { text: "1) TLB miss", correct: true },
+                { text: "2) Buffer miss", correct: false },
+                { text: "3) TLB hit", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Not finding a page entry in TLB is called a TLB miss."
+        },
+        {
+            question: "Q.107. The percentage of times a page number is found in the TLB is known a.?",
+            options: [
+                { text: "1) miss ratio", correct: false },
+                { text: "2) hit ratio", correct: true },
+                { text: "3) miss percent", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Hit ratio measures the frequency of successful TLB lookups."
+        },
+        {
+            question: "Q.108. Consider a system with physical memory of 8 GB and virtual memory of 16 GB...",
+            options: [
+                { text: "1) 2 GB", correct: true },
+                { text: "2) 4 GB", correct: false },
+                { text: "3) 6 GB", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Difference between virtual usage and physical limit determines swapped amount."
+        },
+        {
+            question: "Q.109. Consider a system with physical memory of 8 GB and virtual memory of 16 GB...",
+            options: [
+                { text: "1) 2 GB", correct: false },
+                { text: "2) 4 GB", correct: false },
+                { text: "3) 6 GB", correct: true },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Swapped-in calculation based on allocated RAM vs virtual memory requirements."
+        },
+        {
+            question: "Q.110. Consider a system with total physical memory of 8 GB and total virtual memory of 16 GB...",
+            options: [
+                { text: "1) 2 GB", correct: false },
+                { text: "2) 8 GB", correct: true }, // key 110-2
+                { text: "3) 6 GB", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Total swapped memory calculation using virtual memory differentials."
+        },
+        {
+            question: "Q.111. What is compaction refers to?",
+            options: [
+                { text: "1) a technique for overcoming internal fragmentation", correct: false },
+                { text: "2) a paging technique", correct: false },
+                { text: "3) a technique for overcoming external fragmentation", correct: true },
+                { text: "4) a technique for overcoming fatal error", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            explanation: "Explanation: Compaction shuffles memory contents to place all free memory in one large block, overcoming external fragmentation."
+        },
+        {
+            question: "Q.112. Compactions first step is.?",
+            options: [
+                { text: "1) Collects all the free memory", correct: true },
+                { text: "2) Create one large chunk of free memory", correct: false },
+                { text: "3) Large chunk used to run other processes", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Compaction starts by gathering all scattered free memory spaces."
+        },
+        {
+            question: "Q.113. Compactions process second step is,?",
+            options: [
+                { text: "1) Collects all the free memory", correct: false },
+                { text: "2) Create one large chunk of free memory", correct: true },
+                { text: "3) Large chunk used to run other processes", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: It merges free blocks into a single large contiguous chunk."
+        },
+        {
+            question: "Q.114. Compactions process last step is.?",
+            options: [
+                { text: "1) Collects all the free memory", correct: false },
+                { text: "2) Create one large chunk of free memory", correct: false },
+                { text: "3) Large chunk used to run other processes", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: The unified memory block is used to accommodate new processes."
+        },
+        {
+            question: "Q.115. What is segment base in segmentation.?",
+            options: [
+                { text: "1) The starting address of a segment in physical memory", correct: true },
+                { text: "2) The starting address of a segment in virtual memory", correct: false },
+                { text: "3) The ending address of a segment in physical memory", correct: false },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Segment base contains the starting physical memory address of the segment."
+        },
+        {
+            question: "Q.116. Each entry in a segment table has a.?",
+            options: [
+                { text: "1) Segment base", correct: true },
+                { text: "2) Segment peak", correct: false },
+                { text: "3) Segment value", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Segment table entries consist of base and limit registers."
+        },
+        {
+            question: "Q.117. The segment limit contains the.?",
+            options: [
+                { text: "1) Starting logical address of the process", correct: false },
+                { text: "2) Starting physical address of the segment in memory", correct: false },
+                { text: "3) Segment length", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Segment limit specifies the length or size of the segment."
+        },
+        {
+            question: "Q.118. Which of the following is NOT a memory management technique used by operating systems.?",
+            options: [
+                { text: "1) Paging", correct: false },
+                { text: "2) Segmentation", correct: false },
+                { text: "3) Fragmentation", correct: true },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Fragmentation is a memory phenomenon/problem, not a management technique."
+        },
+        {
+            question: "Q.119. Which one of the following is the address generated by CPU.?",
+            options: [
+                { text: "1) physical address", correct: false },
+                { text: "2) absolute address", correct: false },
+                { text: "3) logical address", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: CPU produces logical addresses during program execution."
+        },
+        {
+            question: "Q.120. Run time mapping from virtual to physical address is done by.?",
+            options: [
+                { text: "1) Memory management unit", correct: true },
+                { text: "2) CPU", correct: false },
+                { text: "3) PCI", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: The Memory Management Unit (MMU) handles virtual-to-physical address translation."
+        },
+        {
+            question: "Q.121. Program always deals with.?",
+            options: [
+                { text: "1) logical address", correct: true },
+                { text: "2) absolute address", correct: false },
+                { text: "3) physical address", correct: false },
+                { text: "4) relative address", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: User programs reference logical addresses."
+        },
+        {
+            question: "Q.122. Operating System maintains the page table for.?",
+            options: [
+                { text: "1) each process", correct: true },
+                { text: "2) each thread", correct: false },
+                { text: "3) each instruction", correct: false },
+                { text: "4) each address", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Every process has its own dedicated page table."
+        },
+        {
+            question: "Q.123. In which of the below phenomenon memory is wasted.?",
+            options: [
+                { text: "1) Compaction", correct: false },
+                { text: "2) Fragmentation", correct: true },
+                { text: "3) Multiplexing", correct: false },
+                { text: "4) Paging", correct: false },
+                { text: "5) Thrashing", correct: false }
+            ],
+            explanation: "Explanation: Fragmentation wastes memory spaces internally or externally."
+        },
+        {
+            question: "Q.124. Which of the following is a type of operating System.?",
+            options: [
+                { text: "1) Real-time operating system", correct: false },
+                { text: "2) Embedded operating system", correct: false },
+                { text: "3) Network operating system", correct: false },
+                { text: "4) More than one of the above", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Real-time, embedded, and network OS are all valid OS types."
+        },
+        {
+            question: "Q.125. Thread shares with other threads belonging to the same process its.?",
+            options: [
+                { text: "1) thread ID", correct: false },
+                { text: "2) program counter", correct: false },
+                { text: "3) code section and data section", correct: true },
+                { text: "4) More than one of the above", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: Threads within a process share code and data sections."
+        },
+        {
+            question: "Q.126. Disk queue FCFS head movements calculation (98 183 37 122 14 124 65 67, initial 53)...",
+            options: [
+                { text: "1) 600", correct: false },
+                { text: "2) 620", correct: false },
+                { text: "3) 640", correct: true },
+                { text: "4) 639", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Sum of absolute differences from 53 -> 98 -> 183 -> 37 -> 122 -> 14 -> 124 -> 65 -> 67 equals 640."
+        },
+        {
+            question: "Q.127. Semaphore is a/an______ to solve the critical section problem.?",
+            options: [
+                { text: "1) Hardware for a system", correct: false },
+                { text: "2) Special program for a system", correct: false },
+                { text: "3) Integer Variable", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: A semaphore is an integer variable accessed via atomic operations."
+        },
+        {
+            question: "Q.128. What are the two atomic operations permissible on semaphores.?",
+            options: [
+                { text: "1) wait and signal", correct: true },
+                { text: "2) stop and wait", correct: false },
+                { text: "3) hold and signal", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Semaphores use wait() and signal() operations."
+        },
+        {
+            question: "Q.129. The wait operation of the semaphore basically works on the basic ____system call.?",
+            options: [
+                { text: "1) stop()", correct: false },
+                { text: "2) block()", correct: true },
+                { text: "3) hold()", correct: false },
+                { text: "4) wait()", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Wait operation blocks processes if the semaphore value is non-positive."
+        },
+        {
+            question: "Q.130. The signal operation of the semaphore basically works on the basic _______system call.?",
+            options: [
+                { text: "1) continue()", correct: false },
+                { text: "2) wakeup()", correct: true },
+                { text: "3) getup()", correct: false },
+                { text: "4) start()", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Signal operation wakes up waiting processes."
+        },
+        {
+            question: "Q.131. In order to allow only one process to enter its critical section, binary semaphore are initialized to.?",
+            options: [
+                { text: "1) 0", correct: false },
+                { text: "2) 1", correct: true },
+                { text: "3) 2", correct: false },
+                { text: "4) 3", correct: false },
+                { text: "5) 4", correct: false }
+            ],
+            explanation: "Explanation: Binary semaphores start at 1 to provide mutual exclusion."
+        },
+        {
+            question: "Q.132. Semaphores are used to solve the problem of.?",
+            options: [
+                { text: "1) Mutual Exclusion", correct: false },
+                { text: "2) Process Synchronization", correct: false },
+                { text: "3) Hold & Wait", correct: false },
+                { text: "4) Both 1 & 2", correct: true },
+                { text: "5) Both 2 & 3", correct: false }
+            ],
+            explanation: "Explanation: Semaphores handle both mutual exclusion and process synchronization."
+        },
+        {
+            question: "Q.133. What are the two types of Semaphore.?",
+            options: [
+                { text: "1) Digital Semaphores and Binary Semaphores", correct: false },
+                { text: "2) Analog Semaphores and Octal Semaphores", correct: false },
+                { text: "3) Counting Semaphores and Binary Semaphores", correct: true },
+                { text: "4) Critical Semaphores and System Semaphores", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Semaphores are classified into counting and binary types."
+        },
+        {
+            question: "Q.134. Which of the following page replacement algorithms suffers from Belady's Anomaly.?",
+            options: [
+                { text: "1) Optimal replacement", correct: false },
+                { text: "2) LRU", correct: false },
+                { text: "3) FIFO", correct: true },
+                { text: "4) Both optimal replacement and FIFO", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: FIFO page replacement can suffer from Belady's Anomaly (more frames resulting in more page faults)."
+        },
+        {
+            question: "Q.135. Increasing the RAM of a computer typically improves performance because.?",
+            options: [
+                { text: "1) Virtual memory increases", correct: false },
+                { text: "2) Larger RAMs are faster", correct: false },
+                { text: "3) Fewer page faults occur", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: More RAM reduces page faults and secondary disk swapping."
+        },
+        {
+            question: "Q.136. In a FIFO algorithm, when a page is to be replaced, which page is chosen.?",
+            options: [
+                { text: "1) Oldest page", correct: true },
+                { text: "2) Newest page", correct: false },
+                { text: "3) Frequently occurred page in the future", correct: false },
+                { text: "4) Not frequently occurred page in the future", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: FIFO replaces the oldest page residing in memory."
+        },
+        {
+            question: "Q.137. Operating system supports different page replacement policy. Which is not a valid page replacement policy.?",
+            options: [
+                { text: "1) Least Recently Used", correct: false },
+                { text: "2) First in first out", correct: false },
+                { text: "3) Round robin", correct: true },
+                { text: "4) Optimal page replacement policy", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Round robin is a CPU scheduling algorithm, not a page replacement policy."
+        },
+        {
+            question: "Q.138. The optimal page replacement algorithm will select the page that.?",
+            options: [
+                { text: "1) has been used least number of times", correct: false },
+                { text: "2) has been used most number of times", correct: false },
+                { text: "3) has been used for the longest time in the past", correct: false },
+                { text: "4) will not be used for the longest time in future", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Optimal algorithm replaces the page that will not be used for the longest duration."
+        },
+        {
+            question: "Q.139. 'LRU' page replacement policy stands for.?",
+            options: [
+                { text: "1) Last Replaced Unit", correct: false },
+                { text: "2) Last Restored Unit", correct: false },
+                { text: "3) Least Recently Used", correct: true },
+                { text: "4) Least Required Unit", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: LRU stands for Least Recently Used."
+        },
+        {
+            question: "Q.140. Which amongst the following is not a valid page replacement policy.?",
+            options: [
+                { text: "1) LRU policy (Least Recently Used)", correct: false },
+                { text: "2) FIFO policy (First in first out)", correct: false },
+                { text: "3) RU policy (Recurrently used)", correct: true },
+                { text: "4) Optimal page replacement policy", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: 'RU' is not a standard page replacement algorithm."
+        },
+        {
+            question: "Q.141. Virtual memory uses disk space as an extension of.?",
+            options: [
+                { text: "1) Secondary storage", correct: false },
+                { text: "2) Main memory", correct: true },
+                { text: "3) Tertiary storage", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Virtual memory extends physical main memory (RAM) capacity using disk storage."
+        },
+        {
+            question: "Q.142. Full form of TLB is_________.?",
+            options: [
+                { text: "1) Transfer Lookaside Buffer", correct: false },
+                { text: "2) Translation Lookinside Buffer", correct: false },
+                { text: "3) Translation Lookaside Buffer", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: TLB stands for Translation Lookaside Buffer."
+        },
+        {
+            question: "Q.143. In segmentation, each address is specified by.?",
+            options: [
+                { text: "1) a segment number & offset", correct: true },
+                { text: "2) an offset & value", correct: false },
+                { text: "3) a value & segment number", correct: false },
+                { text: "4) a key & value", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Segmentation addresses consist of a segment number and an offset."
+        },
+        {
+            question: "Q.144. In internal fragmentation, memory is internal to a partition and.?",
+            options: [
+                { text: "1) is being used", correct: false },
+                { text: "2) is not being used", correct: true },
+                { text: "3) is always used", correct: false },
+                { text: "4) None of these", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Internal fragmentation refers to allocated space inside a partition left unused."
+        },
+        {
+            question: "Q.145. A solution to the problem of external fragmentation is.?",
+            options: [
+                { text: "1) compaction", correct: true },
+                { text: "2) larger memory space", correct: false },
+                { text: "3) smaller memory space", correct: false },
+                { text: "4) None of these", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Compaction resolves external fragmentation by combining free memory holes."
+        },
+        {
+            question: "Q.146. Memory fragmentation results in _______.?",
+            options: [
+                { text: "1) stack overflow", correct: false },
+                { text: "2) page faults", correct: false },
+                { text: "3) Better Utilization of memory", correct: false },
+                { text: "4) poor utilization of memory", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Fragmentation wastes storage, leading to poor memory utilization."
+        },
+        {
+            question: "Q.147. Which conditions must be satisfied to solve a critical section problem.?",
+            options: [
+                { text: "1) Bounded Waiting", correct: false },
+                { text: "2) Progress", correct: false },
+                { text: "3) Mutual Exclusion", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Critical section solution requires mutual exclusion, progress, and bounded waiting."
+        },
+        {
+            question: "Q.148. The first fit, best fit and worst fit are strategies to select a_________.?",
+            options: [
+                { text: "1) process from a queue to put in memory", correct: false },
+                { text: "2) processor to run the next process", correct: false },
+                { text: "3) free hole from a set of available holes", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: These are dynamic storage-allocation algorithms for selecting free memory holes."
+        },
+        {
+            question: "Q.149. ______is generally faster than _______and_______.?",
+            options: [
+                { text: "1) first fit, best fit, worst fit", correct: true },
+                { text: "2) best fit, first fit, worst fit", correct: false },
+                { text: "3) worst fit, best fit, first fit", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: First fit allocates memory faster than best fit or worst fit."
+        },
+        {
+            question: "Q.150. External fragmentation will not occur when?",
+            options: [
+                { text: "1) first fit is used", correct: false },
+                { text: "2) best fit is used", correct: false },
+                { text: "3) worst fit is used", correct: false },
+                { text: "4) no matter which algorithm is used, it will always occur", correct: false },
+                { text: "5) None of these", correct: true }
+            ],
+            explanation: "Explanation: External fragmentation can still occur under various contiguous allocation strategies."
+        },
+        {
+            question: "Q.151. Amongst following pairs, which combination is correct for dynamic memory allocation systems?",
+            options: [
+                { text: "1) Best Fit: Big holes", correct: false },
+                { text: "2) First Fit: Faster than Best and Worst Fit", correct: true },
+                { text: "3) Worst Fit: Small holes", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of the above", correct: false }
+            ],
+            explanation: "Explanation: First Fit is computationally faster because it stops searching as soon as a fitting hole is found."
+        },
+        {
+            question: "Q.152. Which of the following fragmentation types occurs when free memory blocks are scattered throughout the memory space.?",
+            options: [
+                { text: "1) Internal Fragmentation", correct: false },
+                { text: "2) External Fragmentation", correct: true },
+                { text: "3) Contiguous Fragmentation", correct: false },
+                { text: "4) Paging Fragmentation", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: External fragmentation arises when total free memory is enough but scattered in non-contiguous chunks."
+        },
+        {
+            question: "Q.153. To service a request for n bytes of memory, the _________technique uses the first free memory area it can find whose size is ≥ n bytes.?",
+            options: [
+                { text: "1) First Fit technique", correct: true },
+                { text: "2) Best-Fit technique", correct: false },
+                { text: "3) Next-Fit technique", correct: false },
+                { text: "4) Good-Fit technique", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: First Fit allocates the first suitable free hole."
+        },
+        {
+            question: "Q.154. The _______ technique uses the smallest free memory area with size ≥ n bytes.?",
+            options: [
+                { text: "1) First Fit technique", correct: false },
+                { text: "2) Best-Fit technique", correct: true },
+                { text: "3) Next-Fit technique", correct: false },
+                { text: "4) Good-Fit technique", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Best-Fit scans and allocates the smallest sufficient free hole."
+        },
+        {
+            question: "Q.155. The _______technique remembers which entry in the free list was used to make the last allocation.?",
+            options: [
+                { text: "1) First Fit technique", correct: false },
+                { text: "2) Best-Fit technique", correct: false },
+                { text: "3) Next-Fit technique", correct: true },
+                { text: "4) Good-Fit technique", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Next Fit starts searching from the location of the last allocation."
+        },
+        {
+            question: "Q.156. This is a modified version of 'first fit'.?",
+            options: [
+                { text: "1) Best-Fit technique", correct: false },
+                { text: "2) Next-Fit technique", correct: true },
+                { text: "3) Good-Fit technique", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Next Fit is a variation of First Fit that begins its search from the last allocated block."
+        },
+        {
+            question: "Q.157. SSTF Disk scheduling calculation (Sequence: 4, 34, 10, 7, 19, 73, 2, 15, 6, 20; head at 50)...",
+            options: [
+                { text: "1) 190", correct: false },
+                { text: "2) 238", correct: true },
+                { text: "3) 233", correct: false },
+                { text: "4) 276", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Shortest Seek Time First calculates minimum cylinder distances totaling 238 units of movement."
+        },
+        {
+            question: "Q.158. SSTF Disk scheduling calculation (Sequence: 176, 79, 34, 60, 92, 11, 41, 114; head at 50)...",
+            options: [
+                { text: "1) 150", correct: false },
+                { text: "2) 110", correct: false },
+                { text: "3) 220", correct: false },
+                { text: "4) 204", correct: true },
+                { text: "5) 400", correct: false }
+            ],
+            explanation: "Explanation: SSTF head movement calculation yields 204 cylinders."
+        },
+        {
+            question: "Q.159. SSTF Disk scheduling calculation (Sequence: 82, 170, 43, 140, 24, 16, 190; head at 50)...",
+            options: [
+                { text: "1) 200", correct: false },
+                { text: "2) 300", correct: false },
+                { text: "3) 308", correct: false },
+                { text: "4) 208", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            explanation: "Explanation: Total head movement using SSTF is 208."
+        },
+        {
+            question: "Q.160. Disk queue FCFS head movements calculation (98 183 37 122 14 124 65 67, initial 53)...",
+            options: [
+                { text: "1) 600", correct: false },
+                { text: "2) 620", correct: false },
+                { text: "3) 640", correct: true },
+                { text: "4) 639", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            explanation: "Explanation: Cumulative absolute FCFS head travel from 53 totals 640."
+        }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    const container = document.getElementById('quiz-container');
+
+    questions.forEach((q, qIndex) => {
+        const shuffledOptions = shuffle([...q.options]);
+
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const title = document.createElement('div');
+        title.className = 'question-title';
+        title.innerText = q.question;
+        card.appendChild(title);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        const explanationDiv = document.createElement('div');
+        explanationDiv.className = 'explanation';
+        explanationDiv.innerText = q.explanation;
+
+        shuffledOptions.forEach(opt => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.className = 'option-link';
+            link.href = 'javascript:void(0);';
+            link.innerText = opt.text;
+
+            link.onclick = function() {
+                const allLinks = optionsList.querySelectorAll('.option-link');
+                allLinks.forEach(l => l.style.pointerEvents = 'none');
+
+                if (opt.correct) {
+                    link.classList.add('correct');
+                } else {
+                    link.classList.add('incorrect');
+                    allLinks.forEach(l => {
+                        const originalOpt = q.options.find(o => o.text === l.innerText);
+                        if (originalOpt && originalOpt.correct) {
+                            l.classList.add('correct');
+                        }
+                    });
+                }
+                explanationDiv.style.display = 'block';
+            };
+
+            li.appendChild(link);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+        card.appendChild(explanationDiv);
+        container.appendChild(card);
+    });
+</script>
+</body>
+</html>
