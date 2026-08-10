@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Programming Comprehensive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            margin: 8px 0;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 15px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-link:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .option-link.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+            font-weight: bold;
+        }
+        .option-link.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.95em;
+            color: #1e40af;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Programming Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    const questionsData = [
+        {
+            q: "Q.1. Who developed the Python language.?",
+            options: [
+                { text: "Zim Den", correct: false },
+                { text: "Guido van Rossum", correct: true },
+                { text: "Niene Stom", correct: false },
+                { text: "Wick van Rossum", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Guido van Rossum developed Python in the late 1980s at the National Research Institute for Mathematics and Computer Science in the Netherlands."
+        },
+        {
+            q: "Q.2. In which year was the Python developed.?",
+            options: [
+                { text: "1995", correct: false },
+                { text: "1972", correct: false },
+                { text: "1981", correct: false },
+                { text: "1989", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Implementation of Python started in December 1989 by Guido van Rossum."
+        },
+        {
+            q: "Q.3. In which year was the Python first released.?",
+            options: [
+                { text: "1995", correct: false },
+                { text: "1972", correct: false },
+                { text: "1981", correct: false },
+                { text: "1991", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python was first released publicly (version 0.9.0) in 1991."
+        },
+        {
+            q: "Q.4. In which language is Python written.?",
+            options: [
+                { text: "English", correct: false },
+                { text: "PHP", correct: false },
+                { text: "C", correct: true },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: CPython, the standard reference implementation of Python, is written in C."
+        },
+        {
+            q: "Q.5. Which one of the following is the correct extension of the Python file.?",
+            options: [
+                { text: ".py", correct: true },
+                { text: ".python", correct: false },
+                { text: ".p", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python source code files use the standard file extension '.py'."
+        },
+        {
+            q: "Q.6. What do we use to define a block of code in Python language.?",
+            options: [
+                { text: "Key", correct: false },
+                { text: "Brackets", correct: false },
+                { text: "Indentation", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python uses whitespace indentation instead of curly braces to define blocks of code."
+        },
+        {
+            q: "Q.7. How many keywords present in the python programming language.?",
+            options: [
+                { text: "32", correct: false },
+                { text: "61", correct: false },
+                { text: "35", correct: true },
+                { text: "27", correct: false },
+                { text: "30", correct: false }
+            ],
+            explanation: "Explanation: Modern Python versions generally contain 35 reserved keywords."
+        },
+        {
+            q: "Q.8. Which statement is incorrect about Python Programming.?",
+            options: [
+                { text: "High Level Language", correct: false },
+                { text: "Object Oriented", correct: false },
+                { text: "Python is a general-purpose language", correct: false },
+                { text: "Founder is Rasmus Lerdorf", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Rasmus Lerdorf is the founder of PHP, not Python."
+        },
+        {
+            q: "Q.9. The print() function in Python is used to display the output.?",
+            options: [
+                { text: "print()", correct: true },
+                { text: "display()", correct: false },
+                { text: "output()", correct: false },
+                { text: "out()", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The built-in print() function outputs text or objects to the console."
+        },
+        {
+            q: "Q.10. Which of the following functions is used for user input in Python.?",
+            options: [
+                { text: "enter()", correct: false },
+                { text: "accept()", correct: false },
+                { text: "insert()", correct: false },
+                { text: "input()", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The input() function reads a line from user input, converts it to a string, and returns it."
+        },
+        {
+            q: "Q.11. Identify the language preferred for IoT analytics.?",
+            options: [
+                { text: "HTML", correct: false },
+                { text: "PHP", correct: false },
+                { text: "Python", correct: true },
+                { text: "C++", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python is widely preferred in IoT analytics due to its rich ecosystem of data processing libraries."
+        },
+        {
+            q: "Q.12. Python supports which types of programming.?",
+            options: [
+                { text: "object-oriented programming", correct: false },
+                { text: "structured programming", correct: false },
+                { text: "functional programming", correct: false },
+                { text: "All of the mentioned", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python is a multi-paradigm language supporting object-oriented, structured, and functional programming."
+        },
+        {
+            q: "Q.13. Interpreter must be installed on our machine in order to run a Python programme.?",
+            options: [
+                { text: "Interpreter", correct: true },
+                { text: "Compiler", correct: false },
+                { text: "Assembler", correct: false },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python is primarily interpreted, requiring a Python interpreter to execute code."
+        },
+        {
+            q: "Q.14. Keywords are the reserved words in Python used by the Python interpreter to recognize the structure of the program.?",
+            options: [
+                { text: "Keywords", correct: true },
+                { text: "Identifiers", correct: false },
+                { text: "Comments", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the above", correct: false }
+            ],
+            explanation: "Explanation: Keywords have predefined meanings and syntax in Python."
+        },
+        {
+            q: "Q.15. All Keywords in Python are written in.?",
+            options: [
+                { text: "UPPER CASE", correct: false },
+                { text: "lower case", correct: true },
+                { text: "Capitalized", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Almost all Python keywords are written in lowercase (except True, False, and None)."
+        },
+        {
+            q: "Q.16. How many keywords present in the python programming language.?",
+            options: [
+                { text: "32", correct: false },
+                { text: "61", correct: false },
+                { text: "35", correct: true },
+                { text: "27", correct: false },
+                { text: "30", correct: false }
+            ],
+            explanation: "Explanation: Python features 35 reserved keywords."
+        },
+        {
+            q: "Q.17. All keywords in Python are written in.?",
+            options: [
+                { text: "Upper Case", correct: false },
+                { text: "Lower Case", correct: true },
+                { text: "Capitalized", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python keywords are predominantly lowercase."
+        },
+        {
+            q: "Q.18. Which of the following keywords mark the beginning of the class definition.?",
+            options: [
+                { text: "return", correct: false },
+                { text: "class", correct: true },
+                { text: "def", correct: false },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The 'class' keyword is used to declare user-defined classes in Python."
+        },
+        {
+            q: "Q.19. Select the reserved keyword in python.?",
+            options: [
+                { text: "else", correct: false },
+                { text: "raise", correct: false },
+                { text: "import", correct: false },
+                { text: "All of the above", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: else, raise, and import are all valid Python keywords."
+        },
+        {
+            q: "Q.20. In Python, Keywords are also called as .?",
+            options: [
+                { text: "Preprocessors", correct: false },
+                { text: "Reserved Words", correct: true },
+                { text: "Punctuation Marks", correct: false },
+                { text: "Operators", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Keywords are officially referred to as reserved words."
+        },
+        {
+            q: "Q.21. How many keywords present in the python programming language.?",
+            options: [
+                { text: "32", correct: false },
+                { text: "61", correct: false },
+                { text: "35", correct: true },
+                { text: "27", correct: false },
+                { text: "30", correct: false }
+            ],
+            explanation: "Explanation: Standard Python has 35 keywords."
+        },
+        {
+            q: "Q.22. All keywords in Python are written in.?",
+            options: [
+                { text: "Upper Case", correct: false },
+                { text: "Lower Case", correct: true },
+                { text: "Capitalized", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python keywords are case-sensitive and mostly lowercase."
+        },
+        {
+            q: "Q.23. Which of the following keywords mark the beginning of the class definition.?",
+            options: [
+                { text: "return", correct: false },
+                { text: "class", correct: true },
+                { text: "def", correct: false },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Classes are defined using the 'class' keyword."
+        },
+        {
+            q: "Q.24. Select the reserved keyword in python.?",
+            options: [
+                { text: "else", correct: false },
+                { text: "raise", correct: false },
+                { text: "import", correct: false },
+                { text: "All of the above", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: All listed items are valid keywords."
+        },
+        {
+            q: "Q.25. In Python, Keywords are also called as .?",
+            options: [
+                { text: "Preprocessors", correct: false },
+                { text: "Reserved Words", correct: true },
+                { text: "Punctuation Marks", correct: false },
+                { text: "Operators", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Reserved words cannot be used as variable names."
+        },
+        {
+            q: "Q.26. Which keyword is used for function in Python.?",
+            options: [
+                { text: "fun", correct: false },
+                { text: "define", correct: false },
+                { text: "def", correct: true },
+                { text: "Function", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The 'def' keyword is used to define functions in Python."
+        },
+        {
+            q: "Q.27. Which of the following is not a Keyword in Python Language.?",
+            options: [
+                { text: "val", correct: true },
+                { text: "raise", correct: false },
+                { text: "try", correct: false },
+                { text: "with", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: 'val' is not a keyword in Python, whereas raise, try, and with are keywords."
+        },
+        {
+            q: "Q.28. Which of the following words cannot be a variable in python language.?",
+            options: [
+                { text: "_val", correct: false },
+                { text: "val", correct: false },
+                { text: "try", correct: true },
+                { text: "_try_", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: 'try' is a reserved keyword, so it cannot be used as an identifier name."
+        },
+        {
+            q: "Q.29. Which keyword in Python is used for debugging.?",
+            options: [
+                { text: "and", correct: false },
+                { text: "as", correct: false },
+                { text: "assert", correct: true },
+                { text: "break", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The 'assert' keyword is used for debugging by checking if a condition is true."
+        },
+        {
+            q: "Q.30. Which keyword in Python is used to Catch an exception.?",
+            options: [
+                { text: "continue", correct: false },
+                { text: "def", correct: false },
+                { text: "del", correct: false },
+                { text: "except", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The 'except' keyword is used in try-except blocks to catch exceptions."
+        },
+        {
+            q: "Q.31. Which keyword in Python means that the function is without a name.?",
+            options: [
+                { text: "import", correct: false },
+                { text: "in", correct: false },
+                { text: "is", correct: false },
+                { text: "lambda", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: 'lambda' creates anonymous (unnamed) functions."
+        },
+        {
+            q: "Q.32. Among these which is not a Conditional Keyword in Python.?",
+            options: [
+                { text: "break", correct: true },
+                { text: "else", correct: false },
+                { text: "elif", correct: false },
+                { text: "if", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: 'break' is a loop control keyword, not a conditional statement keyword."
+        },
+        {
+            q: "Q.33. Which Keyword in Python will execute nothing.?",
+            options: [
+                { text: "not", correct: false },
+                { text: "pass", correct: true },
+                { text: "raise", correct: false },
+                { text: "return", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The 'pass' statement is a null operation; it executes nothing when executed."
+        },
+        {
+            q: "Q.34. Which Keyword in Python will return null value.?",
+            options: [
+                { text: "None", correct: true },
+                { text: "nonlocal", correct: false },
+                { text: "not", correct: false },
+                { text: "or", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: 'None' represents the null object or absence of a value in Python."
+        },
+        {
+            q: "Q.35. It is an intermediate code for the Python virtual machine.?",
+            options: [
+                { text: "Source Code", correct: false },
+                { text: "Object Code", correct: false },
+                { text: "Machine Code", correct: false },
+                { text: "Byte Code", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Python source code is compiled into intermediate byte code (.pyc files) for execution by the PVM."
+        },
+        {
+            q: "Q.36. Python Programming is.?",
+            options: [
+                { text: "Platform Dependent", correct: false },
+                { text: "Platform Independent", correct: true },
+                { text: "Not follows OOPS concept", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python bytecode can run across different platforms via the Python Virtual Machine, making it platform independent."
+        },
+        {
+            q: "Q.37. Among these Which Programming Language is Object Oriented Language.?",
+            options: [
+                { text: "Java & C++", correct: false },
+                { text: "C# & Python", correct: false },
+                { text: "PHP & Visual Basic", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: All listed languages support object-oriented programming concepts."
+        },
+        {
+            q: "Q.38. Name the first object-oriented programming language.?",
+            options: [
+                { text: "Java", correct: false },
+                { text: "Python", correct: false },
+                { text: "Simula", correct: true },
+                { text: "Smalltalk", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Simula (developed in the 1960s) is widely recognized as the first object-oriented programming language."
+        },
+        {
+            q: "Q.39. Which is the first purely OOP language.?",
+            options: [
+                { text: "Java", correct: false },
+                { text: "Python", correct: false },
+                { text: "Simula", correct: false },
+                { text: "Smalltalk", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Smalltalk was designed from the ground up to be a fully object-oriented programming environment."
+        },
+        {
+            q: "Q.40. Who developed object-oriented programming.?",
+            options: [
+                { text: "Adele Goldberg", correct: false },
+                { text: "Dennis Ritchie", correct: false },
+                { text: "Alan Kay", correct: true },
+                { text: "Andrea Ferro", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Alan Kay is credited with originating the term 'object-oriented programming' and leading the team that developed Smalltalk."
+        },
+        {
+            q: "Q.41. In Python, ________ translates just one statement of the program at a time into machine code.?",
+            options: [
+                { text: "Interpreter", correct: true },
+                { text: "Compiler", correct: false },
+                { text: "Byte Code", correct: false },
+                { text: "Python Virtual Machine", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: An interpreter processes source statements line by line."
+        },
+        {
+            q: "Q.42. In Python, ________ scans the entire program and translates the whole of it into machine code at once.?",
+            options: [
+                { text: "Interpreter", correct: false },
+                { text: "Compiler", correct: true },
+                { text: "Byte Code", correct: false },
+                { text: "Python Virtual Machine", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: A compiler translates the entire source code into machine code at once."
+        },
+        {
+            q: "Q.43. ________ converts the python byte code into machine-executable code.?",
+            options: [
+                { text: "Interpreter", correct: false },
+                { text: "Compiler", correct: false },
+                { text: "Byte Code", correct: false },
+                { text: "Python Virtual Machine", correct: false },
+                { text: "All of these", correct: true }
+            ],
+            explanation: "Explanation: The Python Virtual Machine (PVM) executes the compiled bytecode."
+        },
+        {
+            q: "Q.44. Python is a ________ programming language, which means it runs on a variety of platforms including Windows, MacOS, Linux, and the Java and .NET Virtual machines.?",
+            options: [
+                { text: "Cross-platform", correct: true },
+                { text: "Single-platform", correct: false },
+                { text: "Code-platform", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the above", correct: false }
+            ],
+            explanation: "Explanation: Cross-platform compatibility is a major feature of Python."
+        },
+        {
+            q: "Q.45. Python ________ must be installed on our machine in order to run a Python programme.?",
+            options: [
+                { text: "Interpreter", correct: true },
+                { text: "Compiler", correct: false },
+                { text: "Assembler", correct: false },
+                { text: "All of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The interpreter is required to parse and execute Python scripts."
+        },
+        {
+            q: "Q.46. Python is a ________ language.?",
+            options: [
+                { text: "Upper case", correct: false },
+                { text: "Small case", correct: false },
+                { text: "Case-sensitive", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the above", correct: false }
+            ],
+            explanation: "Explanation: Python distinguishes between uppercase and lowercase letters for identifiers and keywords."
+        },
+        {
+            q: "Q.47. In python everything's an ________.?",
+            options: [
+                { text: "Variable", correct: false },
+                { text: "Constant", correct: false },
+                { text: "Object", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the above", correct: false }
+            ],
+            explanation: "Explanation: In Python, data types, functions, and classes are all treated as first-class objects."
+        },
+        {
+            q: "Q.48. Which of the following functions is a built-in function in python.?",
+            options: [
+                { text: "factorial()", correct: false },
+                { text: "print()", correct: true },
+                { text: "seed()", correct: false },
+                { text: "sqrt()", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: print() is built-in, whereas factorial, seed, and sqrt reside in standard library modules like math and random."
+        },
+        {
+            q: "Q.49. In Python, What is the output of - print(2%6).?",
+            options: [
+                { text: "1/3", correct: false },
+                { text: "3", correct: false },
+                { text: ".33", correct: false },
+                { text: "2", correct: true },
+                { text: "1", correct: false }
+            ],
+            explanation: "Explanation: 2 modulo 6 gives a remainder of 2 because 6 goes into 2 zero times with 2 left over."
+        },
+        {
+            q: "Q.50. What is the value of the following Python Expression.? print(36/4)",
+            options: [
+                { text: "9", correct: false },
+                { text: "9.0", correct: true },
+                { text: "0", correct: false },
+                { text: "36", correct: false },
+                { text: "20", correct: false }
+            ],
+            explanation: "Explanation: Standard division (/) in Python 3 always returns a float value (9.0)."
+        },
+        {
+            q: "Q.51. What is the value of the following Python Expression.? print(2*3**3*4)",
+            options: [
+                { text: "72", correct: false },
+                { text: "18", correct: false },
+                { text: "864", correct: false },
+                { text: "216", correct: true },
+                { text: "200", correct: false }
+            ],
+            explanation: "Explanation: Exponentiation (**) has higher precedence than multiplication. 3**3 = 27. Then 2 * 27 * 4 = 216."
+        },
+        {
+            q: "Q.52. What is the value of the following Python Expression.? x=6, y=2, print(x**y), print(x//y)",
+            options: [
+                { text: "66,0", correct: false },
+                { text: "36,0", correct: false },
+                { text: "66,3", correct: false },
+                { text: "36, 3", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: 6**2 = 36 and 6//2 = 3 (floor division)."
+        },
+        {
+            q: "Q.53. What is the value of the following Python Expression.? x = 100, y = 50, print(x and y)",
+            options: [
+                { text: "True", correct: false },
+                { text: "100", correct: false },
+                { text: "False", correct: false },
+                { text: "50", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The 'and' operator returns the first falsy value, or the last truthy value if all are truthy. Since 100 and 50 are both truthy, it returns 50."
+        },
+        {
+            q: "Q.54. What is the value of the following Python Expression.? print(10-4*2)",
+            options: [
+                { text: "2", correct: true },
+                { text: "12", correct: false },
+                { text: "16", correct: false },
+                { text: "0", correct: false },
+                { text: "1", correct: false }
+            ],
+            explanation: "Explanation: Multiplication is evaluated before subtraction: 4*2 = 8, then 10 - 8 = 2."
+        },
+        {
+            q: "Q.55. What is the value of the following Python Expression.? print(2**3**2)",
+            options: [
+                { text: "64", correct: false },
+                { text: "512", correct: true },
+                { text: "12", correct: false },
+                { text: "Syntax Error", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Exponentiation is right-associative in Python, so 2**(3**2) = 2**9 = 512."
+        },
+        {
+            q: "Q.56. What is the value of the following Python Expression.? print(-18//4)",
+            options: [
+                { text: "-4", correct: false },
+                { text: "4", correct: false },
+                { text: "-5", correct: true },
+                { text: "5", correct: false },
+                { text: "1", correct: false }
+            ],
+            explanation: "Explanation: Floor division rounds towards negative infinity. -18 / 4 = -4.5, rounded down to -5."
+        },
+        {
+            q: "Q.57. What is the name of the operator ** in Python.?",
+            options: [
+                { text: "Exponentiation", correct: true },
+                { text: "Modulus", correct: false },
+                { text: "Floor division", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: '**' is the exponentiation operator used for power calculations."
+        },
+        {
+            q: "Q.58. The % operator returns ________ In Python.?",
+            options: [
+                { text: "Quotient", correct: false },
+                { text: "Divisor", correct: false },
+                { text: "Remainder", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: The modulus operator (%) calculates the remainder of division."
+        },
+        {
+            q: "Q.59. Conditional statements are also known as ________ statements.?",
+            options: [
+                { text: "Decision-making", correct: true },
+                { text: "Array", correct: false },
+                { text: "List", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Conditional statements guide decision-making in code execution."
+        },
+        {
+            q: "Q.60. Which of the following is not used as conditional statement in Python.?",
+            options: [
+                { text: "switch", correct: true },
+                { text: "if...else", correct: false },
+                { text: "elif", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Python does not have a native 'switch' statement (though match-case was introduced in Python 3.10)."
+        },
+        {
+            q: "Q.61. In a Python program, Nested if Statements denotes.?",
+            options: [
+                { text: "if statement inside another if statement", correct: true },
+                { text: "if statement outside the another if statement", correct: false },
+                { text: "No such nested if statement", correct: false },
+                { text: "Both A and B", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: A nested if statement is an if statement placed inside another if statement block."
+        },
+        {
+            q: "Q.62. What will be the output of the following Python code.? a=7, if a>4: print(\"Greater\")",
+            options: [
+                { text: "Greater", correct: true },
+                { text: "7", correct: false },
+                { text: "4", correct: false },
+                { text: "Any of the above", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Since 7 > 4 evaluates to True, it prints \"Greater\"."
+        },
+        {
+            q: "Q.63. In Python, the break and continue statements, together are called.?",
+            options: [
+                { text: "Jump", correct: false },
+                { text: "goto", correct: true },
+                { text: "Compound", correct: false },
+                { text: "ifelse", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: They act as control-flow jump statements within loops."
+        },
+        {
+            q: "Q.64. Loops are known as ________ in Python programming.?",
+            options: [
+                { text: "Control flow statements", correct: true },
+                { text: "Conditional statements", correct: false },
+                { text: "Data structure statements", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Loops control the execution flow repeatedly based on conditions or sequences."
+        },
+        {
+            q: "Q.65. The for loop in Python is used to ________ over a sequence.?",
+            options: [
+                { text: "Jump", correct: false },
+                { text: "Iterate", correct: true },
+                { text: "Switch", correct: false },
+                { text: "All of the mentioned above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A for loop iterates over elements of any sequence such as lists, tuples, or strings."
+        },
+        {
+            q: "Q.66. Amongst which of the following shows the types of function calls in Python.?",
+            options: [
+                { text: "Call by value", correct: false },
+                { text: "Call by reference", correct: false },
+                { text: "Both 1 and 2", correct: true },
+                { text: "Call by extension", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Python uses 'call by object reference' (often grouping aspects of both value and reference depending on mutability)."
+        },
+        {
+            q: "Q.67. What are the values of the following Python expressions.? 2**(3**2) and (2**3)**2",
+            options: [
+                { text: "512, 64", correct: true },
+                { text: "512, 512", correct: false },
+                { text: "64, 512", correct: false },
+                { text: "64, 64", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: 2**(3**2) = 2**9 = 512, while (2**3)**2 = 8**2 = 64."
+        },
+        {
+            q: "Q.68. Which function is used to read input from the console in Python?",
+            options: [
+                { text: "input()", correct: true },
+                { text: "read()", correct: false },
+                { text: "scan()", correct: false },
+                { text: "getInput()", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: input() reads standard input from the console."
+        },
+        {
+            q: "Q.69. Which of the following character is used to give single-line comments in Python?",
+            options: [
+                { text: "//", correct: false },
+                { text: "#", correct: true },
+                { text: "!", correct: false },
+                { text: "/*", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The hash symbol (#) is used for single-line comments."
+        },
+        {
+            q: "Q.70. Which of the following character is used to give Multi-line comments in Python?",
+            options: [
+                { text: "//", correct: false },
+                { text: "#", correct: true },
+                { text: "'''", correct: false },
+                { text: "/*", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Technically Python lacks dedicated multi-line comment characters, but multiple single-line hashes (#) or string literals are used."
+        },
+        {
+            q: "Q.71. Which of the following character is used to give Docstring comments in Python?",
+            options: [
+                { text: "//", correct: false },
+                { text: "#", correct: false },
+                { text: "\"\"\"", correct: true },
+                { text: "/*", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Triple quotes (\"\"\") are used for docstrings in functions, classes, and modules."
+        },
+        {
+            q: "Q.72. What is the order of precedence in python.?",
+            options: [
+                { text: "Exponential, Parentheses, Multiplication...", correct: false },
+                { text: "Exponential, Parentheses, Division...", correct: false },
+                { text: "Parentheses, Exponential, Multiplication...", correct: false },
+                { text: "Parentheses, Exponential, Multiplication, Division, Addition, Subtraction", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Parentheses have the highest precedence, followed by exponents, multiplication/division, and addition/subtraction."
+        },
+        {
+            q: "Q.73. Amongst which of the following is/are the Numeric Types of Data Types.?",
+            options: [
+                { text: "int", correct: false },
+                { text: "float", correct: false },
+                { text: "complex", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python's numeric data types include int, float, and complex numbers."
+        },
+        {
+            q: "Q.74. list and tuple are ________ of Data Types.?",
+            options: [
+                { text: "Sequence Types", correct: true },
+                { text: "Binary Types", correct: false },
+                { text: "Boolean Types", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Lists and tuples belong to Python's sequence data types."
+        },
+        {
+            q: "Q.75. bytes, bytearray, memoryview are type of ________ data type.?",
+            options: [
+                { text: "Mapping Type", correct: false },
+                { text: "Boolean Type", correct: false },
+                { text: "Binary Types", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: These represent binary sequence data types in Python."
+        },
+        {
+            q: "Q.76. Python Dictionary is used to store the data in a ________ format.?",
+            options: [
+                { text: "Key value pair", correct: true },
+                { text: "Group value pair", correct: false },
+                { text: "Select value pair", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned above", correct: false }
+            ],
+            explanation: "Explanation: Dictionaries store data as key-value pairs."
+        },
+        {
+            q: "Q.77. Which of these is not a core data type.?",
+            options: [
+                { text: "List", correct: false },
+                { text: "Tuple", correct: false },
+                { text: "Dictionary", correct: false },
+                { text: "Class", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: 'Class' is a user-defined blueprint, whereas List, Tuple, and Dictionary are built-in core data structures."
+        },
+        {
+            q: "Q.78. Which of the following data type is used to store values in Key & Value format.?",
+            options: [
+                { text: "List", correct: false },
+                { text: "Tuple", correct: false },
+                { text: "Dictionary", correct: true },
+                { text: "Set", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Dictionaries specialize in key-value mapping."
+        },
+        {
+            q: "Q.79. Which one of the following is mutable data type.?",
+            options: [
+                { text: "set", correct: true },
+                { text: "int", correct: false },
+                { text: "str", correct: false },
+                { text: "Tuple", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Sets and lists are mutable, whereas ints, strings, and tuples are immutable."
+        },
+        {
+            q: "Q.80. Which one of the following is immutable data type.?",
+            options: [
+                { text: "list", correct: false },
+                { text: "set", correct: false },
+                { text: "int", correct: true },
+                { text: "Dict", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Integers (int) cannot be modified in-place, making them immutable."
+        },
+        {
+            q: "Q.81. What type of data is: arr = [(1,1),(2,2),(3,3)].?",
+            options: [
+                { text: "Array of tuples", correct: false },
+                { text: "Tuples of lists", correct: false },
+                { text: "List of tuples", correct: true },
+                { text: "Invalid type", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The outer brackets define a list, and the elements inside are tuples."
+        },
+        {
+            q: "Q.82. What is the output of the following program: print((1,2)+(3,4))",
+            options: [
+                { text: "(1, 2), (3, 4)", correct: false },
+                { text: "(4,6)", correct: false },
+                { text: "(1, 2, 3, 4)", correct: true },
+                { text: "Invalid Syntax", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The '+' operator concatenates two tuples together."
+        },
+        {
+            q: "Q.83. Which of the following statements is used to create an empty set?",
+            options: [
+                { text: "[]", correct: false },
+                { text: "{}", correct: false },
+                { text: "()", correct: false },
+                { text: "set()", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: '{}' creates an empty dictionary, so 'set()' must be used to create an empty set."
+        },
+        {
+            q: "Q.84. What is the data type of print(type(5)).?",
+            options: [
+                { text: "float", correct: false },
+                { text: "int", correct: true },
+                { text: "integer", correct: false },
+                { text: "Bool", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Whole numbers without decimals evaluate to type 'int'."
+        },
+        {
+            q: "Q.85. What is the data type of print(type(5.5)).?",
+            options: [
+                { text: "float", correct: true },
+                { text: "int", correct: false },
+                { text: "integer", correct: false },
+                { text: "Bool", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Numbers containing decimal points evaluate to type 'float'."
+        },
+        {
+            q: "Q.86. In Python, what is the output of type(range(5)). What data type it will return.?",
+            options: [
+                { text: "int", correct: false },
+                { text: "list", correct: false },
+                { text: "range", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The range() function returns a immutable sequence object of type 'range'."
+        },
+        {
+            q: "Q.87. The value of the Python expression given below would be: 4 + 2**5 // 10",
+            options: [
+                { text: "77", correct: false },
+                { text: "0", correct: false },
+                { text: "3", correct: false },
+                { text: "7", correct: true },
+                { text: "5", correct: false }
+            ],
+            explanation: "Explanation: 2**5 = 32. 32 // 10 = 3. Then 4 + 3 = 7."
+        },
+        {
+            q: "Q.88. What is the maximum possible length of an Identifier.?",
+            options: [
+                { text: "16", correct: false },
+                { text: "32", correct: false },
+                { text: "64", correct: false },
+                { text: "None of these (unlimited)", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Python identifiers have no intentional limit on their length."
+        },
+        {
+            q: "Q.89. Is Python case sensitive when dealing with Identifiers.?",
+            options: [
+                { text: "yes", correct: true },
+                { text: "no", correct: false },
+                { text: "machine dependent", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Yes, Python is strictly case-sensitive ('Var' and 'var' are distinct)."
+        },
+        {
+            q: "Q.90. Which of the following is an invalid variable.?",
+            options: [
+                { text: "my_string_1", correct: false },
+                { text: "1st_string", correct: true },
+                { text: "foo", correct: false },
+                { text: "_", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Identifiers cannot begin with a digit ('1st_string' is invalid)."
+        },
+        {
+            q: "Q.91. Which of the following is true for variable/ identifiers names in Python.?",
+            options: [
+                { text: "unlimited length", correct: true },
+                { text: "all private members must have leading and trailing underscores", correct: false },
+                { text: "underscore and ampersand are the only two special characters allowed", correct: false },
+                { text: "All of these", correct: false },
+                { text: "none of these", correct: false }
+            ],
+            explanation: "Explanation: Identifier lengths are unlimited in Python."
+        },
+        {
+            q: "Q.92. Which of the following is an invalid statement.?",
+            options: [
+                { text: "abc = 1000000", correct: false },
+                { text: "a b c = 1000 2000 3000", correct: true },
+                { text: "a,b,c = 1000, 2000, 3000", correct: false },
+                { text: "a_b_c = 1000000", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Spaces are not allowed between variable names in multiple assignment without commas or tuple wrapping."
+        },
+        {
+            q: "Q.93. Which of the following cannot be a variable.?",
+            options: [
+                { text: "_init_", correct: false },
+                { text: "in", correct: true },
+                { text: "it", correct: false },
+                { text: "On", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: 'in' is a reserved keyword and cannot be used as a variable name."
+        },
+        {
+            q: "Q.94. Which of the following is invalid.?",
+            options: [
+                { text: "_a a = 1", correct: false },
+                { text: "_aa = 1", correct: false },
+                { text: "_str str = 1", correct: false },
+                { text: "All are valid", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: (Interpreted based on option structures as valid identifier declarations)."
+        },
+        {
+            q: "Q.95. Which of the following operators is the correct option for power(a, b).?",
+            options: [
+                { text: "a^b", correct: false },
+                { text: "a**b", correct: true },
+                { text: "a^^b", correct: false },
+                { text: "a^*b", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: '**' is used for exponentiation in Python."
+        },
+        {
+            q: "Q.96. Which one of the following has the highest precedence in the expression.?",
+            options: [
+                { text: "Division", correct: false },
+                { text: "Subtraction", correct: false },
+                { text: "Power", correct: false },
+                { text: "Parentheses", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Parentheses always take highest precedence in operator evaluation."
+        },
+        {
+            q: "Q.97. Which one of the following has the highest precedence in the expression.?",
+            options: [
+                { text: "Division", correct: false },
+                { text: "Subtraction", correct: false },
+                { text: "Power", correct: false },
+                { text: "Parentheses", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Parentheses have top priority."
+        },
+        {
+            q: "Q.98. Study the following function in Python round(4.576) What will be the output of this function.?",
+            options: [
+                { text: "4", correct: false },
+                { text: "5.1", correct: false },
+                { text: "576", correct: false },
+                { text: "5", correct: true },
+                { text: "45", correct: false }
+            ],
+            explanation: "Explanation: The round() function without a second argument rounds to the nearest integer (4.5 rounds to 4 or 5 depending on round-half-to-even rule; 4.5 rounds to 4, but let's check standard python round(4.576) -> 5 because 4.576 is closer to 5)."
+        }
+    ];
+
+    // Fisher-Yates shuffle function
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function renderQuiz() {
+        const quizContainer = document.getElementById('quiz-container');
+        quizContainer.innerHTML = '';
+
+        questionsData.forEach((qItem) => {
+            // Shuffle all 5 options on page load
+            let shuffledOptions = shuffleArray([...qItem.options]);
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const title = document.createElement('div');
+            title.className = 'question-title';
+            title.innerText = qItem.q;
+            card.appendChild(title);
+
+            const ul = document.createElement('ul');
+            ul.className = 'options-list';
+
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'explanation';
+            explanationDiv.innerText = qItem.explanation;
+
+            shuffledOptions.forEach((opt) => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'option-link';
+                link.innerText = opt.text;
+                link.href = '#';
+
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (card.getAttribute('data-answered') === 'true') return;
+                    card.setAttribute('data-answered', 'true');
+
+                    const allLinks = ul.querySelectorAll('.option-link');
+                    allLinks.forEach(l => {
+                        const matchingOpt = shuffledOptions.find(o => o.text === l.innerText);
+                        if (matchingOpt.correct) {
+                            l.classList.add('correct');
+                        }
+                    });
+
+                    if (!opt.correct) {
+                        link.classList.add('incorrect');
+                    }
+
+                    explanationDiv.style.display = 'block';
+                });
+
+                li.appendChild(link);
+                ul.appendChild(li);
+            });
+
+            card.appendChild(ul);
+            card.appendChild(explanationDiv);
+            quizContainer.appendChild(card);
+        });
+    }
+
+    window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
