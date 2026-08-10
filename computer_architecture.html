@@ -6,83 +6,84 @@
     <title>Computer Architecture Quiz</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 20px;
+            padding: 0;
+            color: #333;
         }
         .quiz-container {
             max-width: 900px;
-            margin: 0 auto;
+            margin: auto;
             background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
-            color: #1a365d;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #3182ce;
-            padding-bottom: 10px;
+            color: #2c3e50;
+            margin-bottom: 25px;
         }
         .question-card {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-        }
-        .question-text {
-            font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        @media (min-width: 600px) {
-            .options {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .btn {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e0;
-            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
             border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #1a252f;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-item {
+            margin-bottom: 8px;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 14px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
             cursor: pointer;
-            text-align: left;
-            font-size: 0.95em;
-            color: #4a5568;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
-        .btn:hover:not(:disabled) {
-            background-color: #edf2f7;
-            border-color: #cbd5e0;
+        .option-link:hover {
+            background-color: #eef2f7;
         }
-        .btn.correct {
-            background-color: #38a169 !important;
-            color: white !important;
-            border-color: #38a169 !important;
+        .option-link.correct {
+            background-color: #28a745 !important;
+            color: #ffffff !important;
+            border-color: #28a745 !important;
+            font-weight: bold;
         }
-        .btn.incorrect {
-            background-color: #e53e3e !important;
-            color: white !important;
-            border-color: #e53e3e !important;
+        .option-link.incorrect {
+            background-color: #dc3545 !important;
+            color: #ffffff !important;
+            border-color: #dc3545 !important;
         }
         .explanation {
-            margin-top: 15px;
-            padding: 12px 15px;
-            background-color: #ebf8ff;
-            border-left: 4px solid #3182ce;
-            border-radius: 4px;
             display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #eef7fc;
+            border-left: 4px solid #17a2b8;
             font-size: 0.95em;
-            color: #2b6cb0;
+            color: #1c3d5a;
+            border-radius: 0 4px 4px 0;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -90,1128 +91,1140 @@
 
 <div class="quiz-container">
     <h1>Computer Architecture Practice Quiz</h1>
-    <div id="quiz"></div>
+    <div id="quiz-body"></div>
 </div>
 
 <script>
-const rawQuizData = [
+const rawQuestions = [
     {
-        q: "1. A CPU's clock speed is measured in?",
-        options: ["Gigahertz", "Megahertz", "Bits/Bytes per second", "Both 1 & 2"],
-        ans: 3,
-        exp: "CPU clock speed indicates how many cycles per second the processor can execute, measured in Megahertz (MHz) or Gigahertz (GHz)."
+        q: "Q.1. A CPU's clock speed is measured in.?",
+        options: ["Gigahertz", "Megahertz", "Bits/Bytes per second", "Both 1 & 2", "None of these"],
+        correct: 3,
+        exp: "CPU clock speed is measured in frequency units such as Megahertz (MHz) or Gigahertz (GHz)."
     },
     {
-        q: "2. The speed of the CPU is measured in which represents a CPU cycle?",
-        options: ["Gigabyte (GB)", "Terabyte (TB)", "Hertz (Hz)", "Kilobyte (KB)"],
-        ans: 2,
-        exp: "Hertz (Hz) measures the frequency of clock cycles in a central processing unit per second."
+        q: "Q.2. The speed of the CPU is measured in _____ which represents a CPU cycle.?",
+        options: ["Gigabyte (GB)", "Terabyte (TB)", "Hertz (Hz)", "Kilobyte (KB)", "None of these"],
+        correct: 2,
+        exp: "Hertz (Hz) is the standard unit of frequency representing one cycle per second."
     },
     {
-        q: "3. Speed of Processor chip is measured in?",
-        options: ["Mbps", "MHz", "Bits per second", "Bytes per second"],
-        ans: 1,
-        exp: "Processor chips operate at clock rates typically measured in MHz (Megahertz) or GHz (Gigahertz)."
+        q: "Q.3. Speed of Processor chip is measured in.?",
+        options: ["Mbps", "MHz", "Bits per second", "Bytes per second", "None of these"],
+        correct: 1,
+        exp: "Processor chip clock speeds are conventionally expressed in Megahertz (MHz) or Gigahertz (GHz)."
     },
     {
-        q: "4. CPU's processing power is measured in?",
-        options: ["IPS", "CIPS", "MIPS", "Nano Seconds"],
-        ans: 2,
-        exp: "MIPS stands for Million Instructions Per Second, a common measure of processing speed."
+        q: "Q.4. CPU's processing power is measured in.?",
+        options: ["IPS", "CIPS", "MIPS", "Nano Seconds", "None of these"],
+        correct: 2,
+        exp: "MIPS stands for Million Instructions Per Second, measuring raw CPU instruction performance."
     },
     {
-        q: "5. The clock rate of a processor is measured in?",
-        options: ["milliseconds", "microhertz", "megabytes or gigabytes", "megahertz or gigahertz"],
-        ans: 3,
-        exp: "Clock rate reflects execution frequency, expressed in Megahertz (MHz) or Gigahertz (GHz)."
+        q: "Q.5. The clock rate of a processor is measured in.?",
+        options: ["milliseconds", "microhertz", "megabytes or gigabytes", "megahertz or gigahertz", "None of these"],
+        correct: 3,
+        exp: "Clock rate indicates how many instruction cycles a CPU can execute per second, measured in MHz or GHz."
     },
     {
-        q: "6. The speed of the processor can be determined by the?",
-        options: ["Long clock cycles", "Shorter clock cycles", "Regular clock cycles", "Irregular clock cycles"],
-        ans: 1,
-        exp: "Shorter clock cycles allow a processor to complete more cycles and instructions per unit of time."
+        q: "Q.6. The speed of the processor can be determined by the.?",
+        options: ["Long clock cycles", "Shorter clock cycles", "Regular clock cycles", "Irregular clock cycles", "None of these"],
+        correct: 1,
+        exp: "Shorter clock cycle durations mean more clock cycles occur per second, indicating a faster processor speed."
     },
     {
-        q: "7. Which language can be understood directly by CPU?",
-        options: ["C", "Machine", "Java", "Python"],
-        ans: 1,
-        exp: "Machine language consisting of binary code (0s and 1s) is directly executed by the CPU hardware."
+        q: "Q.7. Which language can be understood directly by CPU.?",
+        options: ["C", "Machine", "Java", "All", "None of these"],
+        correct: 1,
+        exp: "Machine language (binary code consisting of 0s and 1s) is directly executable by the CPU without translation."
     },
     {
-        q: "8. CPU speed of Personal Computer is?",
-        options: ["32 KIPS", "100 KIPS", "1 MIPS", "500 KIPS"],
-        ans: 1,
-        exp: "Early personal computer CPUs had processing speeds rated around 100 KIPS (Thousand Instructions Per Second)."
+        q: "Q.8. CPU speed of Personal Computer is.?",
+        options: ["32 KIPS", "100 KIPS", "1 MIPS", "All of these", "None of these"],
+        correct: 1,
+        exp: "Early personal computers had CPU speeds measured around 100 KIPS (Kilo Instructions Per Second)."
     },
     {
-        q: "9. Which of the following is not the component of CPU?",
-        options: ["Storage unit", "Program unit", "Arithmetic Logic Unit", "Control unit"],
-        ans: 1,
-        exp: "The primary CPU components are ALU, Control Unit, and Registers/Storage units. Program unit is not a CPU hardware component."
+        q: "Q.9. Which of the following is not the component of CPU.?",
+        options: ["Storage unit", "Program unit", "Arithmetic Logic Unit", "Control unit", "None of these"],
+        correct: 1,
+        exp: "The main components of a CPU are the ALU, Control Unit (CU), and Registers. Program unit is not a core CPU component."
     },
     {
-        q: "10. The CPU is an example of?",
-        options: ["Software", "Peripheral device", "Hardware", "Input and Output device"],
-        ans: 2,
-        exp: "The Central Processing Unit is the physical physical core hardware of a computer system."
+        q: "Q.10. The CPU is an example of.?",
+        options: ["Software", "Peripheral device", "Hardware", "Input and Output device", "None of these"],
+        correct: 2,
+        exp: "The CPU is the central primary hardware component that executes instructions in a computer."
     },
     {
-        q: "11. In which part of computer system actual execution of instructions takes place during processing operations?",
-        options: ["ALU", "Control Unit", "RAM", "Registers"],
-        ans: 0,
-        exp: "The Arithmetic Logic Unit (ALU) performs the mathematical computations and execution operations."
+        q: "Q.11. In which part of computer system actual execution of instructions takes place during processing operations.?",
+        options: ["ALU", "Control Unit", "RAM", "Registers", "None of these"],
+        correct: 0,
+        exp: "The Arithmetic Logic Unit (ALU) performs arithmetic calculations and logical decisions during instruction execution."
     },
     {
-        q: "12. Which unit of CPU perform arithmetic operations such as addition, subtraction, multiplication, division?",
-        options: ["ALU", "Control Unit", "Input/Output Unit", "Storage Unit"],
-        ans: 0,
-        exp: "The Arithmetic Logic Unit handles arithmetic calculations like addition, subtraction, etc."
+        q: "Q.12. Which unit of CPU perform arithmetic operations such as addition, subtraction, multiplication, division.?",
+        options: ["ALU", "Control Unit", "ALU and Control Unit", "Input/Output Unit", "None of these"],
+        correct: 0,
+        exp: "The ALU contains arithmetic circuits dedicated to fundamental operations like addition and subtraction."
     },
     {
-        q: "13. The function of Control Unit in the CPU is?",
-        options: ["To decode program instructions", "To transfer data to primary storage", "To store program instructions", "To perform arithmetic operations"],
-        ans: 0,
-        exp: "The Control Unit fetches, decodes, and directs the operational flow of instructions."
+        q: "Q.13. The function of Control Unit in the CPU is.?",
+        options: ["To decode program instructions", "To transfer data to primary storage", "To store program instructions", "To perform arithmetic and logical operations", "None of these"],
+        correct: 0,
+        exp: "The Control Unit decodes fetched instructions and generates control signals to direct system operations."
     },
     {
-        q: "14. What is the function of logical unit in the CPU of a computer?",
-        options: ["To generate a result", "To compare data", "To control the flow of information", "To store permanent files"],
-        ans: 1,
-        exp: "The logical unit handles comparison operations (GREATER THAN, LESS THAN, EQUAL TO)."
+        q: "Q.14. What is the function of logical unit in the CPU of a computer.?",
+        options: ["To generate a result", "To compare data", "To control the flow of information", "Both 1 and 2", "None of these"],
+        correct: 1,
+        exp: "The logical unit performs logical operations like comparison (GREATER THAN, LESS THAN, EQUAL TO)."
     },
     {
-        q: "15. Which of the following is used by ALU to store intermediate results?",
-        options: ["Heap memory", "Stack memory", "Main memory", "Accumulator"],
-        ans: 3,
-        exp: "The accumulator is a dedicated register used by the ALU to temporarily store intermediate calculation results."
+        q: "Q.15. Which of the following is used by ALU to store intermediate results.?",
+        options: ["Registers", "Heap memory", "Stack memory", "Accumulator", "None of these"],
+        correct: 3,
+        exp: "The Accumulator is a special register that holds intermediate arithmetic and logic results."
     },
     {
-        q: "16. What is a 'register'?",
-        options: ["Digital circuit", "Combinational circuit", "Arithmetic circuit", "Sequential circuit"],
-        ans: 3,
-        exp: "Registers are constructed from flip-flops, making them sequential memory circuits."
+        q: "Q.16. What is a \"register\".?",
+        options: ["Digital circuit", "Combinational circuit", "Arithmetic circuit", "Sequential circuit", "None of these"],
+        correct: 3,
+        exp: "A register is built using flip-flops, making it a sequential logic circuit with memory capabilities."
     },
     {
-        q: "17. Which of the following is used to overcome the difference in data transfer speeds of various devices?",
-        options: ["Speed enhancing circuit", "Bridge circuit", "Buffer register", "Combinational circuit"],
-        ans: 2,
-        exp: "Buffer registers hold data temporarily to synchronize speed differences between fast and slow hardware."
+        q: "Q.17. Which of the following is used to overcome the difference in data transfer speeds of various devices?",
+        options: ["Speed enhancing circuit", "Bridge circuit", "Buffer register", "Combinational circuit", "None of these"],
+        correct: 2,
+        exp: "Buffer registers hold data temporarily to synchronize communication between devices running at different speeds."
     },
     {
-        q: "18. The operation that does not involves clock cycles is?",
-        options: ["Installation of a device", "Execute", "Fetch", "Decode"],
-        ans: 0,
-        exp: "Fetch, decode, and execute are CPU instruction cycles driven by clock pulses. Device installation is a software/OS process."
+        q: "Q.18. The operation that does not involves clock cycles is",
+        options: ["Installation of a device", "Execute", "Fetch", "Decode", "None of these"],
+        correct: 0,
+        exp: "Device installation is a user/software procedure, whereas fetch, decode, and execute are CPU clock cycle phases."
     },
     {
-        q: "19. Processor which is complex & expensive to produce is?",
-        options: ["RISC", "EPIC", "CISC", "Multi-Core"],
-        ans: 2,
-        exp: "CISC (Complex Instruction Set Computer) chips use complex hardware circuitry making them costly to produce."
+        q: "Q.19. Processor which is complex & expensive to produce is.?",
+        options: ["RISC", "EPIC", "CISC", "Multi-Core", "None of these"],
+        correct: 2,
+        exp: "CISC (Complex Instruction Set Computer) processors require more intricate hardware design and manufacturing."
     },
     {
-        q: "20. CPU itself has following components?",
-        options: ["2", "3", "4", "5"],
-        ans: 1,
-        exp: "The CPU consists of 3 main structural components: Control Unit (CU), Arithmetic Logic Unit (ALU), and Registers."
+        q: "Q.20. CPU itself has following _____ components.?",
+        options: ["2", "3", "4", "5", "None of these"],
+        correct: 1,
+        exp: "The CPU comprises 3 main internal components: Arithmetic Logic Unit (ALU), Control Unit (CU), and Registers."
     },
     {
-        q: "21. ALU unit consists of subsections namely?",
-        options: ["2", "3", "4", "5"],
-        ans: 0,
-        exp: "The ALU has 2 main subsections: the Arithmetic section and the Logic section."
+        q: "Q.21. ALU unit consists of _____ subsections namely.?",
+        options: ["2", "3", "4", "5", "None of these"],
+        correct: 0,
+        exp: "The ALU consists of 2 primary subsections: the Arithmetic Section and the Logic Section."
     },
     {
-        q: "22. Which of the following are correct features of CPU?",
-        options: ["CPU is considered as the brain of the computer", "CPU performs all types of data processing operations", "It stores data, intermediate results, and instructions", "All of the above"],
-        ans: 3,
-        exp: "The CPU acts as the primary brain, executing processing tasks and utilizing internal registers for data."
+        q: "Q.22. Which of the following are correct features of CPU.?",
+        options: ["CPU is considered as the brain of the computer", "CPU performs all types of data processing operations", "It stores data, intermediate results, and instructions", "All of the above", "None of these"],
+        correct: 3,
+        exp: "The CPU acts as the primary brain, executing data operations and storing temporary execution state data."
     },
     {
-        q: "23. Which section is to perform logic operations such as comparing, selecting, matching, and merging of data?",
-        options: ["Arithmetic Section", "Logic Section", "Control Section", "Memory Section"],
-        ans: 1,
-        exp: "The logic section evaluates conditions such as equality, greater than, matching, and comparisons."
+        q: "Q.23. Which section is to perform logic operations such as comparing, selecting, matching, and merging of data.?",
+        options: ["Arithmetic Section", "Logic Section", "Both 1 and 2", "None of the above", "CND"],
+        correct: 1,
+        exp: "The Logic Section handles operations like comparison, pattern matching, and data selecting."
     },
     {
-        q: "24. The address size of 8086 Microprocessor is?",
-        options: ["4 Bit", "8 Bit", "16 Bit", "20 Bit"],
-        ans: 3,
-        exp: "The Intel 8086 microprocessor features a 20-bit address bus enabling direct access to 1 MB of memory."
+        q: "Q.24. The address size of 8086 Microprocessor is.?",
+        options: ["4 Bit", "8 Bit", "16 Bit", "20 Bit", "None of these"],
+        correct: 3,
+        exp: "The Intel 8086 microprocessor has a 20-bit address bus, allowing it to address up to 1 MB of memory."
     },
     {
-        q: "25. ARM processors were basically designed for?",
-        options: ["Main Frame Systems", "Distributed Systems", "Mobile Systems", "Super Computers"],
-        ans: 2,
-        exp: "ARM (Advanced RISC Machines) architecture emphasizes low power consumption, ideal for mobile devices."
+        q: "Q.25. ARM processors were basically designed for .?",
+        options: ["Main Frame Systems", "Distributed Systems", "Mobile Systems", "Super Computers", "None of these"],
+        correct: 2,
+        exp: "ARM architecture focuses on reduced power consumption, making it ideal for mobile devices and embedded systems."
     },
     {
-        q: "26. The outer rectangle box, which stands beside the computer is to be termed as?",
-        options: ["CPU Cabinet", "Inverter", "UPS", "Monitor"],
-        ans: 0,
-        exp: "The outer enclosure housing the motherboard and components is called the CPU cabinet or System Unit."
+        q: "Q.26. The outer rectangle box, which stands beside the computer is to be termed as.?",
+        options: ["CPU Cabinet", "Inverter", "UPS", "All of these", "None of these"],
+        correct: 0,
+        exp: "The protective outer enclosure housing internal components like motherboard and power supply is the CPU Cabinet."
     },
     {
-        q: "27. A device which is not connected to CPU is called as?",
-        options: ["Offline", "Online", "Off Device", "Plugged"],
-        ans: 0,
-        exp: "Devices not currently linked or accessible by the CPU operate offline."
+        q: "Q.27. A device which is not connected to CPU is called as.?",
+        options: ["Offline", "Online", "Off Device", "Not Working", "None of these"],
+        correct: 0,
+        exp: "Devices not currently connected to or controlled by the central processor operate offline."
     },
     {
-        q: "28. In the CPU of a Computer, delivers power supply to all the components at appropriate voltages?",
+        q: "Q.28. In the CPU of a Computer, _____ delivers power supply to all the components at appropriate voltages.?",
         options: ["Hard Disk", "Motherboard", "SMPS", "DVD Drive"],
-        ans: 2,
-        exp: "SMPS (Switched-Mode Power Supply) converts power to correct DC voltages for system components."
+        correct: 2,
+        exp: "SMPS (Switched-Mode Power Supply) converts incoming AC power to stable DC voltages for internal hardware."
     },
     {
-        q: "29. Which of the following operations is/are performed by the ALU?",
-        options: ["Data manipulation", "Exponential", "Square root", "All of the above"],
-        ans: 3,
-        exp: "ALU units handle basic arithmetic, data manipulation, and advanced numerical math steps."
+        q: "Q.29. Which of the following operations is/are performed by the ALU.?",
+        options: ["Data manipulation", "Exponential", "Square root", "All of the above", "None of these"],
+        correct: 3,
+        exp: "ALUs perform basic data operations as well as math calculations directly or through repeated cycles."
     },
     {
-        q: "30. Which of the following memory unit communicates directly with the CPU?",
-        options: ["Auxiliary memory", "Main memory", "Secondary memory", "External memory"],
-        ans: 1,
-        exp: "Main memory (RAM/ROM) interacts directly with CPU registers and memory buses."
+        q: "Q.30. Which of the following memory unit communicates directly with the CPU.?",
+        options: ["Auxiliary memory", "Main memory", "Secondary memory", "All of these", "None of the above"],
+        correct: 1,
+        exp: "Main memory (RAM/ROM) interacts directly with CPU registers and buses during execution cycles."
     },
     {
-        q: "31. A computer has only one Processor which is known as?",
-        options: ["Uniprocessor", "Multiprocessor", "Multithreaded", "Multi-Meter"],
-        ans: 0,
-        exp: "A computer system built with a single processing core or chip is called a uniprocessor system."
+        q: "Q.31. A computer has only one Processor which is known as.?",
+        options: ["Uniprocessor", "Multiprocessor", "Multithreaded", "Multi-Meter", "None of these"],
+        correct: 0,
+        exp: "A computer system built with a single processing unit is called a Uniprocessor system."
     },
     {
-        q: "32. Which of the following is the fastest means of memory access for CPU?",
-        options: ["Registers", "Cache", "Main Memory", "Stack"],
-        ans: 0,
-        exp: "Registers reside directly inside the CPU silicon core, giving them the highest speed access."
+        q: "Q.32. Which of the following is the fastest means of memory access for CPU.?",
+        options: ["Registers", "Cache", "Main Memory", "Stack", "None of these"],
+        correct: 0,
+        exp: "Registers reside inside the CPU core itself, making them the fastest memory location in the architecture."
     },
     {
-        q: "33. To fetch data from secondary memory which one of the following register is used?",
-        options: ["MAR", "PC", "IR", "MBR"],
-        ans: 0,
-        exp: "MAR (Memory Address Register) holds memory addresses requiring access during data fetch."
+        q: "Q.33. To fetch data from secondary memory which one of the following register is used.?",
+        options: ["MAR", "PC", "IR", "MBR", "None of these"],
+        correct: 0,
+        exp: "MAR (Memory Address Register) holds the memory address from which data is to be fetched."
     },
     {
-        q: "34. Which among these was the first Microprocessor?",
-        options: ["Cyrix", "Elbrus", "Intel 4004", "ISRO"],
-        ans: 2,
-        exp: "Intel introduced the 4004 in 1971 as the world's first single-chip commercial microprocessor."
+        q: "Q.34. Which among these was the first Microprocessor.?",
+        options: ["Cyrix", "Elbrus", "Intel 4004", "ISRO", "None of these"],
+        correct: 2,
+        exp: "Intel 4004 was the world's first commercially available single-chip microprocessor released in 1971."
     },
     {
-        q: "35. Which of the following is not a type of bus commonly used in microprocessors?",
-        options: ["Address bus", "Data bus", "Control bus", "Cache bus"],
-        ans: 3,
-        exp: "Standard system buses are Address, Data, and Control buses."
+        q: "Q.35. Which of the following is not a type of bus commonly used in microprocessors.?",
+        options: ["Address bus", "Data bus", "Control bus", "Cache bus", "None of these"],
+        correct: 3,
+        exp: "The three standard system buses in computer architecture are the Address bus, Data bus, and Control bus."
     },
     {
-        q: "36. __________is the oldest type of Central Processing Unit.",
-        options: ["Triple Core", "Single Core", "Dual Core", "Quad Core"],
-        ans: 1,
-        exp: "Single-core processors were the earliest CPU design before multi-core architectures emerged."
+        q: "Q.36. _____ is the oldest type of Central Processing Unit.?",
+        options: ["Triple Core", "Single Core", "Dual Core", "Quad Core", "None of these"],
+        correct: 1,
+        exp: "Single-core processors were the original baseline CPU architecture before multi-core designs emerged."
     },
     {
-        q: "37. Intel 8085 microprocessor is of __________generation.",
-        options: ["First", "Second", "Third", "Fourth"],
-        ans: 1,
-        exp: "The Intel 8085 represents second-generation microprocessors built using NMOS technology."
+        q: "Q.37. Intel 8085 microprocessor is of _____ generation.?",
+        options: ["First", "Second", "Third", "More than one of the above", "None of these"],
+        correct: 1,
+        exp: "The Intel 8085 belongs to the second generation of microprocessors, manufactured using NMOS technology."
     },
     {
-        q: "38. The 8085 microprocessor is an__________ bit CPU introduced in 1976.",
-        options: ["4 Bit", "8 Bit", "16 Bit", "32 Bit"],
-        ans: 1,
-        exp: "The 8085 is an 8-bit general-purpose microprocessor."
+        q: "Q.38. The 8085 microprocessor is an _____ bit CPU introduced in 1976.?",
+        options: ["4 Bit", "8 Bit", "16 Bit", "32 Bit", "64 Bit"],
+        correct: 1,
+        exp: "The 8085 is an 8-bit microprocessor because its internal registers and data bus process 8 bits at a time."
     },
     {
-        q: "39. The 8085 microprocessor is commonly used in?",
-        options: ["Washing Machines", "Refrigerators", "Microwave Ovens", "All of these"],
-        ans: 3,
-        exp: "8085 chips are widely embedded in household automated appliances for electronic control."
+        q: "Q.39. The 8085 microprocessor is commonly used in.?",
+        options: ["Washing Machines", "Refrigerators", "Microwave Ovens", "All of these", "None of these"],
+        correct: 3,
+        exp: "8-bit microprocessors like the 8085 are widely implemented as embedded microcontrollers in household devices."
     },
     {
-        q: "40. The 8085 microprocessor having__________ bit data bus &__________ bit address bus.",
-        options: ["4 Bit, 8 Bit", "4 Bit, 4 Bit", "8 Bit, 8 Bit", "8 Bit, 16 Bit"],
-        ans: 3,
-        exp: "The 8085 chip features an 8-bit data bus and a 16-bit address bus."
+        q: "Q.40. The 8085 microprocessor having _____ bit data bus & _____ bit address bus.?",
+        options: ["4 Bit, 8 Bit", "4 Bit, 4 Bit", "8 Bit, 8 Bit", "8 Bit, 16 Bit", "4 Bit, 32 Bit"],
+        correct: 3,
+        exp: "The Intel 8085 features an 8-bit data bus and a 16-bit address bus."
     },
     {
-        q: "41. Computer on a single Chip is called?",
-        options: ["Microprocessor", "Microcontroller", "Assembler", "Transistor"],
-        ans: 1,
-        exp: "A microcontroller integrates CPU, memory, and I/O timers on a single integrated chip."
+        q: "Q.41. Computer on a single Chip is called.?",
+        options: ["Microprocessor", "Microcontroller", "Assembler", "More than one of the above", "None of these"],
+        correct: 1,
+        exp: "A microcontroller integrates CPU, RAM, ROM, and I/O peripherals onto a single integrated circuit chip."
     },
     {
-        q: "42. CPU on a single Chip is called?",
-        options: ["Microprocessor", "Microcontroller", "Solid State Drive", "ROM"],
-        ans: 0,
-        exp: "A microprocessor contains the Central Processing Unit fabricated onto a single microchip."
+        q: "Q.42. CPU on a single Chip is called.?",
+        options: ["Microprocessor", "Microcontroller", "Solid State Drive", "More than one of the above", "None of these"],
+        correct: 0,
+        exp: "A microprocessor contains CPU components (ALU, CU, Registers) integrated on a single silicon chip."
     },
     {
-        q: "43. Which of the following natural elements is the primary element in computer chips?",
-        options: ["Carbon", "Iron", "Silicon", "Copper"],
-        ans: 2,
-        exp: "Silicon is a semiconductor material used as the foundation for integrated circuits."
+        q: "Q.43. Which of the following natural elements is the primary element in computer chips.?",
+        options: ["Carbon", "Iron", "Silicon", "More than one of the above", "None of these"],
+        correct: 2,
+        exp: "Silicon is a semiconductor material used as the base substrate for integrated electronic microchips."
     },
     {
-        q: "44. Which of the following is a type of microprocessor?",
-        options: ["CISC", "RISC", "EPIC", "All of these"],
-        ans: 3,
-        exp: "CISC, RISC, and EPIC represent core microprocessor architecture designs."
+        q: "Q.44. Which of the following is a type of microprocessor?",
+        options: ["CISC", "RISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 3,
+        exp: "CISC, RISC, and EPIC represent different design philosophies/types of microprocessor architecture."
     },
     {
-        q: "45. The microprocessor of a computer can operate on any information if it is present in?",
-        options: ["Program Counter", "Flag", "Main Memory", "Secondary Memory"],
-        ans: 2,
-        exp: "The CPU directly reads and executes instructions loaded in main memory (RAM)."
+        q: "Q.45. The microprocessor of a computer can operate on any information if it is present in__________ only.?",
+        options: ["Program Counter", "Flag", "Main Memory", "Secondary Memory", "All of these"],
+        correct: 2,
+        exp: "Processors execute code and fetch operands directly from main memory (RAM/ROM)."
     },
     {
-        q: "46. Which of the following technology was used by Intel to design its first 8-bit microprocessor?",
-        options: ["NMOS", "HMOS", "PMOS", "TTL"],
-        ans: 2,
-        exp: "Intel used PMOS (P-channel Metal-Oxide-Semiconductor) technology for the 8008 processor."
+        q: "Q.46. Which of the following technology was used by Intel to design its first 8-bit microprocessor.?",
+        options: ["NMOS", "HMOS", "PMOS", "TTL", "All of these"],
+        correct: 2,
+        exp: "Intel's first 8-bit microprocessor (the Intel 8008) utilized PMOS (P-channel MOS) technology."
     },
     {
-        q: "47. What is the word length of an 8-bit microprocessor?",
-        options: ["8-bits-64 bits", "4-bits-32 bits", "8-bits-16 bits", "8-bits-32 bits"],
-        ans: 0,
-        exp: "An 8-bit processor processes data in 8-bit word units or multiples up to 64 bits depending on operations."
+        q: "Q.47. What is the word length of an 8-bit microprocessor.?",
+        options: ["8-bits-64 bits", "4-bits-32 bits", "8-bits-16 bits", "8-bits-32 bits", "None of these"],
+        correct: 0,
+        exp: "Word length typically indicates processed bit size ranging upwards depending on design parameters."
     },
     {
-        q: "48. In 8-bit microprocessor, how many opcodes are present?",
-        options: ["246", "278", "250", "256"],
-        ans: 0,
-        exp: "The 8085 8-bit processor features 246 distinct operational codes (opcodes)."
+        q: "Q.48. In 8-bit microprocessor, how many opcodes are present.?",
+        options: ["246", "278", "250", "256", "266"],
+        correct: 0,
+        exp: "The Intel 8085 8-bit microprocessor has 246 distinct operational code (opcode) patterns out of 256 possibilities."
     },
     {
-        q: "49. Which of the following is true about microprocessors?",
-        options: ["It has an internal memory", "It has interfacing circuits", "It contains ALU, CU, and registers", "It uses Harvard architecture"],
-        ans: 2,
-        exp: "A microprocessor natively combines an Arithmetic Logic Unit, Control Unit, and internal Registers."
+        q: "Q.49. Which of the following is true about microprocessors?",
+        options: ["It has an internal memory", "It has interfacing circuits", "It contains ALU, CU, and registers", "It uses Harvard architecture", "More than one of the above"],
+        correct: 2,
+        exp: "A microprocessor is defined by combining the ALU, Control Unit, and internal register arrays on a single chip."
     },
     {
-        q: "50. The microprocessor of a computer can operate on any information if it is present in __________only.",
-        options: ["Program Counter", "Flag", "Main Memory", "Secondary Memory"],
-        ans: 2,
-        exp: "Information must be fetched into Main Memory before the CPU can process it."
+        q: "Q.50. The microprocessor of a computer can operate on any information if it is present in _____ only.?",
+        options: ["Program Counter", "Flag", "Main Memory", "Secondary Memory", "More than one of the above"],
+        correct: 2,
+        exp: "Instructions and operands must be loaded into Main Memory before the CPU can process them."
     },
     {
-        q: "51. Which of the following is not a microprocessor?",
-        options: ["Z8000", "Motorola 6809", "Zilog Z8", "PIC1x"],
-        ans: 3,
-        exp: "PIC1x is classified as a microcontroller family rather than a standalone microprocessor."
+        q: "Q.51. Which of the following is not a microprocessor?",
+        options: ["Z8000", "Motorola 6809", "Zilog Z8", "PIC1x", "More than one of the above"],
+        correct: 3,
+        exp: "PIC1x chips are microcontrollers (which incorporate RAM/ROM/I/O on-chip), whereas others are standalone microprocessors."
     },
     {
-        q: "52. If we say microcontroller is 8-bit then here 8-bit denotes size of?",
-        options: ["Data Bus", "ALU", "Control Bus", "Address Bus"],
-        ans: 1,
-        exp: "The bit-rating (e.g., 8-bit) specifies the word size processed by the internal ALU."
+        q: "Q.52. If we say microcontroller is 8-bit then here 8-bit denotes size of?",
+        options: ["Data Bus", "ALU", "Control Bus", "Address Bus", "All of these"],
+        correct: 1,
+        exp: "The bit-size classification of a processor/microcontroller refers to the bit processing width of its ALU."
     },
     {
-        q: "53. The Intel corporation came out with the first generation of microprocessors in__________.",
-        options: ["1955", "1985", "1990", "1971"],
-        ans: 3,
-        exp: "Intel released the Intel 4004 microprocessor in November 1971."
+        q: "Q.53. The Intel corporation came out with the first generation of microprocessors in",
+        options: ["1955", "1985", "1990", "1971", "1999"],
+        correct: 3,
+        exp: "Intel introduced the world's first commercial microprocessor, the Intel 4004, in November 1971."
     },
     {
-        q: "54. The fourth-generation processors are __________microprocessors.",
-        options: ["16 Bit", "32 Bit", "64 Bit", "8 Bit"],
-        ans: 1,
-        exp: "Fourth-generation microprocessors are built on 32-bit computing architecture."
+        q: "Q.54. The fourth-generation processors are _____ microprocessors.?",
+        options: ["16 Bit", "32 Bit", "64 Bit", "4 Bit", "8 Bit"],
+        correct: 1,
+        exp: "Fourth-generation computer processors feature 32-bit architecture models."
     },
     {
-        q: "55. The third-generation processors are __________microprocessors.",
-        options: ["16 Bit", "32 Bit", "64 Bit", "8 Bit"],
-        ans: 0,
-        exp: "Third-generation microprocessors primarily utilized 16-bit processing architecture."
+        q: "Q.55. The third-generation processors are _____ microprocessors.?",
+        options: ["16 Bit", "32 Bit", "64 Bit", "4 Bit", "8 Bit"],
+        correct: 0,
+        exp: "Third-generation microprocessors are built around 16-bit processing architectures."
     },
     {
-        q: "56. It is the first step of the microprocessor which __________the instruction from the memory.",
-        options: ["Execute", "Decode", "Store", "Fetch"],
-        ans: 3,
-        exp: "The fetch step retrieves binary instruction codes from primary memory."
+        q: "Q.56. It is the first step of the microprocessor which _____ the instruction from the memory.",
+        options: ["Execute", "Decode", "Store", "Fetch", "All of these"],
+        correct: 3,
+        exp: "The CPU execution cycle starts with the Fetch phase to retrieve instructions from memory."
     },
     {
-        q: "57. It is the second step of the microprocessor used to __________ the instruction.",
-        options: ["Execute", "Decode", "Store", "Fetch"],
-        ans: 1,
-        exp: "The decode step interprets the fetched operation code to prepare CPU circuits."
+        q: "Q.57. It is the second step of the microprocessor used to _____ the instruction.?",
+        options: ["Execute", "Decode", "Store", "Fetch", "All of these"],
+        correct: 1,
+        exp: "After fetching, the Control Unit performs the Decode step to translate operational instructions."
     },
     {
-        q: "58. It is the last step of this processor that __________ the instructions and the output.",
-        options: ["Execute", "Decode", "Store", "Fetch"],
-        ans: 0,
-        exp: "The execute phase carries out the decoded command and generates results."
+        q: "Q.58. It is the last step of this processor that _____ the instructions and the output.?",
+        options: ["Execute", "Decode", "Store", "Fetch", "All of these"],
+        correct: 0,
+        exp: "The Execute step is the final phase where the CPU performs the operation indicated by the instruction."
     },
     {
-        q: "59. __________ architecture is used in low-end applications such as security systems, home automation, etc.",
-        options: ["RISC", "CISC", "EPIC", "Multi-core"],
-        ans: 1,
-        exp: "CISC architectures are frequently employed in integrated home automation systems."
+        q: "Q.59. _____ architecture is used in low-end applications such as security systems, home automation, etc.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 1,
+        exp: "CISC architectures are utilized in embedded control hardware due to dense single-instruction capabilities."
     },
     {
-        q: "60. __________ architecture is used in high-end applications such as video processing, telecommunications, and image processing.",
-        options: ["RISC", "CISC", "EPIC", "Von-Neumann"],
-        ans: 0,
-        exp: "RISC architecture provides fast execution of simple instructions ideal for heavy parallel throughput."
+        q: "Q.60. _____ architecture is used in high-end applications such as video processing, telecommunications, and image processing.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 0,
+        exp: "RISC processors excel in high-speed repetitive parallel computations like signal processing."
     },
     {
-        q: "61. __________ architecture allows the instructions to compute parallelly by making use of compilers.",
-        options: ["RISC", "CISC", "EPIC", "MISD"],
-        ans: 2,
-        exp: "EPIC (Explicitly Parallel Instruction Computing) uses intelligent compilers to arrange parallel instruction execution."
+        q: "Q.61. _____ architecture allows the instructions to compute parallelly by making use of compilers.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 2,
+        exp: "EPIC (Explicitly Parallel Instruction Computing) uses intelligent compilers to expose parallel instruction execution."
     },
     {
-        q: "62. Intel 386, Intel 486, Pentium, Pentium Pro, Pentium II comes under which architecture of computer?",
-        options: ["RISC", "CISC", "EPIC", "Harvard"],
-        ans: 1,
-        exp: "Intel x86 processors (386, 486, Pentium) are built using CISC architecture."
+        q: "Q.62. Intel 386, Intel 486, Pentium, Pentium Pro, Pentium II comes under which architecture of computer.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 1,
+        exp: "The Intel x86 line (386, 486, Pentium family) belongs to CISC processor architecture."
     },
     {
-        q: "63. IBM RS6000, DEC Alpha 21064, DEC Alpha 21164, etc. comes under which architecture of computer?",
-        options: ["RISC", "CISC", "EPIC", "SIMD"],
-        ans: 0,
-        exp: "IBM RS6000 and DEC Alpha systems are classic implementations of RISC architecture."
+        q: "Q.63. IBM RS6000, DEC Alpha 21064, DEC Alpha 21164, etc. comes under which architecture of computer.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 0,
+        exp: "IBM RS6000 and DEC Alpha processors were landmark commercial implementations of RISC design."
     },
     {
-        q: "64. IA-64 (Intel Architecture-64) etc. comes under which architecture of computer?",
-        options: ["RISC", "CISC", "EPIC", "MIMD"],
-        ans: 2,
-        exp: "Intel's 64-bit Itanium (IA-64) microprocessors were based on EPIC architecture."
+        q: "Q.64. IA-64 (Intel Architecture-64) etc. comes under which architecture of computer.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 2,
+        exp: "IA-64 (Itanium) was explicitly co-developed by Intel and HP based on EPIC architecture."
     },
     {
-        q: "65. This architecture of computer Microprocessor focuses on the software.",
-        options: ["RISC", "CISC", "EPIC", "Hardware-centric"],
-        ans: 0,
-        exp: "RISC relies heavily on smart software/compilers to streamline execution paths."
+        q: "Q.65. This architecture of computer Microprocessor focuses on the software.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 0,
+        exp: "RISC designs simplify hardware and shift complex optimization responsibilities onto compiler software."
     },
     {
-        q: "66. This architecture of computer Microprocessor focuses on the hardware.",
-        options: ["RISC", "CISC", "EPIC", "Software-centric"],
-        ans: 1,
-        exp: "CISC architecture relies on complex physical microcode hardware."
+        q: "Q.66. This architecture of computer Microprocessor focuses on the hardware.?",
+        options: ["RISC", "CISC", "EPIC", "More than one of the above", "None of these"],
+        correct: 1,
+        exp: "CISC architectures emphasize hardware solutions to directly execute complex multi-step instructions."
     },
     {
-        q: "67. Name the Fastest Memory?",
-        options: ["Cache", "Register", "Flip Flop", "RAM"],
-        ans: 1,
-        exp: "Registers located within the CPU core offer the fastest data access speeds."
+        q: "Q.67. Name the Fastest Memory.?",
+        options: ["Cache", "Register", "Flip Flop", "RAM", "None of these"],
+        correct: 1,
+        exp: "CPU Registers represent the fastest memory level in computer architecture hierarchy."
     },
     {
-        q: "68. Which memory is Inside CPU?",
-        options: ["Buffer", "RAM", "ROM", "Register"],
-        ans: 3,
-        exp: "Registers are miniature high-speed storage components built into the CPU."
+        q: "Q.68. Which memory is Inside CPU.?",
+        options: ["Buffer", "RAM", "ROM", "Register", "More than one of the above"],
+        correct: 3,
+        exp: "Registers are built directly inside the CPU package core."
     },
     {
-        q: "69. Cache Memory is made up of?",
-        options: ["DRAM", "SRAM", "ROM", "Registers"],
-        ans: 1,
-        exp: "Cache memory utilizes Static RAM (SRAM) chips for fast access times without refresh cycles."
+        q: "Q.69. Cache Memory is made up of.?",
+        options: ["DRAM", "SRAM", "ROM", "Registers", "More than one of the above"],
+        correct: 1,
+        exp: "Cache memory utilizes Static RAM (SRAM) due to its high speed and lack of refresh requirements."
     },
     {
-        q: "70. RAM is located in?",
-        options: ["Peripheral", "Hard Disk", "Motherboard", "CPU"],
-        ans: 2,
-        exp: "RAM modules reside in dedicated DIMM memory slots located on the motherboard."
+        q: "Q.70. RAM is located in.?",
+        options: ["Peripheral", "Hard Disk", "Motherboard", "CPU", "More than one of the above"],
+        correct: 2,
+        exp: "RAM memory modules are physically installed directly on memory slots located on the motherboard."
     },
     {
-        q: "71. Among these name the temporary memory.",
-        options: ["RAM", "ROM", "Firmware", "Flash"],
-        ans: 0,
-        exp: "RAM is volatile memory; data stored in RAM is lost when power is turned off."
+        q: "Q.71. Among these name the temporary memory.?",
+        options: ["RAM", "ROM", "RAM & ROM", "Firmware", "More than one of the above"],
+        correct: 0,
+        exp: "RAM (Random Access Memory) is volatile, meaning data is erased when power supply is interrupted."
     },
     {
-        q: "72. Among these name the permanent memory.",
-        options: ["RAM", "ROM", "Cache", "Buffer"],
-        ans: 1,
-        exp: "ROM (Read-Only Memory) is non-volatile and retains data even without electrical power."
+        q: "Q.72. Among these name the permanent memory.?",
+        options: ["RAM", "ROM", "RAM & ROM", "Firmware", "More than one of the above"],
+        correct: 1,
+        exp: "ROM (Read-Only Memory) is non-volatile and retains instructions permanently without electrical power."
     },
     {
-        q: "73. Instructions written in ROM are called?",
-        options: ["Hardware", "Software", "Firmware", "Malware"],
-        ans: 2,
-        exp: "Permanent operational micro-programs written into ROM are known as firmware."
+        q: "Q.73. Instructions written in ROM are called.?",
+        options: ["Hardware", "Software", "Firmware", "Malware", "More than one of the above"],
+        correct: 2,
+        exp: "Permanent software programmed into read-only memory chips is called Firmware."
     },
     {
-        q: "74. Transistor is used in?",
-        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM"],
-        ans: 0,
-        exp: "SRAM cells use multi-transistor flip-flop circuits (typically 6 transistors) to store bits."
+        q: "Q.74. Transistor is used in.?",
+        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM", "More than one of the above"],
+        correct: 0,
+        exp: "SRAM cells are constructed using transistor flip-flop latches (typically 6 transistors per bit)."
     },
     {
-        q: "75. Capacitor is used in?",
-        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM"],
-        ans: 1,
-        exp: "Dynamic RAM (DRAM) uses paired transistor-capacitor units to store individual data bits."
+        q: "Q.75. Capacitor is used in.?",
+        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM", "More than one of the above"],
+        correct: 1,
+        exp: "Dynamic RAM (DRAM) memory cells store bit data as electrical charges inside miniature capacitors."
     },
     {
-        q: "76. Which of the following memories must be refreshed many times per second?",
-        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM"],
-        ans: 1,
-        exp: "DRAM capacitors leak charge and must be refreshed regularly every few milliseconds."
+        q: "Q.76. Which of the following memories must be refreshed many times per second.?",
+        options: ["SRAM", "DRAM", "SDRAM", "SSDRAM", "More than one of the above"],
+        correct: 1,
+        exp: "DRAM capacitors constantly leak charge, requiring frequent refresh cycles to preserve stored bits."
     },
     {
-        q: "77. Access time is faster for?",
-        options: ["ROM", "SRAM", "DRAM", "ERAM"],
-        ans: 1,
-        exp: "SRAM provides faster access times because it does not require refresh cycles."
+        q: "Q.77. Access time is faster for .?",
+        options: ["ROM", "SRAM", "DRAM", "ERAM", "More than one of the above"],
+        correct: 1,
+        exp: "SRAM provides significantly faster data access times compared to DRAM."
     },
     {
-        q: "78. What does SDRAM stands for?",
-        options: ["Single Dynamic RAM", "Static Dynamic RAM", "Serial Dynamic RAM", "Synchronous Dynamic RAM"],
-        ans: 3,
-        exp: "SDRAM stands for Synchronous Dynamic Random Access Memory."
+        q: "Q.78. What does SDRAM stands for .?",
+        options: ["Single Dynamic RAM", "Static Dynamic RAM", "Serial Dynamic RAM", "Synchronous Dynamic RAM", "More than one of the above"],
+        correct: 3,
+        exp: "SDRAM stands for Synchronous Dynamic Random-Access Memory, running in sync with the CPU clock."
     },
     {
-        q: "79. The most advanced form of ROM is?",
-        options: ["PROM", "RAM", "Cache memory", "EEPROM"],
-        ans: 3,
-        exp: "EEPROM (Electrically Erasable Programmable Read-Only Memory) allows fast electrical byte reprogramming."
+        q: "Q.79. The most advanced form of ROM is.",
+        options: ["PROM", "RAM", "Cache memory", "EEPROM", "More than one of the above"],
+        correct: 3,
+        exp: "EEPROM allows data bytes to be electrically erased and reprogrammed repeatedly."
     },
     {
-        q: "80. Which memory helps in booting of computer?",
-        options: ["RAM", "Flash memory", "ALU", "ROM"],
-        ans: 3,
-        exp: "ROM stores system BIOS/UEFI boot programs required during initial system power-up."
+        q: "Q.80. Which memory helps in booting of computer.?",
+        options: ["RAM", "Flash memory", "ALU", "ROM", "More than one of the above"],
+        correct: 3,
+        exp: "ROM holds the initial system boot software (like BIOS / UEFI) needed during startup."
     },
     {
-        q: "81. Which type of memory cannot be erased and reprogrammed?",
-        options: ["EEPROM", "PROM", "Flash", "Cache memory"],
-        ans: 1,
-        exp: "PROM (Programmable ROM) can only be written to once using high voltage and cannot be altered."
+        q: "Q.81. Which type of memory cannot be erased and reprogrammed.",
+        options: ["EEPROM", "PROM", "Flash", "Cache memory", "More than one of the above"],
+        correct: 1,
+        exp: "Programmable ROM (PROM) is written once during manufacturing/programming and cannot be altered afterward."
     },
     {
-        q: "82. The next generation of SDRAM is?",
-        options: ["DDR", "PROM", "Flash", "Cache memory"],
-        ans: 0,
-        exp: "DDR (Double Data Rate) SDRAM represents the evolution of standard SDRAM modules."
+        q: "Q.82. The next generation of SDRAM is.?",
+        options: ["DDR", "PROM", "Flash", "Cache memory", "More than one of the above"],
+        correct: 0,
+        exp: "DDR (Double Data Rate) memory is the direct evolved standard successor of standard SDRAM."
     },
     {
-        q: "83. In EEPROM data is erased with the help of?",
-        options: ["Ultra Violet Rays", "Can not be erased", "Transistors", "Electric Signals"],
-        ans: 3,
-        exp: "EEPROM uses electrical signals to erase and rewrite data bits."
+        q: "Q.83. In EEPROM data is erased with the help of.?",
+        options: ["Ultra Violet Rays", "Can not be erased", "Transistors", "Electric Signals", "More than one of the above"],
+        correct: 3,
+        exp: "EEPROM (Electrically Erasable Programmable ROM) uses electrical voltage signals to reset stored bits."
     },
     {
-        q: "84. Who invented RAM / DRAM?",
-        options: ["Tim Berners Lee", "Reynold B Johnson", "Robert Heath Dennard", "Robert Noyce"],
-        ans: 2,
-        exp: "Robert Heath Dennard invented single-transistor Dynamic Random Access Memory (DRAM) at IBM in 1966."
+        q: "Q.84. Who invented RAM & ROM.?",
+        options: ["Tim Berners Lee", "Reynold B Johnson", "Robert Heath Dennard", "Robert Noyce", "More than one of the above"],
+        correct: 2,
+        exp: "Robert H. Dennard invented single-transistor Dynamic RAM (DRAM) at IBM."
     },
     {
-        q: "85. Founder of Flash / EEPROM concept?",
-        options: ["Fujio Masuoka", "Reynold B Johnson", "Robert Heath Dennard", "Robert Noyce"],
-        ans: 0,
-        exp: "Fujio Masuoka invented flash memory while working at Toshiba in the early 1980s."
+        q: "Q.85. Founder of EEPROM.?",
+        options: ["Fujio Masuoka", "Reynold B Johnson", "Robert Heath Dennard", "Robert Noyce", "More than one of the above"],
+        correct: 0,
+        exp: "Fujio Masuoka invented Flash memory and foundational advances in EEPROM while working at Toshiba."
     },
     {
-        q: "86. Which of the following is the smallest entity of memory?",
-        options: ["Block", "Cell", "Instance", "Set"],
-        ans: 1,
-        exp: "A memory cell is the fundamental electronic circuit capable of storing 1 bit of information."
+        q: "Q.86. Which of the following is the smallest entity of memory.?",
+        options: ["Block", "Cell", "Instance", "Set", "More than one of the above"],
+        correct: 1,
+        exp: "A single Memory Cell is the fundamental hardware component capable of storing 1 bit of information."
     },
     {
-        q: "87. The primary memory (also called main memory) of a personal computer consists of?",
-        options: ["RAM only", "ROM only", "Both RAM and ROM", "Cache memory"],
-        ans: 2,
-        exp: "Primary main memory comprises both RAM (working memory) and ROM (boot BIOS memory)."
+        q: "Q.87. The primary memory (also called main memory) of a personal computer consists of.?",
+        options: ["RAM only", "ROM only", "Both RAM and ROM", "Cache memory", "None of these"],
+        correct: 2,
+        exp: "Primary memory encompasses both volatile RAM (working workspace) and non-volatile ROM (boot instructions)."
     },
     {
-        q: "88. The Boot sector files of the system are stored in which computer memory?",
-        options: ["RAM", "ROM", "Cache", "Register"],
-        ans: 1,
-        exp: "Boot sector loader instructions reside permanently in non-volatile ROM."
+        q: "Q.88. The Boot sector files of the system are stored in which computer memory.?",
+        options: ["RAM", "ROM", "Cache", "Register", "More than one of the above"],
+        correct: 1,
+        exp: "Permanent initial booting instructions and bootstrap code reside in non-volatile ROM memory."
     },
     {
-        q: "89. Which of the following statements are correct about main memory?",
-        options: ["Data in RAM gets lost when powered off", "Main memory is faster than secondary storage", "Made up of semiconductor devices", "All are correct"],
-        ans: 3,
-        exp: "Primary semiconductor main memory is volatile, fast, and built with integrated circuits."
+        q: "Q.89. Which of the following statements are not correct about the main memory of a computer.?",
+        options: ["In main memory, data gets lost when power is switched off.", "Main memory is faster than secondary memory but slower than registers.", "They are made up of semiconductors.", "All are correct", "None of these"],
+        correct: 3,
+        exp: "All listed statements accurately describe properties of main semiconductor computer memory."
     },
     {
-        q: "90. RAM is __________ and __________.",
-        options: ["volatile, temporary", "non-volatile, temporary", "volatile, permanent", "non-volatile, permanent"],
-        ans: 0,
-        exp: "RAM is both volatile and temporary in terms of storage persistence."
+        q: "Q.90. RAM is _____ and _____.?",
+        options: ["volatile, temporary", "non-volatile, temporary", "volatile, permanent", "non-volatile, permanent", "More than one of the above"],
+        correct: 0,
+        exp: "RAM is both volatile (requires active current) and temporary (cleared on system shutdown)."
     },
     {
-        q: "91. Which of the following has the fastest speed in the computer memory hierarchy?",
-        options: ["Cache", "Register in CPU", "Main memory", "Disk cache"],
-        ans: 1,
-        exp: "Internal CPU registers operate at the maximum operating frequency of the CPU."
+        q: "Q.91. Which of the following has the fastest speed in the computer memory hierarchy?",
+        options: ["Cache", "Register in CPU", "Main memory", "Disk cache", "More than one of the above"],
+        correct: 1,
+        exp: "Internal CPU Registers provide the absolute highest access speeds across memory storage levels."
     },
     {
-        q: "92. Which computer memory chip allows simultaneous both read and write operations?",
-        options: ["ROM", "RAM", "PROM", "EEPROM"],
-        ans: 1,
-        exp: "RAM allows high-speed real-time read and write operations."
+        q: "Q.92. Which computer memory chip allows simultaneous both read and write operations.?",
+        options: ["ROM", "RAM", "PROM", "EEPROM", "More than one of the above"],
+        correct: 1,
+        exp: "RAM allows arbitrary reading and writing of data locations during computer processing."
     },
     {
-        q: "93. Which type of ROM is used for erasing purposes only electrically?",
-        options: ["PROM", "EPROM", "EEPROM", "Mask ROM"],
-        ans: 2,
-        exp: "EEPROM supports erasing and reprogramming via electrical voltage signals."
+        q: "Q.93. Which type of ROM is used for erasing purposes only.?",
+        options: ["PROM", "EPROM", "EEPROM", "Both 1 and 3", "None of these"],
+        correct: 2,
+        exp: "EEPROM allows selectively erasing and rewriting data electronically directly in system."
     },
     {
-        q: "94. How many main types of RAM are available?",
-        options: ["4", "3", "2", "5"],
-        ans: 2,
-        exp: "The two primary classifications of RAM are Static RAM (SRAM) and Dynamic RAM (DRAM)."
+        q: "Q.94. How many types of RAM are available.?",
+        options: ["4", "3", "2", "5", "More than one of the above"],
+        correct: 2,
+        exp: "RAM is primarily categorized into 2 main hardware architectures: SRAM (Static RAM) and DRAM (Dynamic RAM)."
     },
     {
-        q: "95. The computer internal memory consists of?",
-        options: ["Cache memory, registers", "CPU registers, main memory, cache memory", "Main memory, secondary memory", "Virtual memory, cache memory"],
-        ans: 1,
-        exp: "Internal system memory includes registers, main RAM/ROM, and cache memory tiers."
+        q: "Q.95. The computer internal memory consists of.?",
+        options: ["Cache memory, registers", "CPU registers, main memory, cache memory", "Main memory, secondary memory", "Virtual memory, cache memory", "More than one of the above"],
+        correct: 1,
+        exp: "Internal memory directly accessible by CPU includes Registers, Cache, and Main Memory."
     },
     {
-        q: "96. Main memory (also called primary memory) store(s)?",
-        options: ["Data alone", "Program alone", "Results alone", "All of these"],
-        ans: 3,
-        exp: "Main memory holds current program instructions, active input data, and calculated output results."
+        q: "Q.96. Main memory (also called primary memory) store(s).?",
+        options: ["Data alone", "Program alone", "Results alone", "All", "None of these"],
+        correct: 3,
+        exp: "Main memory holds executing software program code, raw input data, and intermediate/final operational results."
     },
     {
-        q: "97. Primary storage is__________as compared to secondary storage.",
-        options: ["Slow and inexpensive", "Fast and inexpensive", "Fast and expensive", "Slow and expensive"],
-        ans: 2,
-        exp: "Primary semiconductor storage offers fast access speed at higher per-gigabyte costs."
+        q: "Q.97. Primary storage is__________as compared to secondary storage.?",
+        options: ["Slow and inexpensive", "Fast and inexpensive", "Fast and expensive", "Slow and expensive", "None of these"],
+        correct: 2,
+        exp: "Primary semiconductor memory is significantly faster but costs considerably more per gigabyte than secondary storage."
     },
     {
-        q: "98. Which of the following can be used as main memory?",
-        options: ["Compact disk", "Magnetic disk", "Hard disk", "Semiconductor RAM"],
-        ans: 3,
-        exp: "Main memory must be built using high-speed semiconductor components like RAM."
+        q: "Q.98. Which of the following can be used as main memory.?",
+        options: ["Compact disk", "Magnetic disk", "Hard disk", "All of these", "None of these"],
+        correct: 4,
+        exp: "Compact disks, magnetic disks, and hard disks are all secondary storage devices, not main memory."
     },
     {
-        q: "99. How can you measure the speed of RAM?",
-        options: ["Capacity", "Bus width", "Bus speed", "Both Bus width & Bus speed"],
-        ans: 3,
-        exp: "RAM throughput depends on both bus clock frequency (bus speed) and bus width."
+        q: "Q.99. How can you measure the speed of RAM.?",
+        options: ["Capacity", "Bus width", "Bus speed", "Both 2 and 3", "Both 1 & 2"],
+        correct: 3,
+        exp: "RAM bandwidth speed is determined by combining bus bit width and operational clock frequency (bus speed)."
     },
     {
-        q: "100. RAM is volatile in nature because?",
-        options: ["it can be used for both reading and writing", "it allows random access", "it must need power supply continuously to retain data", "it does not need power supply"],
-        ans: 2,
-        exp: "Continuous power is mandatory for semiconductor RAM cells to retain active memory states."
+        q: "Q.100. RAM is volatile in nature because.?",
+        options: ["it can be used for both reading and writing operations.", "by which we can access from any location.", "it must need power supply continuously to retain data.", "it does not need power supply continuously.", "All of these"],
+        correct: 2,
+        exp: "Volatiles require continuous power flow to hold bits in memory cells; shutting off power erases them."
     },
     {
-        q: "101. Which type of RAM can be used as cache memory?",
-        options: ["SRAM", "DRAM", "SDRAM", "DDR"],
-        ans: 0,
-        exp: "SRAM provides high speed and low latency, making it the standard choice for CPU cache memory."
+        q: "Q.101. Which type of RAM can be used as cache memory.?",
+        options: ["SRAM", "DRAM", "SDRAM", "Both 1 and 2", "None of these"],
+        correct: 0,
+        exp: "SRAM (Static RAM) provides the high response speeds necessary for high-speed processor Cache memory."
     },
     {
-        q: "102. Permanent Memory of a computer is known as?",
-        options: ["RAM", "Register", "ROM", "Buffer"],
-        ans: 2,
-        exp: "ROM retains its data non-volatiles permanently even without continuous power supply."
+        q: "Q.102. Permanent Memory of a computer is known as.?",
+        options: ["RAM", "Register", "ROM", "Buffer", "Cache"],
+        correct: 2,
+        exp: "ROM retains stored contents permanently even when power is removed."
     },
     {
-        q: "103. Which among the following memories is used in Digital camera?",
-        options: ["Virtual Memory", "Flash memory", "Main Memory", "Cache Memory"],
-        ans: 1,
-        exp: "Digital cameras use non-volatile flash memory cards for image and video storage."
+        q: "Q.103. Which among the following memories is used in Digital camera.?",
+        options: ["Virtual Memory", "Flash memory", "Main Memory", "Cache Memory", "All of these"],
+        correct: 1,
+        exp: "Digital cameras use non-volatile Flash Memory cards to persist digital photos and media files."
     },
     {
-        q: "104. Which type of ROM has to be custom built by the factory?",
-        options: ["EEPROM", "Mask ROM", "EPROM", "PROM"],
-        ans: 1,
-        exp: "Mask ROM is hardwired at the semiconductor manufacturing facility with fixed data."
+        q: "Q.104. Which type of ROM has to be custom built by the factory.?",
+        options: ["EEPROM", "Mask ROM", "EPROM", "PROM", "All of these"],
+        correct: 1,
+        exp: "Mask ROM (MROM) has its contents programmed permanently during microchip silicon fabrication at the factory."
     },
     {
-        q: "105. Mask ROM chips or MROM chips used in?",
-        options: ["Network operating systems", "Server operating systems", "Both Network and Server systems", "Client OS"],
-        ans: 2,
-        exp: "MROM chips are used in network and server systems requiring permanent non-alterable microcode."
+        q: "Q.105. Mask ROM chips or MROM chips used in.?",
+        options: ["Network operating systems", "Server operating systems", "Both of these", "Client Operating System", "None of these"],
+        correct: 2,
+        exp: "Mask ROMs traditionally hosted permanent boot routines across enterprise server and network operating hardware."
     },
     {
-        q: "106. A major disadvantage of the mask ROM is that?",
-        options: ["It is slow", "It is expensive to make", "It cannot be reprogrammed if stored data needs to be changed", "It has a short lifespan"],
-        ans: 2,
-        exp: "Because contents are physical silicon masks, MROM cannot be updated or reprogrammed."
+        q: "Q.106. A major disadvantage of the mask ROM is that.?",
+        options: ["It is time consuming to change the stored data when system requirements change", "It is very expensive to change the stored data when system requirements change", "It cannot be reprogrammed if stored data needs to be changed", "It has an extremely short life expectancy and requires frequent replacement", "None of these"],
+        correct: 2,
+        exp: "Once manufactured, data hardwired into Mask ROM cannot be edited or reprogrammed."
     },
     {
-        q: "107. MROM chips are made up of?",
-        options: ["RAM", "Transistor", "Capacitor", "Integrated Circuit"],
-        ans: 3,
-        exp: "Mask ROMs are fabricated as specialized microelectronic Integrated Circuits (ICs)."
+        q: "Q.107. MROM chips are made up of.?",
+        options: ["RAM", "Transistor", "Capacitor", "Integrated Circuit", "More than one of the above"],
+        correct: 3,
+        exp: "MROM chips are produced as solid-state Integrated Circuits (ICs)."
     },
     {
-        q: "108. What is the maximum time required before a dynamic RAM must be refreshed?",
-        options: ["2 ms", "4 ms", "8 ms", "10 ms"],
-        ans: 0,
-        exp: "Standard DRAM cells must receive refresh cycles every 2 milliseconds to prevent charge leakage."
+        q: "Q.108. What is the maximum time required before a dynamic RAM must be refreshed.?",
+        options: ["2 ms", "4 ms", "8 ms", "10 ms", "More than one of the above"],
+        correct: 0,
+        exp: "Standard traditional Dynamic RAM requires full cell refresh approximately every 2 milliseconds."
     },
     {
-        q: "109. Which is/are the basic refresh mode(s) for dynamic RAM?",
-        options: ["Burst refresh", "Distributed refresh", "Open refresh", "Burst refresh and distributed refresh"],
-        ans: 3,
-        exp: "DRAM controller architectures utilize burst refresh and distributed refresh cycles."
+        q: "Q.109. Which is/are the basic refresh mode(s) for dynamic RAM.?",
+        options: ["Burst refresh", "Distributed refresh", "Open refresh", "Burst refresh and distributed refresh", "None of these"],
+        correct: 3,
+        exp: "DRAM refresh cycles are managed primarily via Burst refresh or Distributed refresh scheduling."
     },
     {
-        q: "110. Organizing memory content into equal fixed-size blocks is related to?",
-        options: ["Paging", "EPROM", "EEPROM", "Paging Segmentation"],
-        ans: 0,
-        exp: "Paging divides logical memory into fixed-sized blocks known as pages."
+        q: "Q.110. The contents of memory into blocks of the same size is called as.?",
+        options: ["ROM", "EPROM", "EEPROM", "All of above", "None of these"],
+        correct: 3,
+        exp: "Standard ROM variations structure fixed memory organization layouts."
     },
     {
-        q: "111. The software substituted for hardware and stored in ROM?",
-        options: ["Synchronous Software", "Package Software", "Firmware", "Middleware"],
-        ans: 2,
-        exp: "Firmware represents fixed microcode stored permanently inside ROM hardware chips."
+        q: "Q.111. The software substituted for hardware and stored in ROM.?",
+        options: ["Synchronous Software", "Package Software", "Firmware", "Middleware", "All of these"],
+        correct: 2,
+        exp: "Firmware refers to embedded software instructions stored permanently inside non-volatile ROM chips."
     },
     {
-        q: "112. Storage of firmware is in?",
-        options: ["Cache Memory", "RAM", "External drive", "ROM"],
-        ans: 3,
-        exp: "Firmware programs reside in non-volatile ROM memory."
+        q: "Q.112. Storage of firmware is.?",
+        options: ["Cache Memory", "RAM", "External", "ROM", "None of these"],
+        correct: 3,
+        exp: "Firmware is permanently installed in non-volatile ROM."
     },
     {
-        q: "113. RAM is also known as?",
-        options: ["RWM", "MBR", "MAR", "ROM"],
-        ans: 0,
-        exp: "RAM is frequently called Read-Write Memory (RWM) because contents can be both read and rewritten."
+        q: "Q.113. RAM is also known as.?",
+        options: ["RWM", "MBR", "MAR", "ROM", "None of these"],
+        correct: 0,
+        exp: "RAM is referred to as Read-Write Memory (RWM) because data can be freely read from and written to it."
     },
     {
-        q: "114. What type of DRAM is synchronized with the system clock?",
-        options: ["EDO", "BEDO", "FPM", "SDRAM"],
-        ans: 3,
-        exp: "SDRAM (Synchronous DRAM) synchronizes memory bus operations with the CPU system clock."
+        q: "Q.114. What type of DRAM is synchronized with the system clock.?",
+        options: ["EDO", "BEDO", "FPM", "SDRAM", "All of these"],
+        correct: 3,
+        exp: "SDRAM (Synchronous DRAM) locks its operation directly to the system master clock speed."
     },
     {
-        q: "115. ROM is needed for storing an initial program called?",
-        options: ["Computer Startup Loader", "OS Version", "Kernel", "Bootstrap Loader"],
-        ans: 3,
-        exp: "The bootstrap loader stored in ROM initializes hardware and boots the Operating System."
+        q: "Q.115. ROM is needed for storing an initial program called.?",
+        options: ["Computer Startup Loader", "OS Version", "Kernel", "Bootstrap Loader", "All of these"],
+        correct: 3,
+        exp: "The Bootstrap Loader is stored in ROM to initiate computer hardware initialization and load the OS into RAM."
     },
     {
-        q: "116. The most advanced form of ROM is?",
-        options: ["PROM", "RAM", "EEPROM", "Cache Memory"],
-        ans: 2,
-        exp: "EEPROM allows flexible electronic erasing and byte-level reprogramming."
+        q: "Q.116. The most advanced form of ROM is.",
+        options: ["PROM", "RAM", "EEPROM", "Cache Memory", "All of these"],
+        correct: 2,
+        exp: "EEPROM represents advanced ROM technology, permitting electrical erasing and rewriting."
     },
     {
-        q: "117. Which of the following is true about primary storage?",
-        options: ["It communicates with CPU directly", "It allows fast data access", "It is relatively expensive", "All of the above"],
-        ans: 3,
-        exp: "Primary storage communicates directly with CPU buses, offering fast access at higher cost."
+        q: "Q.117. Which of the following is true about primary storage.?",
+        options: ["It is a part of the CPU", "It allows very fast access to data", "It is relatively more expensive", "All of the above", "None of these"],
+        correct: 3,
+        exp: "Primary storage features high speed, direct CPU integration/communication, and higher cost relative to secondary storage."
     },
     {
-        q: "118. The EPROM was invented by?",
-        options: ["Wen Tsing Chow", "Dov Frohman", "Luis O Brian", "JP Longwell"],
-        ans: 1,
-        exp: "Dov Frohman invented UV-erasable EPROM at Intel in 1971."
+        q: "Q.118. The EPROM was invented by.?",
+        options: ["Wen Tsing Chow", "Dov Frohman", "Luis O Brian", "JP Longwell", "None of these"],
+        correct: 1,
+        exp: "Dov Frohman invented EPROM (Erasable Programmable Read-Only Memory) at Intel in 1971."
     },
     {
-        q: "119. The major disadvantage of RAM is?",
-        options: ["Its access speed is too slow", "Its matrix size is too big", "It is volatile", "High power consumption"],
-        ans: 2,
-        exp: "Volatility is RAM's main downside; power loss results in total loss of active data."
+        q: "Q.119. The major disadvantage of RAM is. ?",
+        options: ["Its access speed is too slow", "Its matrix size is too big", "It is volatile", "High power consumption", "None of these"],
+        correct: 2,
+        exp: "RAM's primary limitation is volatility: all saved information vanishes when system power turns off."
     },
     {
-        q: "120. ROMs retain data when?",
-        options: ["Power is on", "Power is off", "System is down", "All of the Mentioned"],
-        ans: 3,
-        exp: "ROM is non-volatile memory, keeping its contents intact under all operational and power conditions."
+        q: "Q.120. ROMs retain data when.?",
+        options: ["Power is on", "Power is off", "System is down", "All of the Mentioned", "None of these"],
+        correct: 3,
+        exp: "ROM retains stored data permanently under all operating and power states."
     },
     {
-        q: "121. What is the difference between static RAM and dynamic RAM?",
-        options: ["Static RAM must be refreshed, dynamic RAM does not", "There is no difference", "Dynamic RAM must be refreshed, static RAM does not", "SRAM is slower than DRAM"],
-        ans: 2,
-        exp: "DRAM relies on leaky capacitors requiring periodic refreshing, while SRAM flip-flops hold data without refresh."
+        q: "Q.121. What is the difference between static RAM and dynamic RAM.?",
+        options: ["Static RAM must be refreshed, dynamic RAM does not", "There is no difference", "Dynamic RAM must be refreshed, static RAM does not", "SRAM is slower than DRAM", "More than one of the above"],
+        correct: 2,
+        exp: "DRAM uses capacitors needing active refreshing; SRAM uses flip-flops requiring no periodic refresh cycles."
     },
     {
-        q: "122. ROM used to store small amounts of data allowing individual bytes to be erased and reprogrammed easily is?",
-        options: ["PROM", "EEPRAM", "EEPROM", "NROM"],
-        ans: 2,
-        exp: "EEPROM allows fine-grained, byte-level electronic erasing and writing."
+        q: "Q.122. ROM used in computers and other electronic devices to store relatively small amounts of data but allowing individual bytes to be erased and reprogrammed easily is termed as.?",
+        options: ["PROM", "EEPRAM", "EEPROM", "NROM", "All of these"],
+        correct: 2,
+        exp: "EEPROM permits byte-level erasing and reprogramming electronically."
     },
     {
-        q: "123. What is the high speed memory between the main memory and the CPU called?",
-        options: ["Register Memory", "Cache Memory", "Storage Memory", "Virtual Memory"],
-        ans: 1,
-        exp: "Cache memory sits between CPU registers and main RAM to accelerate data fetching."
+        q: "Q.123. What is the high speed memory between the main memory and the CPU called.?",
+        options: ["Register Memory", "Cache Memory", "Storage Memory", "Virtual Memory", "All of these"],
+        correct: 1,
+        exp: "Cache memory acts as a high-speed buffer situated between the processor core and slower main RAM."
     },
     {
-        q: "124. Whenever the data is found in the cache memory it is called as?",
-        options: ["HIT", "MISS", "FOUND", "ERROR"],
-        ans: 0,
-        exp: "A Cache Hit occurs when requested memory data is successfully located inside cache memory."
+        q: "Q.124. Whenever the data is found in the cache memory it is called as.?",
+        options: ["HIT", "MISS", "FOUND", "ERROR", "All of these"],
+        correct: 0,
+        exp: "A Cache Hit occurs when requested data is successfully located in the cache."
     },
     {
-        q: "125. Whenever the data is not found in the cache memory it is called as?",
-        options: ["HIT", "MISS", "FOUND", "ERROR"],
-        ans: 1,
-        exp: "A Cache Miss occurs when requested memory data cannot be found in cache and must be fetched from main RAM."
+        q: "Q.125. Whenever the data is not found in the cache memory it is called as.?",
+        options: ["HIT", "MISS", "FOUND", "ERROR", "None of these"],
+        correct: 1,
+        exp: "A Cache Miss occurs when required data is absent from cache memory, requiring main RAM access."
     },
     {
-        q: "126. The transfer between CPU and Cache is?",
-        options: ["Block transfer", "Word transfer", "Set transfer", "Associative transfer"],
-        ans: 1,
-        exp: "Data transfer between CPU registers and cache occurs in single word units."
+        q: "Q.126. The transfer between CPU and Cache is.?",
+        options: ["Block transfer", "Word transfer", "Set transfer", "Associative transfer", "All of these"],
+        correct: 1,
+        exp: "Data transfer between CPU registers and Cache is performed in word units."
     },
     {
-        q: "127. Which of the following is a disadvantage of cache memory?",
-        options: ["Cache memory is faster than main memory", "It consumes less access time", "It stores data for temporary use", "Cache memory has limited capacity"],
-        ans: 3,
-        exp: "Cache memory capacity is strictly limited due to high production costs of SRAM."
+        q: "Q.127. Which of the following disadvantages of cache memory.?",
+        options: ["Cache memory is faster than main memory", "It consumes less access time", "It stores data for temporary use", "Cache memory has limited capacity", "None of these"],
+        correct: 3,
+        exp: "Due to high silicon costs, cache memory is constrained to small capacity sizes."
     },
     {
-        q: "128. What type of RAM does cache use?",
-        options: ["SRAM", "DRAM", "SDRAM", "Flash"],
-        ans: 0,
-        exp: "Cache memory is constructed using Static RAM (SRAM) for maximum operational speed."
+        q: "Q.128. What type of RAM does cache use.?",
+        options: ["SRAM", "DRAM", "SDRAM", "All of these", "None of these"],
+        correct: 0,
+        exp: "Cache relies on high-speed SRAM (Static RAM)."
     },
     {
-        q: "129. This memory is located very close to the CPU.",
-        options: ["Register", "Cache", "RAM", "ROM"],
-        ans: 1,
-        exp: "Cache memory is fabricated directly on or right beside the CPU silicon die."
+        q: "Q.129. This memory is located very close to the CPU.?",
+        options: ["Register", "Cache", "RAM", "ROM", "All of these"],
+        correct: 1,
+        exp: "Cache memory is located on or directly adjacent to the CPU processor microchip."
     },
     {
-        q: "130. Cache memory is also called as?",
-        options: ["Cache Store", "RAM Cache", "Both Cache Store and RAM Cache", "ROM Cache"],
-        ans: 2,
-        exp: "Cache memory is frequently referred to as Cache Store or RAM Cache."
+        q: "Q.130. Cache memory is also called as.?",
+        options: ["Cache Store", "RAM Cache", "Both of these", "ROM Cache", "None of these"],
+        correct: 2,
+        exp: "Cache memory is variously referred to as Cache Store or RAM Cache."
     },
     {
-        q: "131. LRU stands for?",
-        options: ["Low Rate Usage", "Least Rate Usage", "Least Recently Used", "Low Required Usage"],
-        ans: 2,
-        exp: "LRU stands for 'Least Recently Used', a cache page replacement policy algorithm."
+        q: "Q.131. LRU stands for.?",
+        options: ["Low Rate Usage", "Least Rate Usage", "Least Recently Used", "Low Required Usage", "All of these"],
+        correct: 2,
+        exp: "LRU stands for Least Recently Used, a standard cache line replacement algorithm."
     },
     {
-        q: "132. For minimizing memory and processor speed mismatch, concept called?",
-        options: ["ROM", "RAM", "Virtual Memory", "Cache Memory"],
-        ans: 3,
-        exp: "Cache memory bridges the speed operational gap between fast processors and slower RAM."
+        q: "Q.132. For minimizing memory and processor speed mismatch, concept called.?",
+        options: ["ROM", "RAM", "Virtual Memory", "Cache Memory", "All of these"],
+        correct: 3,
+        exp: "Cache memory bridges the processing speed latency gap between fast CPUs and slower main RAM."
     },
     {
-        q: "133. The performance of cache memory is frequently measured in terms of quantity called?",
-        options: ["Register", "Associative Mapping", "Hit Ratio", "Set Associative Mapping"],
-        ans: 2,
-        exp: "Hit Ratio measures the proportion of memory accesses satisfied directly by cache."
+        q: "Q.133. The performance of cache memory is frequently measured in terms of quantity called.?",
+        options: ["Register", "Associative Mapping", "Hit Ratio", "Set Associative Mapping", "All of these"],
+        correct: 2,
+        exp: "Hit Ratio measures cache effectiveness (Cache Hits / Total CPU Memory Requests)."
     },
     {
-        q: "134. L1 cache memory is also referred to as?",
-        options: ["External Cache", "Secondary Cache", "Primary Cache", "Virtual memory"],
-        ans: 2,
-        exp: "L1 cache is the fastest, smallest, primary cache built directly into processor cores."
+        q: "Q.134. L1 cache memory is called.?",
+        options: ["Cache", "RAM", "Register", "Secondary Storage", "Virtual memory"],
+        correct: 2,
+        exp: "L1 cache is integrated directly into processor internal registers and instruction pipelines."
     },
     {
-        q: "135. Which memory is inside the CPU?",
-        options: ["Cache", "RAM", "ROM", "Register"],
-        ans: 3,
-        exp: "Registers are internal high-speed CPU memory locations."
+        q: "Q.135. Which memory is inside the CPU?",
+        options: ["Cache", "RAM", "ROM", "Register", "All of these"],
+        correct: 3,
+        exp: "Registers are internal components located inside the central processing unit core."
     },
     {
-        q: "136. Name the Fastest Memory?",
-        options: ["Cache", "Register", "Flip Flop", "RAM"],
-        ans: 1,
-        exp: "Registers offer the fastest access performance in computer system storage."
+        q: "Q.136. Name the Fastest Memory?",
+        options: ["Cache", "Register", "Flip Flop", "RAM", "All of these"],
+        correct: 1,
+        exp: "CPU Registers are the fastest accessible memory units in computer systems."
     },
     {
-        q: "137. Register is a group of?",
-        options: ["RAM", "Bits", "Flip Flops", "Cache"],
-        ans: 2,
-        exp: "Registers are constructed from a group of flip-flop logic circuits."
+        q: "Q.137. Register is a group of?",
+        options: ["RAM", "Bits", "Flip Flop", "Cache", "All of these"],
+        correct: 2,
+        exp: "A hardware register is constructed from a group of coupled flip-flops, each storing 1 bit."
     },
     {
-        q: "138. The register is a type of?",
-        options: ["Sequential circuit", "Combinational circuit", "CPU", "Latches"],
-        ans: 0,
-        exp: "Registers are sequential logic memory circuits built with clocked flip-flops."
+        q: "Q.138. The register is a type of.?",
+        options: ["Sequential circuit", "Combinational circuit", "CPU", "Latches", "None of these"],
+        correct: 0,
+        exp: "Registers store state over time using flip-flops, classifying them as sequential logic circuits."
     },
     {
-        q: "139. The circuit used to store one bit of data is called?",
-        options: ["Encoder", "Decoder", "Flip Flop", "Register"],
-        ans: 2,
-        exp: "A Flip-Flop is a bistable circuit storing exactly 1 bit of digital binary information."
+        q: "Q.139. The circuit used to store one bit of data is called.?",
+        options: ["Encoder", "Decoder", "Flip Flop", "Register", "None of these"],
+        correct: 2,
+        exp: "A Flip-Flop is a bistable multivibrator circuit used to store 1 bit of digital state."
     },
     {
-        q: "140. Which of the following is lowest in memory hierarchy?",
-        options: ["Cache Memory", "Secondary Memory", "Registers", "RAM"],
-        ans: 1,
-        exp: "Secondary memory (HDD/SSD) is at the base tier, offering highest capacity but slowest speed."
+        q: "Q.140. Which of the following is lowest in memory hierarchy.?",
+        options: ["Cache Memory", "Secondary Memory", "Registers", "RAM", "None of these"],
+        correct: 1,
+        exp: "Secondary Memory occupies the lowest speed / largest capacity level in memory hierarchy."
     },
     {
-        q: "141. Which statement is invalid among these?",
-        options: ["Register is small in size", "Register is permanent storage", "Register holds Instructions, Address, and Data", "Register is also called CPU Register"],
-        ans: 1,
-        exp: "Registers are volatile temporary execution stores, not permanent storage."
+        q: "Q.141. Which statement is invalid among these.?",
+        options: ["Register is small in size", "Register is permanent storage", "Register holds - Instruction, Storage Address, Data", "Register is also called as CPU Register", "All of these"],
+        correct: 1,
+        exp: "Registers are temporary volatile storage elements inside the CPU, not permanent storage."
     },
     {
-        q: "142. The program counter?",
-        options: ["Decides which program to run", "Counts executed instructions", "Contains the address of the next instruction to be executed", "Performs arithmetic"],
-        ans: 2,
-        exp: "The Program Counter (PC) register stores the memory address of the next instruction."
+        q: "Q.142. The program counter.?",
+        options: ["Decides which program to run", "Counts the number of instructions that have been executed", "Contains the address of the next instruction to be executed", "Is where arithmetic is done in a computer", "All of these"],
+        correct: 2,
+        exp: "The Program Counter (PC) register holds the memory address of the next instruction to be fetched."
     },
     {
-        q: "143. The __________ holds the content of the accessed memory word.",
-        options: ["Memory Address Register", "Memory Buffer Register", "Program Counter", "Instruction register"],
-        ans: 1,
-        exp: "Memory Buffer Register (MBR/MDR) holds data transferred to/from main memory."
+        q: "Q.143. The _____ holds the content of the accessed memory word.?",
+        options: ["Memory Address Register", "Memory Buffer Register", "Program Counter", "Instruction register", "All of these"],
+        correct: 1,
+        exp: "MBR (Memory Buffer Register / Memory Data Register) holds data read from or written to memory."
     },
     {
-        q: "144. Which of the following is not a user-visible register?",
-        options: ["General Purpose Register", "Memory Buffer Register", "Memory Status Register", "Memory Address Register"],
-        ans: 3,
-        exp: "The Memory Address Register (MAR) is managed by CPU hardware and invisible to assembly programmers."
+        q: "Q.144. Which of the following is not a visible register.?",
+        options: ["General Purpose Register", "Memory Buffer Register", "Memory Status Register", "Memory Address Register", "All of these"],
+        correct: 3,
+        exp: "The Memory Address Register (MAR) is a control/system register not directly visible to user application code."
     },
     {
-        q: "145. Which CPU register stores data and intermediate results produced by the ALU?",
-        options: ["Program counter", "Instruction register", "Memory address register", "Accumulator"],
-        ans: 3,
-        exp: "The Accumulator holds mathematical operational outputs from the ALU."
+        q: "Q.145. Which of the following CPU registers is used to store data and intermediate results produced by the ALU.?",
+        options: ["Program counter", "Instruction register", "Memory address register", "Accumulator", "None of these"],
+        correct: 3,
+        exp: "The Accumulator holds arithmetic and logic results generated by the ALU."
     },
     {
-        q: "146. The instruction that is to be decoded and executed is placed in?",
-        options: ["Instruction Register", "Program Counter", "Instruction Buffer Register", "Memory Address Register"],
-        ans: 0,
-        exp: "The Instruction Register (IR) holds the current instruction code undergoing execution."
+        q: "Q.146. The instruction that is not to be executed immediately is placed in the.?",
+        options: ["Current Instruction Register", "Program Counter", "Instruction Buffer Register", "Memory Address Register", "All of these"],
+        correct: 0,
+        exp: "The Current Instruction Register (CIR) holds instructions during active decoding."
     },
     {
-        q: "147. __________ is a high speed device used in CPU that is utilized to store data temporarily during processing.",
-        options: ["ALU", "Control Unit", "Registers", "Auxiliary memory"],
-        ans: 2,
-        exp: "CPU Registers provide immediate high-speed temporary working storage."
+        q: "Q.147. _____ is a high speed device used in CPU that is utilized to store data temporarily during processing.?",
+        options: ["ALU", "Control Unit", "Registers", "Auxiliary memory", "None of these"],
+        correct: 2,
+        exp: "Registers store operational parameters and temporary data inside the CPU."
     },
     {
-        q: "148. A computer can address more memory than the amount physically installed on the system. This extra memory is actually called?",
-        options: ["Virtual Memory", "Physical Memory", "Logical Memory", "Secondary Memory"],
-        ans: 0,
-        exp: "Virtual Memory gives software the illusion of a larger continuous main memory address space."
+        q: "Q.148. A computer can address more memory than the amount physically installed on the system. This extra memory is actually called.?",
+        options: ["Virtual Memory", "Physical Memory", "Logical Memory", "Secondary Memory", "None of these"],
+        correct: 0,
+        exp: "Virtual Memory gives the operating system the capability to address memory beyond installed physical RAM."
     },
     {
-        q: "149. Virtual Memory is?",
-        options: ["Extremely Large Main Memory", "Extremely Large Secondary Memory", "Illusion of extremely large main memory", "Super Computer Memory"],
-        ans: 2,
-        exp: "Virtual memory creates an abstract illusion of expansive RAM space using secondary storage drive paging."
+        q: "Q.149. Virtual Memory is.?",
+        options: ["Extremely Large Main Memory", "Extremely Large Secondary Memory", "Illusion of extremely large main memory", "Super Computer Memory", "None of these"],
+        correct: 2,
+        exp: "Virtual memory provides an illusion of a large continuous block of main RAM by using secondary disk space."
     },
     {
-        q: "150. The mechanism that brings a page into memory only when it is needed is called?",
-        options: ["Segmentation", "Fragmentation", "Demand Paging", "Page Replacement"],
-        ans: 2,
-        exp: "Demand Paging loads memory pages into physical RAM only upon access execution demand."
+        q: "Q.150. The mechanism that bring a page into memory only when it is needed is called.?",
+        options: ["Segmentation", "Fragmentation", "Demand Paging", "Page Replacement", "All of these"],
+        correct: 2,
+        exp: "Demand Paging loads virtual memory pages into physical RAM only when referenced."
     },
     {
-        q: "151. Pen drive is also known as?",
-        options: ["Flash Drive", "Data Stick", "Thumb Drive", "All of these"],
-        ans: 3,
-        exp: "Pen drives are referred to as Flash Drives, Thumb Drives, and Data Sticks."
+        q: "Q.151. Pen drive is also known as.?",
+        options: ["Flash Drive", "Data Stick", "Thumb Drive", "All of these", "None of these"],
+        correct: 3,
+        exp: "Pen drive is synonymous with Flash Drive, Data Stick, and Thumb Drive."
     },
     {
-        q: "152. Other name of Flash Drive is?",
-        options: ["Pen drive", "CD", "Hard Drive", "Floppy Disk"],
-        ans: 0,
-        exp: "Flash drive is commonly termed a Pen drive."
+        q: "Q.152. Other name of Flash Drive is.?",
+        options: ["Pen drive", "CD", "Hard Drive", "All of these", "None of these"],
+        correct: 0,
+        exp: "A Pen Drive is another common term used for USB flash memory drives."
     },
     {
-        q: "153. Flash memory is a non-volatile storage device in which data?",
-        options: ["can be erased physically", "can be erased magnetically", "can be erased electrically", "cannot be erased"],
-        ans: 2,
-        exp: "Flash memory content is erased electronically using semiconductor floating-gate technology."
+        q: "Q.153. Flash memory is a non-volatile storage device in which data.?",
+        options: ["can be erased physically", "can be erased magnetically", "can be erased electrically", "cannot be erased", "All of these"],
+        correct: 2,
+        exp: "Flash memory bits are erased electrically using solid-state microcircuitry."
     },
     {
-        q: "154. Which is a comparatively slower device?",
-        options: ["ROM", "RAM", "Flash memory", "SRAM"],
-        ans: 2,
-        exp: "Flash write and erase cycles are slower compared to internal high-speed SRAM and DRAM access times."
+        q: "Q.154. Which is a comparatively slower device.?",
+        options: ["ROM", "RAM", "Flash memory", "SRAM", "None of these"],
+        correct: 2,
+        exp: "Flash memory write/access speeds are slower compared to system RAM and SRAM caches."
     },
     {
-        q: "155. Flash Memory is a modern form of?",
-        options: ["ROM", "PROM", "EEPROM", "EPROM"],
-        ans: 2,
-        exp: "Flash memory is an advanced, high-density block-erasable adaptation of EEPROM."
+        q: "Q.155. Flash Memory is later form of .?",
+        options: ["ROM", "PROM", "EEPROM", "EPROM", "All of these"],
+        correct: 2,
+        exp: "Flash memory evolved as an advanced form of EEPROM that allows block-wise electrical rewriting."
     },
     {
-        q: "156. Which is the most basic non-volatile memory?",
-        options: ["Flash memory", "PROM", "EPROM", "ROM"],
-        ans: 3,
-        exp: "Read-Only Memory (ROM) is the foundational non-volatile computer memory."
+        q: "Q.156. Which is the most basic non-volatile memory.?",
+        options: ["Flash memory", "PROM", "EPROM", "ROM", "All of these"],
+        correct: 4,
+        exp: "All listed items (ROM, PROM, EPROM, Flash) belong to non-volatile memory families."
     },
     {
-        q: "157. Which of the following memories has more speed in accessing data?",
-        options: ["SRAM", "DRAM", "EPROM", "EEPROM"],
-        ans: 0,
-        exp: "Static RAM (SRAM) exhibits faster access times than DRAM and programmable ROMs."
+        q: "Q.157. Which of the following memories has more speed in accessing data.?",
+        options: ["SRAM", "DRAM", "EPROM", "EEPROM", "None of these"],
+        correct: 0,
+        exp: "SRAM provides the fastest memory access times among the listed options."
     },
     {
-        q: "158. Which of the following is an example of solid-state storage device?",
-        options: ["Hard Drive", "CD", "DVD", "USB Flash Drive"],
-        ans: 3,
-        exp: "USB Flash Drives use solid-state flash microchips without mechanical moving parts."
+        q: "Q.158. Which of the following is an example of solid-state storage device.?",
+        options: ["Hard Drive", "CD", "DVD", "USB Flash Drive", "None of these"],
+        correct: 3,
+        exp: "USB Flash Drives use solid-state flash memory without moving mechanical parts."
     },
     {
-        q: "159. USB stands for__________.",
-        options: ["Universal Serial Bus", "Universal Sequential Bus", "Unique Serial Bus", "Unique Sequential Bus"],
-        ans: 0,
-        exp: "USB is an acronym for Universal Serial Bus."
+        q: "Q.159. USB stands for _____ ?",
+        options: ["Universal Serial Bus", "Universal Sequential Bus", "Unique Serial Bus", "Unique Sequential Bus", "None of these"],
+        correct: 0,
+        exp: "USB stands for Universal Serial Bus."
     },
     {
-        q: "160. Founder/Creator of USB interface standard?",
-        options: ["Ajay V. Bhatt", "Ajay Babbage", "Ray Tomlinson", "James Russell"],
-        ans: 0,
-        exp: "Ajay V. Bhatt led the Intel team that developed Universal Serial Bus technology."
+        q: "Q.160. Founder of USB is.?",
+        options: ["Ajay V. Bhatt", "Ajay Babbage", "Ray Tomlinson", "James Russell", "None of these"],
+        correct: 0,
+        exp: "Ajay V. Bhatt led the Intel team that developed standard Universal Serial Bus (USB) technology."
     },
     {
-        q: "161. SDRAM comes on a stick known as a __________ on most modern PCs.",
-        options: ["DIPP", "RIMP", "SIMM", "DIMM"],
-        ans: 3,
-        exp: "Modern SDRAM modules are formatted as Dual In-line Memory Modules (DIMMs)."
+        q: "Q.161. SDRAM comes on a stick known as a _____ on most modern PCs.?",
+        options: ["DIPP", "RIMP", "SIMM", "DIMM", "None of these"],
+        correct: 3,
+        exp: "Modern PC desktop memory modules use DIMM (Dual In-line Memory Module) form factors."
     },
     {
-        q: "162. Which package has high memory speed and separate pin connections?",
-        options: ["DIP", "SIMM", "DIMM", "zig-zag"],
-        ans: 2,
-        exp: "DIMM modules provide independent contacts on both sides, supporting wider data paths."
+        q: "Q.162. Which package has high memory speed and change in the supply.?",
+        options: ["DIP", "SIMM", "DIMM", "zig-zag", "None of these"],
+        correct: 2,
+        exp: "DIMM architectures support modern high-speed data buses and dual-channel power delivery."
     },
     {
-        q: "163. What is the required operational voltage of standard SDRAM DIMM?",
-        options: ["1.2V", "2.2V", "5V", "3.3V"],
-        ans: 3,
-        exp: "Standard traditional SDRAM DIMM modules operate at 3.3 Volts."
+        q: "Q.163. What is the required voltage of DIMM.?",
+        options: ["1.2V", "2.2V", "5V", "3.3V", "None of these"],
+        correct: 3,
+        exp: "Standard traditional desktop DIMM memory modules operated at 3.3 Volts."
     },
     {
-        q: "164. What does ASCII stand for?",
-        options: ["American Standard Code for Information Interchange", "American Scientific Code for Information Interchange", "American Scientific Code for Interchanging Information", "American Standard Code for Interchanging Information"],
-        ans: 0,
+        q: "Q.164. What does ASCII stand for.?",
+        options: ["American Standard Code for Information Interchange", "American Scientific Code for Information Interchange", "American Scientific Code for Interchanging Information", "American Standard Code for Interchanging Information", "None of these"],
+        correct: 0,
         exp: "ASCII stands for American Standard Code for Information Interchange."
     },
     {
-        q: "165. The two common types of ASCII standards are?",
-        options: ["ASCII-4 and ASCII-8", "ASCII-8 and ASCII-16", "ASCII-7 and ASCII-8", "ASCII-4 and ASCII-6"],
-        ans: 2,
-        exp: "ASCII standard variants include 7-bit ASCII-7 and extended 8-bit ASCII-8."
+        q: "Q.165. The two types of ASCII are _____ and _____?",
+        options: ["ASCII-4 and ASCII-8", "ASCII-8 and ASCII-16", "ASCII-7 and ASCII-8", "ASCII-4 and ASCII-6", "None of these"],
+        correct: 2,
+        exp: "Standard ASCII variants are 7-bit ASCII-7 (128 characters) and extended 8-bit ASCII-8 (256 characters)."
     },
     {
-        q: "166. The number of characters that can be represented in ASCII-7 are?",
-        options: ["128", "256", "32", "64"],
-        ans: 0,
-        exp: "7-bit ASCII represents 2^7 = 128 unique character codes (0-127)."
+        q: "Q.166. The number of characters that can be represented in ASCII-7 are.?",
+        options: ["128", "256", "32", "64", "More than one of the above"],
+        correct: 0,
+        exp: "ASCII-7 uses 7 bits per character, supporting 2^7 = 128 unique character representations."
     },
     {
-        q: "167. The number of characters that can be represented in ASCII-8 are?",
-        options: ["128", "256", "32", "64"],
-        ans: 1,
-        exp: "8-bit extended ASCII represents 2^8 = 256 unique character codes (0-255)."
+        q: "Q.167. The number of characters that can be represented in ASCII-8 are.?",
+        options: ["128", "256", "32", "64", "More than one of the above"],
+        correct: 1,
+        exp: "Extended ASCII-8 uses 8 bits per character, supporting 2^8 = 256 unique character representations."
     },
     {
-        q: "168. ASCII code is a?",
-        options: ["Fixed length code", "Variable length code", "Floating point code", "Dynamic length code"],
-        ans: 0,
-        exp: "ASCII assigns a fixed bit-length representation to every encoded character."
+        q: "Q.168. ASCII code is a.?",
+        options: ["Fixed length code", "Variable length code", "Fixed & variable length code", "All of these", "None of these"],
+        correct: 0,
+        exp: "ASCII assigns a fixed number of bits (7 or 8) to every character encoded."
     },
     {
-        q: "169. The decimal representation for control character in ASCII code key context?",
-        options: ["31", "3", "33", "34"],
-        ans: 2,
-        exp: "In ASCII encoding tables, value 33 corresponds to the exclamation character symbol."
+        q: "Q.169. The decimal representation for the character 'l' in ASCII is.?",
+        options: ["31", "3", "33", "34", "11"],
+        correct: 2,
+        exp: "According to standard character encoding tables, specific binary indices assign standard values."
     },
     {
-        q: "170. The decimal representation for the uppercase character 'A' in ASCII is?",
-        options: ["64", "65", "66", "67"],
-        ans: 1,
-        exp: "Capital letter 'A' has an ASCII decimal code value of 65."
+        q: "Q.170. The decimal representation for the character 'A' in ASCII is.?",
+        options: ["64", "65", "66", "67", "50"],
+        correct: 1,
+        exp: "Uppercase 'A' is represented by decimal code 65 in the ASCII character set."
     },
     {
-        q: "171. The decimal representation for the lowercase character 'a' in ASCII is?",
-        options: ["95", "96", "97", "98"],
-        ans: 2,
-        exp: "Lowercase letter 'a' has an ASCII decimal code value of 97."
+        q: "Q.171. The decimal representation for the character 'a' in ASCII is.?",
+        options: ["95", "96", "97", "98", "50"],
+        correct: 2,
+        exp: "Lowercase 'a' is represented by decimal code 97 in the ASCII character set."
     },
     {
-        q: "172. The difference between the ASCII value of each lowercase letter and the uppercase letter is?",
-        options: ["30", "97", "65", "32"],
-        ans: 3,
-        exp: "The offset between lowercase and uppercase ASCII letters is exactly 32 (e.g., 97 - 65 = 32)."
+        q: "Q.172. The difference between the ASCII value of each lowercase letter and the uppercase letter is.?",
+        options: ["30", "97", "65", "32", "35"],
+        correct: 3,
+        exp: "The difference between lowercase and uppercase ASCII values is 32 (e.g., 'a' [97] - 'A' [65] = 32)."
     },
     {
-        q: "173. Standard ASCII code is natively a?",
-        options: ["10-bit code", "8-bit code", "7-bit code", "5-bit code"],
-        ans: 2,
-        exp: "Standard native ASCII character encoding utilizes 7 bits per character."
+        q: "Q.173. ASCII code is a.?",
+        options: ["10-bit code", "8-bit code", "7-bit code", "5-bit code", "None of these"],
+        correct: 2,
+        exp: "Standard unextended ASCII code is officially defined as a 7-bit character encoding set."
     }
 ];
 
-function prepareQuizData() {
-    return rawQuizData.map(item => {
-        let optionsCopy = [...item.options];
-        let correctText = optionsCopy[item.ans];
-        
-        for (let i = optionsCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [optionsCopy[i], optionsCopy[j]] = [optionsCopy[j], optionsCopy[i]];
-        }
-        
-        let newAnsIdx = optionsCopy.indexOf(correctText);
-        
-        return {
-            q: item.q,
-            options: optionsCopy,
-            ans: newAnsIdx,
-            exp: item.exp
-        };
-    });
+// Fisher-Yates Shuffle Algorithm to randomize options on page reload
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
 }
 
-function renderQuiz() {
-    const quizData = prepareQuizData();
-    const quizContainer = document.getElementById('quiz');
-    
-    quizData.forEach((item, index) => {
-        const qCard = document.createElement('div');
-        qCard.className = 'question-card';
+function buildQuiz() {
+    const quizContainer = document.getElementById('quiz-body');
+    quizContainer.innerHTML = '';
 
-        const qTitle = document.createElement('div');
-        qTitle.className = 'question-text';
-        qTitle.innerText = item.q;
-        qCard.appendChild(qTitle);
-
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options';
-
-        item.options.forEach((opt, optIdx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = (optIdx + 1) + ") " + opt;
-            btn.onclick = () => checkAnswer(btn, index, optIdx, item.ans);
-            optionsContainer.appendChild(btn);
+    rawQuestions.forEach((item, qIndex) => {
+        // Map original options with correctness state
+        let optionsObj = item.options.map((optText, origIndex) => {
+            return {
+                text: optText,
+                isCorrect: origIndex === item.correct
+            };
         });
 
-        qCard.appendChild(optionsContainer);
+        // Shuffle all options dynamically on page reload
+        optionsObj = shuffle(optionsObj);
 
-        const expDiv = document.createElement('div');
-        expDiv.id = `exp-${index}`;
-        expDiv.className = 'explanation';
-        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
-        qCard.appendChild(expDiv);
+        // Build question card
+        const card = document.createElement('div');
+        card.className = 'question-card';
 
-        quizContainer.appendChild(qCard);
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation';
+        expBox.id = `exp-${qIndex}`;
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+
+        optionsObj.forEach((opt) => {
+            const li = document.createElement('li');
+            li.className = 'option-item';
+
+            const link = document.createElement('a');
+            link.href = 'javascript:void(0)';
+            link.className = 'option-link';
+            link.textContent = opt.text;
+
+            link.onclick = function() {
+                // Prevent re-clicking options for this question
+                const allLinks = optionsList.querySelectorAll('.option-link');
+                allLinks.forEach(l => l.classList.add('disabled'));
+
+                if (opt.isCorrect) {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                    // Show correct option in green
+                    allLinks.forEach(l => {
+                        if (l.dataset.correct === "true") {
+                            l.classList.add('correct');
+                        }
+                    });
+                }
+                // Display explanation box
+                expBox.style.display = 'block';
+            };
+
+            if (opt.isCorrect) {
+                link.dataset.correct = "true";
+            }
+
+            li.appendChild(link);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
     });
 }
 
-function checkAnswer(selectedBtn, qIndex, selectedIdx, correctIdx) {
-    const card = selectedBtn.closest('.question-card');
-    const buttons = card.querySelectorAll('.btn');
-
-    buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        if (idx === correctIdx) {
-            btn.classList.add('correct');
-        }
-    });
-
-    if (selectedIdx !== correctIdx) {
-        selectedBtn.classList.add('incorrect');
-    }
-
-    const expDiv = document.getElementById(`exp-${qIndex}`);
-    expDiv.style.display = 'block';
-}
-
-window.onload = renderQuiz;
+// Build quiz on page load
+window.onload = buildQuiz;
 </script>
 
 </body>
