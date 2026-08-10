@@ -7,17 +7,18 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #f4f7f6;
             margin: 0;
             padding: 20px;
+            color: #333;
         }
-        .quiz-container {
+        .container {
             max-width: 850px;
-            margin: 0 auto;
-            background: #ffffff;
+            margin: auto;
+            background: #fff;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
@@ -25,807 +26,825 @@
         }
         .question-card {
             margin-bottom: 25px;
-            padding-bottom: 15px;
+            padding: 15px;
             border-bottom: 1px solid #e0e0e0;
         }
         .question-text {
-            font-weight: bold;
             font-size: 1.05em;
+            font-weight: bold;
             margin-bottom: 12px;
-            color: #333;
         }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .options-list {
+            list-style: none;
+            padding: 0;
         }
-        .btn {
-            background-color: #e9ecef;
-            border: 2px solid #ced4da;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
+        .option-btn {
+            display: block;
+            width: 100%;
             text-align: left;
+            background-color: #eef2f5;
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 0.95em;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: background-color 0.2s ease;
         }
-        .btn:hover {
-            background-color: #dee2e6;
+        .option-btn:hover:not([disabled]) {
+            background-color: #dbe4eb;
         }
-        .btn.correct {
+        .option-btn.correct {
             background-color: #28a745 !important;
             color: white;
-            border-color: #28a745 !important;
+            border-color: #28a745;
         }
-        .btn.incorrect {
+        .option-btn.wrong {
             background-color: #dc3545 !important;
             color: white;
-            border-color: #dc3545 !important;
+            border-color: #dc3545;
         }
         .explanation {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #e8f4f8;
-            border-left: 4px solid #17a2b8;
             display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #e7f3fe;
+            border-left: 5px solid #2196F3;
+            border-radius: 4px;
             font-size: 0.9em;
-            color: #2c3e50;
+            color: #0c5460;
         }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
+<div class="container">
     <h1>Boolean Algebra Quiz</h1>
-    <div id="quiz"></div>
+    <div id="quiz-container"></div>
 </div>
 
 <script>
 const quizData = [
     {
         q: "Q.1. ______ Gate follows condition If both the inputs are high then the output is also high.?",
-        options: ["AND Gate", "OR Gate", "XNOR Gate", "All of these"],
-        ans: 3,
-        exp: "For AND, OR, and XNOR gates, when both inputs are 1 (high), the output is always 1 (high)."
+        options: ["And Gate", "OR Gate", "XNOR Gate", "All of these", "None of these"],
+        answer: 3, // All of these (AND, OR, XNOR output high when both inputs are 1)
+        explanation: "For AND, OR, and XNOR gates, when both inputs are HIGH (1), the output is always HIGH (1)."
     },
     {
         q: "Q.2. _______ Gate follows condition If both input is low then the output is High & If both input is high then the output is high.?",
-        options: ["AND Gate", "OR Gate", "XOR Gate", "XNOR Gate"],
-        ans: 3,
-        exp: "XNOR gives high output (1) when both inputs are identical (either 00 or 11)."
+        options: ["And Gate", "OR Gate", "XOR Gate", "NOR Gate", "XNOR Gate"],
+        answer: 4, // XNOR Gate
+        explanation: "The XNOR gate gives a HIGH (1) output when both inputs are equal (both 0s or both 1s)."
     },
     {
         q: "Q.3. _______ Gate follows condition If the minimum one input is high then only the output is high.?",
-        options: ["XNOR Gate", "NOR Gate", "XOR Gate", "AND Gate"],
-        ans: 2,
-        exp: "In OR or XOR logic, having at least one input high produces a high output."
+        options: ["XNOR Gate", "NOR Gate", "XOR Gate", "AND Gate", "All of these"],
+        answer: 2, // XOR Gate
+        explanation: "In XOR gate, the output is high only when inputs are different (at least/exactly one input is high for 2 inputs)."
     },
     {
         q: "Q.4. ______ Gate follows condition If the minimum one input low then the output is high.?",
-        options: ["AND Gate", "OR Gate", "XOR Gate", "NAND Gate"],
-        ans: 3,
-        exp: "NAND output is the complement of AND; if at least one input is 0, the output becomes 1."
+        options: ["And Gate", "OR Gate", "XOR Gate", "NAND Gate", "None of these"],
+        answer: 3, // NAND Gate
+        explanation: "A NAND gate produces a HIGH output if at least one of its inputs is LOW."
     },
     {
         q: "Q.5. ______ Gate follows condition If both the inputs are low then the output is high.?",
-        options: ["NAND", "NOR", "XNOR", "All of these"],
-        ans: 3,
-        exp: "NAND (0·0=1), NOR (0+0=1), and XNOR (0⊙0=1) all output high when both inputs are low."
+        options: ["NAND", "NOR", "XNOR", "All of these", "None of these"],
+        answer: 3, // All of these
+        explanation: "NAND, NOR, and XNOR gates all produce a HIGH (1) output when both inputs are LOW (0)."
     },
     {
         q: "Q.6. Boolean algebra deals with variables that can have?",
-        options: ["two discrete values", "three discrete values", "four discrete values", "five discrete values"],
-        ans: 0,
-        exp: "Boolean algebra operates exclusively on binary variables having two discrete values: 0 (False) and 1 (True)."
+        options: ["two discrete values", "three discrete values", "four discrete values", "five discrete values", "None of these"],
+        answer: 0,
+        explanation: "Boolean algebra operates strictly on binary variables which take two discrete values: 0 (False) or 1 (True)."
     },
     {
         q: "Q.7. Boolean algebra was introduced by______ in 1854.",
-        options: ["Alan Turing", "Charles Babbage", "George Boole", "John Von Neumann"],
-        ans: 2,
-        exp: "George Boole introduced Boolean algebra in his book published in 1854."
+        options: ["Alan Turing", "Charles Babbage", "George Boole", "John Von Neumann", "None of these"],
+        answer: 2,
+        explanation: "English mathematician George Boole introduced Boolean algebra in his book published in 1854."
     },
     {
         q: "Q.8. The result of a Boolean expression is.?",
-        options: ["AND, OR", "True, False", "NOT, AND", "None of these"],
-        ans: 1,
-        exp: "A Boolean expression evaluates strictly to a binary logic outcome: True (1) or False (0)."
+        options: ["And, OR", "True, False", "Not, And", "All of these", "None of these"],
+        answer: 1,
+        explanation: "A Boolean expression evaluates exclusively to either True (1) or False (0)."
     },
     {
         q: "Q.9. _____ Gate gives true output only when both inputs are true.?",
-        options: ["AND", "OR", "XNOR", "All of these"],
-        ans: 3,
-        exp: "AND, OR, and XNOR all output True (1) when both input variables are True (1)."
+        options: ["And", "OR", "XNOR", "All of these", "None of these"],
+        answer: 3,
+        explanation: "In standard key logic (Option 4 / All of these), AND, OR, and XNOR gates yield True for (1,1) inputs."
     },
     {
         q: "Q.10. ______ Gate gives a true output when at least one input is true.?",
-        options: ["AND", "OR", "XNOR", "None of these"],
-        ans: 1,
-        exp: "The OR gate outputs True whenever any input bit is 1."
+        options: ["And", "OR", "XNOR", "All of /these", "None of these"],
+        answer: 1,
+        explanation: "An OR gate produces an output of True (1) whenever at least one of its inputs is True (1)."
     },
     {
         q: "Q.11. _________ is a single input single output gate.?",
-        options: ["AND", "OR", "NOT", "All of these"],
-        ans: 2,
-        exp: "The NOT gate accepts exactly one input signal and produces its complement."
+        options: ["And", "OR", "Not", "All of these", "None of these"],
+        answer: 2,
+        explanation: "The NOT gate (inverter) takes only one input and produces one inverted output."
     },
     {
         q: "Q.12. This gate is also known as Inverter.?",
-        options: ["AND", "OR", "NOT", "All of these"],
-        ans: 2,
-        exp: "The NOT gate is called an Inverter because it inverts logic 1 to 0 and vice versa."
+        options: ["And", "OR", "Not", "All of these", "None of these"],
+        answer: 2,
+        explanation: "The NOT gate is commonly referred to as an inverter because it flips binary 0 to 1 and vice versa."
     },
     {
         q: "Q.13. The symbol + in Boolean is also known as the _______ operator.?",
-        options: ["AND", "OR", "NOT", "NAND"],
-        ans: 1,
-        exp: "The '+' sign represents logical addition, which corresponds to the OR operator."
+        options: ["AND", "OR", "NOT", "NAND", "All of these"],
+        answer: 1,
+        explanation: "In Boolean algebra, the '+' symbol denotes the logical OR operation."
     },
     {
         q: "Q.14. The format used to present the logic output for the various combinations of logic inputs to a gate is called a(n).?",
-        options: ["Boolean Constant", "Boolean Variable", "Truth Table", "Input Logic Function"],
-        ans: 2,
-        exp: "A Truth Table lists every possible input combination alongside its corresponding logical output."
+        options: ["Boolean Constant", "Boolean Variable", "Truth Table", "Input Logic Function", "None of these"],
+        answer: 2,
+        explanation: "A Truth Table lists all possible input value combinations alongside their corresponding output values."
     },
     {
-        q: "Q.15. Which one of the following logical operations is represented by the dot (.) sign in Boolean Algebra.?",
-        options: ["OR", "NOT", "NOR", "AND"],
-        ans: 3,
-        exp: "The dot (.) symbol denotes logical multiplication, corresponding to the AND operation."
+        q: "Q.15. Which one of the following logical operations is represented by the . Sign in Boolean Algebra.?",
+        options: ["OR", "NOT", "NOR", "AND", "XNOR"],
+        answer: 3,
+        explanation: "The dot (·) operator in Boolean expression represents logical multiplication or the AND operation."
     },
     {
         q: "Q.16. How many total Logic Gates are there in Boolean Algebra.?",
-        options: ["4 Only", "2 Only", "5 Only", "7 Only"],
-        ans: 3,
-        exp: "There are 7 basic logic gates: AND, OR, NOT, NAND, NOR, XOR, and XNOR."
+        options: ["4 Only", "2 Only", "5 Only", "7 Only", "8 Only"],
+        answer: 3,
+        explanation: "There are 7 primary logic gates: AND, OR, NOT, NAND, NOR, XOR, and XNOR."
     },
     {
         q: "Q.17. Which logical gate is known as Universal gate.?",
-        options: ["Ex-OR", "AND", "NAND", "NOT"],
-        ans: 2,
-        exp: "NAND (and NOR) are Universal Gates because any Boolean logic function can be constructed using only them."
+        options: ["Ex-OR", "AND", "NAND", "NOT", "All of these"],
+        answer: 2,
+        explanation: "NAND (and NOR) are Universal Gates because any digital logic circuit can be built using only them."
     },
     {
         q: "Q.18. Boolean Algebra is also called.?",
-        options: ["Switching algebra", "Arithmetic algebra", "Linear algebra", "Algebra"],
-        ans: 0,
-        exp: "Boolean Algebra is frequently termed Switching Algebra due to its application in digital switching circuits."
+        options: ["Switching algebra", "Arithmetic algebra", "Linear algebra", "Algebra", "All of these"],
+        answer: 0,
+        explanation: "Boolean algebra is also referred to as Switching Algebra as it models binary electric switches."
     },
     {
         q: "Q.19. A digital circuit that can store only one bit is a?",
-        options: ["Register", "NOR gate", "Flip-flop", "None of these"],
-        ans: 2,
-        exp: "A Flip-flop is the fundamental bistable memory element capable of storing 1 bit of binary information."
+        options: ["Register", "NOR gate", "Flip-flop", "All of these", "None of these"],
+        answer: 2,
+        explanation: "A Flip-flop is a basic bistable memory element capable of storing 1 bit of data."
     },
     {
         q: "Q.20. Which of the following gates can have only one input?",
-        options: ["OR gate", "NOT gate", "AND gate", "NAND gate"],
-        ans: 1,
-        exp: "Only the NOT gate inherently processes a single input line."
+        options: ["OR gate", "NOT gate", "AND gate", "NAND gate", "All of these"],
+        answer: 1,
+        explanation: "A standard NOT gate accepts exactly 1 input signal."
     },
     {
         q: "Q.21. How many basic logic gates are there?",
-        options: ["1", "2", "3", "4"],
-        ans: 2,
-        exp: "The three core basic logic gates are AND, OR, and NOT."
+        options: ["1", "2", "3", "4", "5"],
+        answer: 2,
+        explanation: "The 3 fundamental basic logic gates are AND, OR, and NOT."
     },
     {
         q: "Q.22. Which of the following gates cannot be used as an inverter?",
-        options: ["NAND", "AND", "NOR", "X-NOR"],
-        ans: 1,
-        exp: "A standard two-input AND gate cannot invert signals regardless of how static inputs are tied."
+        options: ["NAND", "AND", "NOR", "X-NOR", "All of these"],
+        answer: 1,
+        explanation: "An AND gate alone cannot perform logic inversion (NOT operation)."
     },
     {
         q: "Q.23. How many Boolean expressions can be formed with four Boolean variables.?",
-        options: ["4", "16", "65536", "256"],
-        ans: 2,
-        exp: "The formula for total Boolean functions of n variables is 2^(2^n). For n=4, 2^(2^4) = 2^16 = 65,536."
+        options: ["4", "16", "65536", "256", "65535"],
+        answer: 2,
+        explanation: "Number of Boolean functions for n variables is 2^(2^n). For n=4, 2^(2^4) = 2^16 = 65,536."
     },
     {
         q: "Q.24. How many Boolean expressions can be formed with three Boolean variables.?",
-        options: ["16", "1024", "32", "256"],
-        ans: 3,
-        exp: "For n=3 variables, total functions = 2^(2^3) = 2^8 = 256."
+        options: ["16", "1024", "32", "256", "255"],
+        answer: 3,
+        explanation: "For n=3 variables, total Boolean functions = 2^(2^3) = 2^8 = 256."
     },
     {
         q: "Q.25. How many entries will be in the truth table of a 4-input NAND gate?",
-        options: ["6", "8", "32", "16"],
-        ans: 3,
-        exp: "A truth table for n inputs contains 2^n rows. For n=4, 2^4 = 16 rows/entries."
+        options: ["6", "8", "32", "16", "64"],
+        answer: 3,
+        explanation: "A truth table for n inputs has 2^n rows/entries. For n=4, 2^4 = 16 rows."
     },
     {
         q: "Q.26. How many truth table entries are necessary for a four-input circuit?",
-        options: ["4", "8", "12", "16"],
-        ans: 3,
-        exp: "With 4 input variables, 2^4 = 16 input binary combinations exist."
+        options: ["4", "8", "12", "16", "32"],
+        answer: 3,
+        explanation: "4 inputs yield 2^4 = 16 possible truth table binary input combinations."
     },
     {
         q: "Q.27. According to De-Morgan's theorem: NAND = ?",
-        options: ["Bubbled AND", "Bubbled NOR", "Bubbled XOR", "Bubbled OR"],
-        ans: 3,
-        exp: "De-Morgan's Law states (A·B)' = A' + B', which equates a NAND gate to an OR gate with inverted inputs (Bubbled OR)."
+        options: ["Bubbled AND", "Bubbled NOR", "Bubbled XOR", "Bubbled OR", "All of these"],
+        answer: 3,
+        explanation: "(A · B)' = A' + B', which represents an OR gate with inverted (bubbled) inputs."
     },
     {
         q: "Q.28. According to De-Morgan's theorem : NOR = ?",
-        options: ["Bubbled AND", "Bubbled NOR", "Bubbled XOR", "Bubbled OR"],
-        ans: 0,
-        exp: "De-Morgan's Law states (A+B)' = A'·B', which equates a NOR gate to an AND gate with inverted inputs (Bubbled AND)."
+        options: ["Bubbled AND", "Bubbled NOR", "Bubbled XOR", "Bubbled OR", "None of these"],
+        answer: 0,
+        explanation: "(A + B)' = A' · B', which represents an AND gate with inverted (bubbled) inputs."
     },
     {
-        q: "Q.29. Which of the following scientist represented De-Morgan's theorem?",
-        options: ["Augustus De-Morgan", "Charles De-Morgan", "Richard De-Morgan", "None of these"],
-        ans: 0,
-        exp: "Augustus De Morgan was the British mathematician who formulated these key logical theorems."
+        q: "Q.29. Which of the following scientist represented De-Morgans theorem?",
+        options: ["Augustus De-Morgan", "Charles De-Morgan", "Richard De-Morgan", "All of these", "None of the above"],
+        answer: 0,
+        explanation: "British mathematician Augustus De Morgan introduced De Morgan's laws."
     },
     {
-        q: "Q.30. De-Morgan's theorem solves________ expressions?",
-        options: ["Boolean algebra", "Logic gates", "Arithmetic", "Both 1 and 2"],
-        ans: 3,
-        exp: "De Morgan's theorem simplifies both theoretical Boolean algebraic terms and physical logic gate structures."
+        q: "Q.30. De-morgans theorem solves________ expressions?",
+        options: ["Boolean algebra", "Logic gates", "Arithmetic", "Both 1 and 2", "All of these"],
+        answer: 3,
+        explanation: "De Morgan's theorems are used to simplify both algebraic Boolean expressions and logic gate circuits."
     },
     {
-        q: "Q.31. De-Morgan's theorem is applicable for______ types of components?",
-        options: ["High circuit design", "Computer programming", "Networking", "Both 1 and 2"],
-        ans: 3,
-        exp: "It applies broadly across digital hardware circuit design and computer software programming logic."
+        q: "Q.31. De-morgens theorem is applicable for______ types of components?",
+        options: ["High circuit design", "Computer programming", "Networking", "Both 1 and 2", "All of these"],
+        answer: 3,
+        explanation: "De Morgan's theorem applies to both digital hardware circuit design and computer programming logic."
     },
     {
-        q: "Q.32. Which of the following logical operation does De-Morgan's theorem perform?",
-        options: ["AND", "OR", "NOT", "All the above"],
-        ans: 3,
-        exp: "De-Morgan's rules transform AND, OR, and NOT operations into one another."
+        q: "Q.32. Which of the following logical operation of does De-Morgans theorem performs?",
+        options: ["AND", "OR", "NOT", "All the above", "None of these"],
+        answer: 3,
+        explanation: "De Morgan's theorem involves AND, OR, and NOT (complementation) operations together."
     },
     {
-        q: "Q.33. Which of the following is the De-Morgan's formula for (XY)'?",
-        options: ["X' + Y'", "X'Y'", "XY", "X/Y"],
-        ans: 0,
-        exp: "According to De Morgan's theorem, the complement of a product is equal to the sum of complements: (XY)' = X' + Y'."
+        q: "Q.33. Which of the following is the De-Morgans formula for (XY)'?",
+        options: ["X'+Y'", "X'+Y", "XY", "X/Y", "None of these"],
+        answer: 0,
+        explanation: "De Morgan's 1st law states: (X · Y)' = X' + Y'."
     },
     {
-        q: "Q.34. Which theorem states that multiple variables ANDed and negated equal the OR of individual complements?",
-        options: ["First theorem", "Second theorem", "Third theorem", "Fourth theorem"],
-        ans: 0,
-        exp: "De Morgan's First Theorem states (X·Y)' = X' + Y'."
+        q: "Q.34. Which of the following DeMorgans theorem states when multiple variables are AND and negated they are equivalent to OR of the complements of individual variables.?",
+        options: ["First theorem", "Second theorem", "Third theorem", "Fourth theorem", "None of these"],
+        answer: 0,
+        explanation: "The 1st theorem states: (X · Y)' = X' + Y'."
     },
     {
-        q: "Q.35. Which theorem states that multiple variables ORed and negated equal the AND of individual complements?",
-        options: ["First theorem", "Second theorem", "Third theorem", "Fourth theorem"],
-        ans: 1,
-        exp: "De Morgan's Second Theorem states (X+Y)' = X'·Y'."
+        q: "Q.35. Which of the following DeMorgans theorem states when multiple variables are ORed and negated they are equivalent to AND of the complements of individual variables.?",
+        options: ["First theorem", "Second theorem", "Third theorem", "Fourth theorem", "None of these"],
+        answer: 1,
+        explanation: "The 2nd theorem states: (X + Y)' = X' · Y'."
     },
     {
         q: "Q.36. ________ is used to implement fundamental gate functions like the NAND gate and NOR gate?",
-        options: ["Logic Gates", "Truth Table", "Universal Gates", "De Morgan's theorem"],
-        ans: 3,
-        exp: "De Morgan's theorem allows equivalence and conversion among NAND, NOR, and basic gates."
+        options: ["Logic Gates", "Truth Table", "Universal Gates", "De Morgan's theorem", "None of these"],
+        answer: 3,
+        explanation: "De Morgan's theorem provides mathematical conversion between NAND/NOR and standard fundamental functions."
     },
     {
-        q: "Q.37. De Morgan's law states:",
-        options: ["(X ∧ Y)' = X' ∨ Y'", "(X ∨ Y)' = X' ∧ Y'", "Both", "None of these"],
-        ans: 2,
-        exp: "Both laws represent De Morgan's equations for logical conjunction (AND) and disjunction (OR)."
+        q: "Q.37. De Morgan's law states",
+        options: ["(X AND Y)' = X' OR Y'", "(X OR Y)' = X' AND Y'", "Both", "None of these"],
+        answer: 2,
+        explanation: "Both (X · Y)' = X' + Y' and (X + Y)' = X' · Y' form the dual pair of De Morgan's laws."
     },
     {
         q: "Q.38. According to DeMorgan's theorem:",
-        options: ["NAND is equivalent to inverted-AND", "NOR is equivalent to inverted-OR", "NAND is equivalent to NOR", "a NAND gate is equivalent to negative-OR (inverted OR) gate"],
-        ans: 3,
-        exp: "A NAND gate ((A·B)') produces identical output to an OR gate with inverted inputs (A' + B')."
+        options: ["a NAND gate is equivalent to negative-AND gate", "a NOR gate is equivalent to negative-OR gate", "a NAND gate is equivalent to NOR gate", "a NAND gate is equivalent to negative-OR (inverted OR) gate"],
+        answer: 3,
+        explanation: "(A · B)' = A' + B', which is a negative-OR (inverted OR) gate."
     },
     {
-        q: "Q.39. Applying DeMorgan's theorem to (W' + X' + Y')Z', we get:",
-        options: ["W'X'Y'Z'", "WXYZ'", "(WXYZ)'", "WXYZ"],
-        ans: 3,
-        exp: "Applying complement transformation simplifies the logical output according to DeMorgan principles."
+        q: "Q.39. Applying DeMorgan's theorem to the expression (W + X + Y) · Z, we get _________",
+        options: ["W' X' Y' Z'", "WX Y Z", "WXYZ", "W' X' Y' + Z'"],
+        answer: 3,
+        explanation: "Complementing expression: ((W+X+Y)·Z)' = (W+X+Y)' + Z' = W'X'Y' + Z'."
     },
     {
-        q: "Q.39 (B). Applying DeMorgan's theorem to A' + B' + C', we get:",
-        options: ["(ABC)'", "A' + B' + C'", "A + B + C", "(A+B+C)'"],
-        ans: 0,
-        exp: "By DeMorgan's rule, A' + B' + C' = (A·B·C)'."
+        q: "Q.39 (B). Applying DeMorgan's theorem to the expression (A + B + C + D)', we get _________",
+        options: ["A' B' C' D'", "A' + B' + C' + D'", "A + B' + C' + D", "A' + B + C + D'"],
+        answer: 0,
+        explanation: "By De Morgan's theorem, (A + B + C + D)' = A' · B' · C' · D'."
     },
     {
-        q: "Q.40. F(X,Y,Z,M) = X'Y'Z'M'. The degree/arity of the function is _______?",
-        options: ["2", "5", "4", "1"],
-        ans: 2,
-        exp: "The degree or arity equals the total number of input variables, which is 4 (X, Y, Z, M)."
+        q: "Q.40. F(X,Y,Z,M) = X'Y'Z'M'. The degree of the function is _______?",
+        options: ["2", "5", "4", "1", "More than one of the above"],
+        answer: 2,
+        explanation: "The degree of a Boolean function is the total number of input variables involved, which is 4 (X, Y, Z, M)."
     },
     {
         q: "Q.41. A_______ value is represented by a Boolean expression.?",
-        options: ["Positive", "Recursive", "Negative", "Boolean"],
-        ans: 3,
-        exp: "A Boolean expression evaluates to a binary Boolean logic value (0 or 1)."
+        options: ["Positive", "Recursive", "Negative", "Boolean", "More than one of the above"],
+        answer: 3,
+        explanation: "A Boolean expression evaluates directly to a Boolean value (0 or 1)."
     },
     {
         q: "Q.42. The involution of A is equal to _______?",
-        options: ["A", "A'", "1", "0"],
-        ans: 0,
-        exp: "The Involution Law states that double negation restores the original variable: (A')' = A."
+        options: ["A", "A'", "1", "0", "All of these"],
+        answer: 0,
+        explanation: "The Involution Law states that double complementation restores original value: (A')' = A."
     },
     {
         q: "Q.43. Complement of the expression A'B + CD' is ______ ?",
-        options: ["(A+B)(C'+D)", "(A+B')(C'+D)", "(A+B')(C+D')", "(A'+B')(C'+D)"],
-        ans: 1,
-        exp: "(A'B + CD')' = (A'B)' · (CD')' = (A + B') · (C' + D)."
+        options: ["(A+B)(C'+ D)", "(A+B')(C'+ D)", "(A+B)(C'+D)", "(A+B')(C+D')", "None of these"],
+        answer: 1,
+        explanation: "(A'B + CD')' = (A'B)' · (CD')' = (A + B') · (C' + D)."
     },
     {
         q: "Q.44. A Boolean function may be transformed into.?",
-        options: ["logical diagram", "map", "logical graph", "Matrix"],
-        ans: 0,
-        exp: "A Boolean function can directly map into an equivalent hardware logic gate diagram."
+        options: ["logical diagram", "map", "logical graph", "Matrix", "All of these"],
+        answer: 0,
+        explanation: "A Boolean algebraic function transforms into a physical logic diagram using logic gates."
     },
     {
         q: "Q.45. In Boolean algebra 0 is a.?",
-        options: ["Commutative property", "Additive identity", "Associative identity", "Identity element"],
-        ans: 1,
-        exp: "0 acts as the additive identity because A + 0 = A."
+        options: ["Commutative property", "Additive identity", "Associative identity", "Identity element", "More than one of the above"],
+        answer: 1,
+        explanation: "0 is the Additive Identity element in Boolean algebra because A + 0 = A."
     },
     {
-        q: "Q.46. A + B = B + A defines which law in Boolean Algebra.?",
-        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law"],
-        ans: 0,
-        exp: "The Commutative Law states that variable order does not alter the result of OR/AND operations."
+        q: "Q.46. A+B = B+A defines which law in Boolean Algebra.?",
+        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law", "Complement Law"],
+        answer: 0,
+        explanation: "Commutative Law states that variable order does not affect result: A + B = B + A."
     },
     {
         q: "Q.47. A + (B + C) = (A + B) + C defines which law in Boolean Algebra.?",
-        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law"],
-        ans: 1,
-        exp: "The Associative Law allows regrouping of variables without changing the expression value."
+        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law", "Complement Law"],
+        answer: 1,
+        explanation: "Associative Law allows regrouping of variables: A + (B + C) = (A + B) + C."
     },
     {
-        q: "Q.48. A·(B + C) = A·B + A·C defines which law in Boolean Algebra.?",
-        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law"],
-        ans: 2,
-        exp: "The Distributive Law expands an operation over terms inside parentheses."
+        q: "Q.48. A · (B + C) = A·B + A·C defines which law in Boolean Algebra.?",
+        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law", "Complement Law"],
+        answer: 2,
+        explanation: "Distributive Law allows multiplying an expression across additions: A·(B+C) = A·B + A·C."
     },
     {
         q: "Q.49. (A')' = A defines which law in Boolean Algebra.?",
-        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law"],
-        ans: 3,
-        exp: "The Inversion (or Involution) Law states double complementation cancels out."
+        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law", "Complement Law"],
+        answer: 3,
+        explanation: "Inversion Law (Involution) states double complementation yields original input."
     },
     {
-        q: "Q.50. A + A' = 1 & A·A' = 0 defines which law in Boolean Algebra.?",
-        options: ["Commutative Law", "Associative Law", "Distributive Law", "Complement Law"],
-        ans: 3,
-        exp: "The Complement Law defines interaction between a variable and its inverse."
+        q: "Q.50. A + A' = 1 & A · A' = 0 defines which law in Boolean Algebra.?",
+        options: ["Commutative Law", "Associative Law", "Distributive Law", "Inversion Law", "Complement Law"],
+        answer: 4,
+        explanation: "Complement Law defines ORing or ANDing a variable with its complement."
     },
     {
-        q: "Q.51. A + 0 = A, A·1 = A defines which law in Boolean Algebra.?",
-        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorption Law"],
-        ans: 0,
-        exp: "Identity Laws state that ORing with 0 or ANDing with 1 keeps the variable unchanged."
+        q: "Q.51. A + 0 = A, A · 1 = A defines which law in Boolean Algebra.?",
+        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorbtion Law", "De Morgan's Law"],
+        answer: 0,
+        explanation: "Identity Law states operating with 0 (OR) or 1 (AND) leaves variable unchanged."
     },
     {
-        q: "Q.52. A·0 = 0, A + 1 = 1 defines which law in Boolean Algebra.?",
-        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorption Law"],
-        ans: 1,
-        exp: "Annulment (Dominance) Law shows 0 dominates AND while 1 dominates OR."
+        q: "Q.52. A · 0 = 0, A + 1 = 1 defines which law in Boolean Algebra.?",
+        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorbtion Law", "De Morgan's Law"],
+        answer: 1,
+        explanation: "Annulment (Dominance) Law states operating with 0 (AND) or 1 (OR) dominates output."
     },
     {
-        q: "Q.53. A + A = A, A·A = A defines which law in Boolean Algebra.?",
-        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorption Law"],
-        ans: 2,
-        exp: "Idempotent Law states combining a variable with itself yields the same variable."
+        q: "Q.53. A + A = A, A · A = A defines which law in Boolean Algebra.?",
+        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorbtion Law", "De Morgan's Law"],
+        answer: 2,
+        explanation: "Idempotent Law states combining a variable with itself yields original variable."
     },
     {
         q: "Q.54. A + A·B = A defines which law in Boolean Algebra.?",
-        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorption Law"],
-        ans: 3,
-        exp: "Absorption Law reduces redundant terms: A + AB = A(1 + B) = A(1) = A."
+        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorbtion Law", "De Morgan's Law"],
+        answer: 3,
+        explanation: "Absorption Law simplifies expression: A + AB = A(1 + B) = A(1) = A."
     },
     {
-        q: "Q.55. (A·B)' = A' + B' & (A+B)' = A'·B' defines which law.?",
-        options: ["Identity Law", "Annulment Law", "Idempotent Law", "De Morgan's Law"],
-        ans: 3,
-        exp: "These formulas represent the fundamental statements of De Morgan's Laws."
+        q: "Q.55. (A·B)' = A'+B' & (A+B)' = A'·B' defines which law in Boolean Algebra.?",
+        options: ["Identity Law", "Annulment Law", "Idempotent Law", "Absorbtion Law", "De Morgan's Law"],
+        answer: 4,
+        explanation: "De Morgan's Laws convert complemented products to sums and vice versa."
     },
     {
-        q: "Q.56. Dual of a Boolean theorem is obtained by:",
-        options: ["Interchanging 0 & 1 only", "Changing 0 to 1", "Changing 1 to 0", "Interchanging 0 & 1, and + & ·"],
-        ans: 3,
-        exp: "Duality principle requires swapping 0 ↔ 1 and AND (·) ↔ OR (+)."
+        q: "Q.56. Dual of a Boolean theorem is obtained by",
+        options: ["Interchanging all zero and ones only", "Changing all zero to one only", "Changing all ones to zero", "Interchanging all zero and ones and + to ·"],
+        answer: 3,
+        explanation: "Duality principle replaces 0 with 1, 1 with 0, AND (·) with OR (+), and OR (+) with AND (·)."
     },
     {
-        q: "Q.57. Minterm ∑m(1, 3, 5, 6) equals to maxterm:",
-        options: ["∏M(0, 3, 7)", "∏M(0, 2, 4, 7)", "∏M(0, 3, 4, 7)", "None of these"],
-        ans: 1,
-        exp: "Maxterms consist of indices omitted from minterms for 3 variables (0 to 7): {0, 2, 4, 7}."
+        q: "Q.57. Minterm ∑m(1, 3, 5, 6) equals to maxterm",
+        options: ["ΠM(0, 3, 7)", "ΠM(0, 2, 4, 7)", "ΠM(0, 3, 4, 7)", "None of these"],
+        answer: 1,
+        explanation: "For 3 variables (0-7), Maxterm is set complement of Minterm: {0,1,2,3,4,5,6,7} - {1,3,5,6} = {0,2,4,7}."
     },
     {
-        q: "Q.58. Boolean function F(x, y, z) = ∑(1, 3, 6, 7). Equivalent canonical Product of Maxterms is:",
-        options: ["∏(0, 2, 3, 5)", "∏(0, 2, 4, 5)", "∏(1, 3, 6, 7)", "∑(0, 2, 4, 5)"],
-        ans: 1,
-        exp: "Maxterms correspond to remaining indices from total domain 0..7: ∏(0, 2, 4, 5)."
+        q: "Q.58. A boolean function is given as F(x, y, z) = ∑(1, 3, 6, 7). What is its equivalent canonical form?",
+        options: ["F(x, y, z) = π(0, 2, 3, 5) product of max terms", "F(x, y, z) = π(0, 2, 4, 5) product of max terms", "F(x, y, z) = π(0, 2, 4, 5) product of min terms", "F(x, y, z) = π(0, 2, 4, 5) sum of max terms"],
+        answer: 1,
+        explanation: "Product of Maxterms (π) contains missing indices: {0, 2, 4, 5}."
     },
     {
-        q: "Q.59. Minterm corresponding to decimal number 15 (for 4 variables) is:",
-        options: ["ABCD", "A'B'C'D'", "A+B+C+D", "A'+B'+C'+D'"],
-        ans: 0,
-        exp: "15 in binary is 1111, which maps directly to uncomplemented minterm ABCD."
+        q: "Q.59. Minterms corresponding to decimal number 15 is",
+        options: ["ABCD", "A' B' C' D'", "A+B+C+D", "A' + B' + C' + D'"],
+        answer: 0,
+        explanation: "Decimal 15 in 4-bit binary is 1111, which maps to minterm ABCD."
     },
     {
         q: "Q.60. There are ______ Minterms for 3 variables (a, b, c).?",
-        options: ["0", "2", "8", "1"],
-        ans: 2,
-        exp: "For 3 variables, total minterms = 2^3 = 8."
+        options: ["0", "2", "8", "1", "3"],
+        answer: 2,
+        explanation: "For n variables, total possible minterms = 2^n. For n=3, 2^3 = 8."
     },
     {
         q: "Q.61. The truth table for the SOP expression AB + B'C has how many input combinations?",
         options: ["1", "2", "4", "8"],
-        ans: 3,
-        exp: "The expression contains 3 distinct variables (A, B, C), so 2^3 = 8 input combinations."
+        answer: 3,
+        explanation: "There are 3 unique variables (A, B, C), so 2^3 = 8 input combinations."
     },
     {
-        q: "Q.62. Y = A'B'C' + A'BC' + A'BC + AB'C + ABC in minterm notation:",
-        options: ["m(1,2,4,6,7)", "m(0,1,3,6,7)", "m(1,3,5,6,7)", "m(0,2,3,5,7)"],
-        ans: 3,
-        exp: "Binary terms: 000(0), 010(2), 011(3), 101(5), 111(7) -> Minterms = 0,2,3,5,7."
+        q: "Q.62. Convert SOP expression to Min Term & Max Term? Y=A'B'C' + A'BC' + A'BC + AB'C + ABC.?",
+        options: ["Minterm = 1,2,4,6,7 Maxterm = 0,3,5", "Minterm= 0,1,3,6,7 Maxterm = 2,4,5", "Minterm = 1,3,5,6,7 Maxterm = 0,2,4", "Minterm= 0,2,3,5,7 Maxterm = 1,4,6", "None of these"],
+        answer: 3,
+        explanation: "Binary equivalents: 000(0), 010(2), 011(3), 101(5), 111(7). Minterm={0,2,3,5,7}, Maxterm={1,4,6}."
     },
     {
-        q: "Q.63. Y = A'BC + AB'C' + AB'C + ABC' + ABC in minterm notation:",
-        options: ["m(1,2,4,6,7)", "m(0,1,3,6,7)", "m(1,3,5,6,7)", "m(3,4,5,6,7)"],
-        ans: 3,
-        exp: "Binary terms: 011(3), 100(4), 101(5), 110(6), 111(7) -> Minterms = 3,4,5,6,7."
+        q: "Q.63. Convert SOP expression to Min Term & Max Term? Y = A'BC + AB'C' + AB'C + ABC' + ABC",
+        options: ["Minterm = 1,2,4,6,7 Maxterm = 0,3,5", "Minterm = 0,1,3,6,7 Maxterm = 2,4,5", "Minterm = 1,3,5,6,7 Maxterm = 0,2,4", "Minterm = 3,4,5,6,7 Maxterm = 0,1,2", "None of these"],
+        answer: 3,
+        explanation: "Binary equivalents: 011(3), 100(4), 101(5), 110(6), 111(7). Minterm={3,4,5,6,7}, Maxterm={0,1,2}."
     },
     {
-        q: "Q.64. Convert SOP expression F = A'B'C + AB'C' + ABC' to Min Terms:",
-        options: ["m(0,2,4)", "m(1,4,6)", "m(1,5,7)", "m(0,1,6)"],
-        ans: 1,
-        exp: "Binary terms: 001(1), 100(4), 110(6) -> Minterm = 1,4,6."
+        q: "Q.64. Convert SOP expression to Min Term & Max Term? F= A'B'C + AB'C' + ABC'.?",
+        options: ["Minterm= 0,2,4 Maxterm = 1,3,5,6,7", "Minterm=1,4,6 Maxterm = 0,2,3,5,7", "Minterm = 1,5,7 Maxterm = 0,2,3,4,6", "Minterm= 0,1,6 Maxterm = 2,3,4,5,7", "None of these"],
+        answer: 1,
+        explanation: "Binary terms: 001(1), 100(4), 110(6). Minterm={1,4,6}, Maxterm={0,2,3,5,7}."
     },
     {
-        q: "Q.65. In ______ form, every minterm/maxterm contains all variables in complemented or uncomplemented form.",
-        options: ["Standard Form", "Normal Form", "Algebra Form", "Canonical Form"],
-        ans: 3,
-        exp: "Canonical form uniquely represents Boolean logic where each term retains all function variables."
+        q: "Q.65. In ______ form number of variables depends on the output of SOP or POS.?",
+        options: ["Standard Form", "Normal Form", "Algebra Form", "Canonical Form", "None of these"],
+        answer: 3,
+        explanation: "In Canonical Form, every product/sum term must contain all domain variables."
     },
     {
         q: "Q.66. Canonical form of Boolean expression is mainly based on.?",
-        options: ["SOP", "POS", "Both of these", "None of these"],
-        ans: 2,
-        exp: "Canonical forms are categorized as Canonical Sum of Products (SOP) or Product of Sums (POS)."
+        options: ["SOP", "POS", "Both of these", "None of these", "SOS"],
+        answer: 2,
+        explanation: "Canonical representation is categorized into Canonical SOP and Canonical POS."
     },
     {
-        q: "Q.67. The expression Y = AB + BC + AC shows the ________ operation.?",
-        options: ["EX-OR", "SOP", "POS", "NOR"],
-        ans: 1,
-        exp: "Y = AB + BC + AC is written as Sum of Products (SOP)."
+        q: "Q.67. The expression Y=AB+BC+AC shows the ________ operation.?",
+        options: ["EX-OR", "SOP", "POS", "NOR", "None of these"],
+        answer: 1,
+        explanation: "It represents Sum Of Products (SOP) form."
     },
     {
-        q: "Q.68. The expression Y = (A+B)(B+C)(C+A) shows the _______ operation.?",
-        options: ["AND", "POS", "SOP", "NAND"],
-        ans: 1,
-        exp: "Product of individual sum clauses forms a POS expression."
+        q: "Q.68. The expression Y=(A+B)(B+C)(C+A) shows the _______ operation.?",
+        options: ["AND", "POS", "SOP", "NAND", "SOS"],
+        answer: 1,
+        explanation: "It represents Product Of Sums (POS) form."
     },
     {
         q: "Q.69. The terms in SOP are called SOP ______?",
-        options: ["Max Terms", "Min terms", "Mid Terms", "Sum Terms"],
-        ans: 1,
-        exp: "Sum of Products (SOP) expressions consist of Minterms."
+        options: ["Max Terms", "Min terms", "Mid Terms", "Sum Terms", "All of these"],
+        answer: 1,
+        explanation: "Individual product terms in SOP are called Minterms."
     },
     {
         q: "Q.70. The terms in POS are called ______?",
-        options: ["Max Terms", "Min terms", "Mid Terms", "Sum Terms"],
-        ans: 0,
-        exp: "Product of Sums (POS) expressions consist of Maxterms."
+        options: ["Max Terms", "Min terms", "Mid Terms", "Sum Terms", "None of these"],
+        answer: 0,
+        explanation: "Individual sum terms in POS are called Maxterms."
     },
     {
-        q: "Q.71. _________ is a function for which the number of minterms and number of maxterms are equal.?",
-        options: ["Boolean", "Universal", "Self dual", "Neutral"],
-        ans: 3,
-        exp: "A Neutral function has an equal count of minterms (output 1) and maxterms (output 0)."
+        q: "Q.71. _________ is a function for which the number of minterms and number of maxterms are same.?",
+        options: ["Boolean", "Universal", "Self dual", "Neutral", "None of these"],
+        answer: 3,
+        explanation: "A Neutral function has an equal count of minterms and maxterms (2^(n-1) each)."
     },
     {
         q: "Q.72. In Boolean algebra, the word 'literal' means.?",
-        options: ["product term", "all variables", "inverse function", "variable or its complement"],
-        ans: 3,
-        exp: "A literal represents a single variable instance in either primed (A') or unprimed (A) form."
+        options: ["product term", "all the variables in a Boolean expression", "inverse function", "variable or its complement", "All of these"],
+        answer: 3,
+        explanation: "A literal refers to a single variable in complemented (A') or uncomplemented (A) form."
     },
     {
-        q: "Q.73. Convert SOP Y = A'B'C' + A'BC' + A'BC + AB'C + ABC to POS form:",
-        options: ["(A+B+C)(A'+B+C)(A'+B'+C)", "(A+B+C')(A'+B+C)(A'+B'+C)", "(A+B+C')(A+B'+C')(A'+B+C)", "(A+B+C')(A'+B+C)(A'+B'+C)"],
-        ans: 3,
-        exp: "Missing minterms are 1(001), 4(100), 5(101). Corresponding Maxterms create POS expression."
+        q: "Q.73. Convert SOP expression to POS expression? Y(SOP)=A'B'C' + A'BC' + A'BC + AB'C + ABC.?",
+        options: ["(A'+B'+C') (A'+B+C') (A+B+C)", "(A+B+C) (A'+B'+C') (A'+B'+C)", "(A'+B+C') (A'+B'+C) (A+B'+C')", "(A+B+C') (A'+B+C) (A'+B'+C)", "None of these"],
+        answer: 3,
+        explanation: "Missing minterms are {1,4,6}. Converting to maxterms gives (A+B+C')(A'+B+C)(A'+B'+C)."
     },
     {
-        q: "Q.74. Convert SOP Y = X'Y'Z' + XY'Z' + XYZ' + X'YZ' + XYZ to POS form:",
-        options: ["(X+Y+Z')(X+Y'+Z')(X'+Y+Z')", "(X+Y+Z')(X+Y'+Z')(X'+Y'+Z')", "(X+Y+Z)(X+Y'+Z)(X+Y+Z)", "None"],
-        ans: 0,
-        exp: "Excluding present minterms yields Maxterms mapping directly to POS factors."
+        q: "Q.74. Convert SOP expression to POS expression? Y(SOP)= X'Y'Z' + XY'Z' + XYZ' + X'YZ' + XYZ",
+        options: ["(X+Y+Z') (X+Y'+Z') (X'+Y+Z')", "(X+Y+Z') (X+Y'+Z') (X'+Y+Z')", "(X+Y+Z') (X+Y+Z') (X'+Y'+Z')", "(X+Y+Z) (X+Y'+Z) (X+Y+Z)", "None of these"],
+        answer: 0,
+        explanation: "Given minterms are {0,4,6,2,7}. Missing minterms {1,3,5} convert into Maxterm POS format."
     },
     {
-        q: "Q.75. Convert SOP Y = X'YZ' + XYZ + XY'Z + XYZ' to POS form:",
-        options: ["(X'+Y'+Z')(X+Y+Z')", "(X+Y+Z)(X'+Y'+Z)", "(X+Y+Z)(X+Y+Z')(X+Y'+Z)", "(X+Y+Z')(X+Y+Z')"],
-        ans: 2,
-        exp: "Calculated by identifying unrepresented combination indices and forming Maxterms."
+        q: "Q.75. Convert SOP expression to POS expression? Y(SOP)= X'YZ' + XYZ + XY'Z + XYZ'",
+        options: ["(X'+Y'+Z') (X+Y+Z') (X'+Y+Z) (X'+Y'+Z')", "(X+Y+Z) (X'+Y'+Z) (X+Y+Z) (X+Y'+Z')", "(X+Y+Z) (X+Y+Z') (X+Y+Z) (X'+Y'+Z')", "(X+Y+Z') (X+Y+Z') (X'+Y+Z') (X+Y+Z)", "None of these"],
+        answer: 2,
+        explanation: "Given minterms are {2,7,5,6}. Missing minterms {0,1,3,4} written in POS maxterms."
     },
     {
-        q: "Q.76. Convert SOP Y = ABC + AB'C' + AB'C + ABC' + A'B'C to POS form:",
-        options: ["(A'+B'+C')(A'+B+C')", "(A'+B'+C')(A+B'+C)", "(A+B+C)(A'+B+C')", "(A+B+C)(A+B'+C)(A'+B+C)"],
-        ans: 3,
-        exp: "Finding complementary combinations yields corresponding POS sum terms."
+        q: "Q.76. Convert SOP expression to POS expression? Y(SOP)= ABC+AB'C' + AB'C+ABC'+A'B'C",
+        options: ["(A'+B'+C')(A'+ B + C')(A'+B+C)", "(A'+B'+C')(A + B'+C)(A + B'+C)", "(A+B+C)(A'+ B +C')(A + B'+C)", "(A+B+C)(A + B'+C)(A + B'+C')", "None of these"],
+        answer: 3,
+        explanation: "Given minterms {7,4,5,6,1}. Missing are {0,2,3}, which convert to maxterms (A+B+C)(A+B'+C)(A+B'+C')."
     },
     {
-        q: "Q.77. Find the Boolean Expression for truth table output matching input variable X directly:",
-        options: ["X", "X+Y", "X·Y", "Y"],
-        ans: 0,
-        exp: "When output values identical to X values across rows, the expression reduces to X."
+        q: "Q.77. Find the Boolean Expression Corresponding to the Truth Table given below.?",
+        options: ["X", "X+Y", "X.Y", "Y", "None of these"],
+        answer: 0,
+        explanation: "Truth table mapping evaluates directly to variable X."
     },
     {
         q: "Q.78. Minterm ∑m(1,3,5,6) equals to maxterm.?",
-        options: ["∏M(0,3,7)", "∏M(0,2,4,7)", "∏M(0,3,4,7)", "None of these"],
-        ans: 1,
-        exp: "Maxterms comprise remaining numbers in 0..7 set: {0, 2, 4, 7}."
+        options: ["ΠM(0,3,7)", "ΠM(0,2,4,7)", "ΠM(0,3,4,7)", "More than one", "None of these"],
+        answer: 1,
+        explanation: "Set complement of {1,3,5,6} out of 8 indices (0-7) is ΠM(0,2,4,7)."
     },
     {
         q: "Q.79. Don't care conditions can be used for simplifying Boolean expressions in _______?",
-        options: ["Registers", "Terms", "K-maps", "Latches"],
-        ans: 2,
-        exp: "Don't care conditions ('X') allow larger sub-groupings during Karnaugh Map (K-map) minimization."
+        options: ["Registers", "Terms", "K-maps", "Latches", "All of these"],
+        answer: 2,
+        explanation: "Don't care terms ('X') are placed in K-maps to form larger adjacent groups for simplification."
     },
     {
-        q: "Q.80. Don't care terms should be used along with the terms present in:",
-        options: ["Minterms", "Maxterms", "K-Map", "Latches"],
-        ans: 4,
-        exp: "Don't cares can be grouped with both Minterms (SOP) and Maxterms (POS) on K-Maps."
+        q: "Q.80. It should be kept in mind that don't care terms should be used along with the terms that are present in?",
+        options: ["Minterms", "Maxterms", "K-Map", "Latches", "More than one of the above"],
+        answer: 4,
+        explanation: "Don't cares combine with either Minterms or Maxterms in K-maps."
     },
     {
         q: "Q.81. In Boolean Algebra, the OR operation is performed by which properties.?",
-        options: ["Associative properties", "Commutative properties", "Distributive properties", "All of these"],
-        ans: 3,
-        exp: "OR operations satisfy Associative, Commutative, and Distributive algebraic properties."
+        options: ["Associative properties", "Commutative properties", "Distributive properties", "All of these", "None of these"],
+        answer: 3,
+        explanation: "The OR operation obeys Associative, Commutative, and Distributive algebraic properties."
     },
     {
         q: "Q.82. The expression for Absorption law is given by.?",
-        options: ["A+AB = A", "A+AB = B", "AB+AA' = A", "All of these"],
-        ans: 0,
-        exp: "Absorption law explicitly simplifies A + AB down to A."
+        options: ["A+AB = A", "A+AB = B", "AB+AA' = A", "All of these", "None of these"],
+        answer: 0,
+        explanation: "Absorption Law states A + AB = A."
     },
     {
-        q: "Q.83. According to Boolean law: A+1 = ?",
-        options: ["1", "A", "0", "A'"],
-        ans: 0,
-        exp: "Any variable ORed with 1 yields 1 (Annulment Law)."
+        q: "Q.83. According to Boolean law: A+1=?",
+        options: ["1", "A", "0", "A'", "-1"],
+        answer: 0,
+        explanation: "ORing any variable with 1 yields 1 (Annulment Law)."
     },
     {
         q: "Q.84. The involution of A is equal to.?",
-        options: ["A", "A'", "1", "0"],
-        ans: 0,
-        exp: "Double inversion (A')' simplifies back to A."
+        options: ["A", "A'", "1", "0", "-1"],
+        answer: 0,
+        explanation: "(A')' = A."
     },
     {
         q: "Q.85. A(A + B) = ?",
-        options: ["AB", "1", "1+AB", "A"],
-        ans: 3,
-        exp: "A(A+B) = AA + AB = A + AB = A(1+B) = A."
+        options: ["AB", "1", "(1+AB)", "A", "B"],
+        answer: 3,
+        explanation: "A(A + B) = AA + AB = A + AB = A (Absorption Law)."
     },
     {
         q: "Q.86. DeMorgan's theorem states that.?",
-        options: ["(AB)' = A' + B'", "(A+B)' = A' * B", "A'+B' = A'B'", "None of these"],
-        ans: 0,
-        exp: "(AB)' = A' + B' represents DeMorgan's key logical equivalence."
+        options: ["(AB)'=A'+B'", "(A+B)'=A' * B", "A'+B'=A'B'", "All of these", "None of these"],
+        answer: 0,
+        explanation: "De Morgan's First Law: (AB)' = A' + B'."
     },
     {
         q: "Q.87. Complement of the expression A'B + CD' is.?",
-        options: ["(A'+B)(C'+D)", "(A+B')(C'+D)", "(A'+B')(C'+D)", "(A+B')(C+D')"],
-        ans: 1,
-        exp: "Applying DeMorgan: (A'B + CD')' = (A + B')(C' + D)."
+        options: ["(A'+B)(C' + D)", "(A+B')(C' + D)", "(A'+B')(C' + D)", "(A+B')(C+D')", "None of these"],
+        answer: 1,
+        explanation: "(A'B + CD')' = (A + B')(C' + D)."
     },
     {
         q: "Q.88. The logical sum of two or more logical product terms is called.?",
-        options: ["SOP", "POS", "OR operation", "NAND operation"],
-        ans: 0,
-        exp: "Sum of Products (SOP) adds (ORs) product (AND) terms together."
+        options: ["SOP", "POS", "OR operation", "NAND operation", "None of these"],
+        answer: 0,
+        explanation: "Sum Of Products (SOP) is the logical sum of product terms."
     },
     {
-        q: "Q.89. The expression Y = AB + BC + AC shows the________ operation.?",
-        options: ["EX-OR", "SOP", "POS", "NOR"],
-        ans: 1,
-        exp: "Sum of product terms forms SOP expression structure."
+        q: "Q.89. The expression Y=AB+BC+AC shows the________ operation.?",
+        options: ["EX-OR", "SOP", "POS", "NOR", "None of these"],
+        answer: 1,
+        explanation: "It is an SOP (Sum of Products) expression."
     },
     {
-        q: "Q.90. The expression Y = (A+B)(B+C)(C+A) shows the ________operation.?",
-        options: ["AND", "POS", "SOP", "NAND"],
-        ans: 1,
-        exp: "Product of sum terms forms POS expression structure."
+        q: "Q.90. The expression Y=(A+B)(B+C)(C+A) shows the ________operation.?",
+        options: ["AND", "POS", "SOP", "NAND", "None of these"],
+        answer: 1,
+        explanation: "It is a POS (Product of Sums) expression."
     },
     {
         q: "Q.91. A product term containing all K variables of the function in either complemented or uncomplemented form is called a.?",
-        options: ["Minterm", "Maxterm", "Midterm", "All of these"],
-        ans: 0,
-        exp: "A Minterm contains every variable of the function combined via AND operations."
+        options: ["Minterm", "Maxterm", "Midterm", "All of these", "None of these"],
+        answer: 0,
+        explanation: "A Minterm is a product term containing all domain variables."
     },
     {
         q: "Q.92. A variable on its own or in its complemented form is known as a?",
-        options: ["Product Term", "Literal", "Sum Term", "All of these"],
-        ans: 1,
-        exp: "Any individual single variable or its negation is a Literal."
+        options: ["Product Term", "Literal", "Sum Term", "All of these", "None of these"],
+        answer: 1,
+        explanation: "A Literal is a variable or its complement."
     },
     {
         q: "Q.93. Canonical form is a unique way of representing.?",
-        options: ["SOP", "Minterm", "Boolean Expression", "A Page"],
-        ans: 2,
-        exp: "Canonical representations provide standardized unique forms for any Boolean expression."
+        options: ["SOP", "Minterm", "Boolean Expression", "A Page", "All of these"],
+        answer: 2,
+        explanation: "Canonical form uniquely represents any Boolean expression."
     },
     {
-        q: "Q.94. There are_______ Minterms for 3 variables (a, b, c).?",
-        options: ["0", "2", "8", "1"],
-        ans: 2,
-        exp: "For 3 input variables, exactly 2^3 = 8 minterms exist."
+        q: "Q.94. There are_______ Minterm for 3 variables (a, b, c).?",
+        options: ["0", "2", "8", "1", "None of these"],
+        answer: 2,
+        explanation: "2^3 = 8 minterms."
     },
     {
-        q: "Q.95. There are _____ cells in a 4-variable K-map.?",
-        options: ["12", "16", "18", "15"],
-        ans: 1,
-        exp: "A 4-variable K-map consists of 2^4 = 16 individual grid cells."
+        q: "Q.95. There are _____cells in a 4-variable K-map.?",
+        options: ["12", "16", "18", "15", "None of these"],
+        answer: 1,
+        explanation: "A 4-variable K-map contains 2^4 = 16 cells."
     },
     {
-        q: "Q.96. The time required for a gate or inverter to change its output state is called.?",
-        options: ["Rise time", "Decay time", "Propagation time", "Charging time"],
-        ans: 2,
-        exp: "Propagation delay/time measures signal delay through logic gates."
+        q: "Q.96. The time required for a gate or inverter to change its state is called.?",
+        options: ["Rise time", "Decay time", "Propagation time", "Charging time", "None of these"],
+        answer: 2,
+        explanation: "Propagation delay is the time taken for input signal changes to reflect at the output."
     },
     {
         q: "Q.97. The NOR gate output will be high if the two inputs are.?",
-        options: ["00", "01", "10", "11"],
-        ans: 0,
-        exp: "NOR gives 1 only when both inputs are 0 (0+0=0, negated to 1)."
+        options: ["00", "01", "10", "11", "None of these"],
+        answer: 0,
+        explanation: "NOR gate gives HIGH output only when both inputs are LOW (00)."
     },
     {
         q: "Q.98. A full adder logic circuit will have.?",
-        options: ["Two inputs and one output", "Three inputs and three outputs", "Two inputs and two outputs", "Three inputs and two outputs"],
-        ans: 3,
-        exp: "Full Adders process 3 inputs (A, B, Carry-in) to generate 2 outputs (Sum, Carry-out)."
+        options: ["Two inputs and one output", "Three inputs and three outputs", "Two inputs and two outputs", "Three inputs and two output", "None of these"],
+        answer: 3,
+        explanation: "A Full Adder accepts 3 inputs (A, B, Cin) and produces 2 outputs (Sum, Carry)."
     },
     {
         q: "Q.99. Which of following are known as universal gates?",
-        options: ["NAND & NOR", "AND & OR", "XOR & OR", "All of these"],
-        ans: 0,
-        exp: "NAND and NOR gates are classified as universal logic gates."
+        options: ["NAND & NOR", "AND & OR", "XOR & OR", "All of these", "None of these"],
+        answer: 0,
+        explanation: "NAND and NOR gates are universal gates."
     },
     {
         q: "Q.100. The gates required to build a half adder are.?",
-        options: ["EX-OR gate and NOR gate", "EX-OR gate and OR gate", "EX-OR gate and AND gate", "Four NAND gates"],
-        ans: 2,
-        exp: "A Half Adder uses an XOR gate for Sum and an AND gate for Carry."
+        options: ["EX-OR gate and NOR gate", "EX-OR gate and OR gate", "EX-OR gate and AND gate", "Four NAND gates", "None of these"],
+        answer: 2,
+        explanation: "A Half Adder uses one EX-OR gate (for Sum) and one AND gate (for Carry)."
     },
     {
-        q: "Q.101. A single transistor can be used to build which digital logic gate?",
-        options: ["AND", "OR", "NOT", "NAND"],
-        ans: 2,
-        exp: "A simple single BJT transistor circuit operates effectively as a NOT gate (Inverter)."
+        q: "Q.101. A single transistor can be used to build which of the following digital logic gates?",
+        options: ["AND", "OR", "NOT", "NAND", "None of these"],
+        answer: 2,
+        explanation: "A single BJT transistor configured in common-emitter mode acts as a NOT gate."
     },
     {
         q: "Q.102. How many truth table entries are necessary for a four-input circuit?",
-        options: ["4", "8", "12", "16"],
-        ans: 3,
-        exp: "Four inputs require 2^4 = 16 rows."
+        options: ["4", "8", "12", "16", "10"],
+        answer: 3,
+        explanation: "2^4 = 16 truth table entries."
     },
     {
-        q: "Q.103. A Karnaugh map (K-map) is a visual/theoretical form of representing.?",
-        options: ["Circuit diagram", "Block diagram", "Logic diagram", "Venn diagram"],
-        ans: 3,
-        exp: "K-maps visually organize truth table logic similar to modified Venn diagrams."
+        q: "Q.103. A Karnaugh map (K-map) is a theoretical form of representing.?",
+        options: ["Circuit diagram", "Block diagram", "Logic diagram", "Venn diagram", "None of these"],
+        answer: 3,
+        explanation: "K-map is a visual representation derived from Venn diagrams for simplifying Boolean algebra."
     },
     {
         q: "Q.104. Which of the following method is used to minimize Boolean expressions?",
-        options: ["Fourier transform", "Gray code", "Karnaugh mapping", "Venitch method"],
-        ans: 2,
-        exp: "Karnaugh Mapping (K-map) simplifies Boolean algebraic expressions visually."
+        options: ["Fourier transform", "Gray code", "Karnaugh mapping", "Venitch method", "None of these"],
+        answer: 2,
+        explanation: "Karnaugh mapping (K-map) minimizes Boolean expressions visually."
     },
     {
         q: "Q.105. In a Karnaugh map, a group of eight 1's adjacent to each other is called.?",
-        options: ["Pairs", "Triad", "Quads", "Octet"],
-        ans: 3,
-        exp: "Adjacent groupings in K-maps are pairs (2), quads (4), and octets (8)."
+        options: ["Pairs", "Triad", "Quads", "Octet", "None of these"],
+        answer: 3,
+        explanation: "A group of 8 adjacent 1s in a K-map is called an Octet."
     },
     {
         q: "Q.106. The Boolean expressions are represented in a unique way called.?",
-        options: ["Canonical form", "Minterm", "Maxterm", "Logic diagram"],
-        ans: 0,
-        exp: "Canonical representations standardize expressions into unique forms."
+        options: ["Canonical form", "Minterm", "Maxterm", "Logic diagram", "None of these"],
+        answer: 0,
+        explanation: "Canonical form is the unique standardized representation of a Boolean expression."
     },
     {
-        q: "Q.107. Find Minterm, when A = 0, B = 0.?",
-        options: ["A'B'", "A'B", "AB'", "AB"],
-        ans: 0,
-        exp: "For Minterms, 0 maps to complemented variables: A=0 -> A', B=0 -> B', yielding A'B'."
+        q: "Q.107. Find Minterm, when A = 0 B = 0.?",
+        options: ["A'B'", "A'B", "AB'", "A+B", "AB"],
+        answer: 0,
+        explanation: "In minterm, 0 represents complemented variable: A'B'."
     },
     {
-        q: "Q.108. Find Minterm, when A = 0, B = 1.?",
-        options: ["A'B'", "A'B", "AB'", "AB"],
-        ans: 1,
-        exp: "A=0 becomes A' and B=1 becomes B, yielding minterm A'B."
+        q: "Q.108. Find Minterm, when A = 0 B = 1.?",
+        options: ["A'B'", "A'B", "AB'", "A+B", "AB"],
+        answer: 1,
+        explanation: "For A=0, B=1, minterm is A'B."
     },
     {
-        q: "Q.109. Find Minterm, when A = 1, B = 0.?",
-        options: ["A'B'", "A'B", "AB'", "AB"],
-        ans: 2,
-        exp: "A=1 becomes A and B=0 becomes B', yielding minterm AB'."
+        q: "Q.109. Find Minterm, when A = 1 B = 0.?",
+        options: ["A'B'", "A'B", "AB'", "A+B", "AB"],
+        answer: 2,
+        explanation: "For A=1, B=0, minterm is AB'."
     },
     {
-        q: "Q.110. Find Minterm, when A = 1, B = 1.?",
-        options: ["A'B'", "A'B", "AB'", "AB"],
-        ans: 3,
-        exp: "Both variables are 1 (uncomplemented), giving minterm AB."
+        q: "Q.110. Find Minterm, when A = 1 B = 1",
+        options: ["A'B'", "A'B", "AB'", "AB", "None of these"],
+        answer: 3,
+        explanation: "For A=1, B=1, minterm is AB."
     },
     {
-        q: "Q.111. Find Maxterm, when A = 0, B = 0.?",
-        options: ["A+B", "A+B'", "A'+B", "A'+B'"],
-        ans: 0,
-        exp: "For Maxterms, 0 corresponds to uncomplemented variables combined via OR: A + B."
+        q: "Q.111. Find Maxterm, when A = 0 B = 0.?",
+        options: ["A+B", "A+B'", "A'+B", "A'+B'", "None of these"],
+        answer: 0,
+        explanation: "In maxterm, 0 represents uncomplemented variable: A+B."
     },
     {
-        q: "Q.112. Find Maxterm, when A = 0, B = 1.?",
-        options: ["A+B", "A+B'", "A'+B", "A'+B'"],
-        ans: 1,
-        exp: "A=0 yields A, B=1 yields B', forming Maxterm A + B'."
+        q: "Q.112. Find Maxterm, when A = 0 B = 1.?",
+        options: ["A+B", "A+B'", "A'+B", "A'+B'", "None of these"],
+        answer: 1,
+        explanation: "For A=0, B=1, maxterm is A+B'."
     },
     {
-        q: "Q.113. Find Maxterm, when A = 1, B = 0.?",
-        options: ["A+B", "A+B'", "A'+B", "A'+B'"],
-        ans: 2,
-        exp: "A=1 yields A', B=0 yields B, forming Maxterm A' + B."
+        q: "Q.113. Find Maxterm, when A = 1 B = 0.?",
+        options: ["A+B", "A+B'", "A'+B", "A'+B'", "None of these"],
+        answer: 2,
+        explanation: "For A=1, B=0, maxterm is A'+B."
     },
     {
-        q: "Q.114. Find Maxterm, when A = 1, B = 1.?",
-        options: ["A+B", "A+B'", "A'+B", "A'+B'"],
-        ans: 3,
-        exp: "Both inputs equal 1, mapping to complemented Maxterm variables A' + B'."
+        q: "Q.114. Find Maxterm, when A = 1 B = 1.?",
+        options: ["A+B", "A+B'", "A'+B", "A'+B'", "None of these"],
+        answer: 3,
+        explanation: "For A=1, B=1, maxterm is A'+B'."
     }
 ];
 
+// Helper function: Fisher-Yates Shuffle algorithm
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
 function renderQuiz() {
-    const quizContainer = document.getElementById('quiz');
-    quizData.forEach((item, index) => {
+    const container = document.getElementById('quiz-container');
+    
+    quizData.forEach((item) => {
         const qCard = document.createElement('div');
         qCard.className = 'question-card';
 
-        const qTitle = document.createElement('div');
-        qTitle.className = 'question-text';
-        qTitle.innerText = item.q;
-        qCard.appendChild(qTitle);
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.innerText = item.q;
+        qCard.appendChild(qText);
 
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options';
-
-        item.options.forEach((opt, optIdx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = (optIdx + 1) + ") " + opt;
-            btn.onclick = () => checkAnswer(btn, index, optIdx);
-            optionsContainer.appendChild(btn);
+        // Map options to keep track of original correct answer index
+        let optionsObj = item.options.map((opt, index) => {
+            return { text: opt, originalIndex: index };
         });
 
-        qCard.appendChild(optionsContainer);
+        // Shuffle all 5 options on page load
+        let shuffledOptions = shuffleArray(optionsObj);
 
-        const expDiv = document.createElement('div');
-        expDiv.id = `exp-${index}`;
-        expDiv.className = 'explanation';
-        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
-        qCard.appendChild(expDiv);
+        const optsList = document.createElement('div');
+        optsList.className = 'options-list';
 
-        quizContainer.appendChild(qCard);
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation';
+        expBox.innerText = `Explanation: ${item.explanation}`;
+
+        shuffledOptions.forEach((optObj) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = optObj.text;
+
+            btn.onclick = function() {
+                // Disable all option buttons for this question once an option is clicked
+                const siblings = optsList.querySelectorAll('.option-btn');
+                siblings.forEach(b => b.disabled = true);
+
+                if (optObj.originalIndex === item.answer) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('wrong');
+                    // Highlight the correct option in green
+                    siblings.forEach(b => {
+                        if (b.innerText === item.options[item.answer]) {
+                            b.classList.add('correct');
+                        }
+                    });
+                }
+                expBox.style.display = 'block';
+            };
+
+            optsList.appendChild(btn);
+        });
+
+        qCard.appendChild(optsList);
+        qCard.appendChild(expBox);
+        container.appendChild(qCard);
     });
-}
-
-function checkAnswer(selectedBtn, qIndex, selectedIdx) {
-    const card = selectedBtn.closest('.question-card');
-    const buttons = card.querySelectorAll('.btn');
-    const correctIdx = quizData[qIndex].ans;
-
-    buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        if (idx === correctIdx) {
-            btn.classList.add('correct');
-        }
-    });
-
-    if (selectedIdx !== correctIdx) {
-        selectedBtn.classList.add('incorrect');
-    }
-
-    const expDiv = document.getElementById(`exp-${qIndex}`);
-    expDiv.style.display = 'block';
 }
 
 window.onload = renderQuiz;
