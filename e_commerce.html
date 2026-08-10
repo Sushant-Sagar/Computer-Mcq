@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 20px;
+            padding: 0;
+        }
+        .quiz-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question-card {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+        .question-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #222;
+        }
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #333;
+            text-decoration: none;
+            box-sizing: border-box;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #eef2f5;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
+        }
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 12px;
+            background-color: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            font-size: 13px;
+            color: #0c5460;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>E-Commerce Quiz (61 Questions)</h1>
+    <div id="quiz-body"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. What does e-commerce mean?",
+        options: ["Electronic communication", "Electronic commerce", "Electronic computer", "Electronic calculator", "All of these"],
+        correct: 1,
+        exp: "E-Commerce stands for Electronic Commerce, which involves buying and selling goods/services electronically over the Internet."
+    },
+    {
+        q: "Q.2. Which of the following is an example of e-commerce?",
+        options: ["Buying groceries at a supermarket", "Ordering food at a restaurant", "Booking a hotel room online", "Visiting a physical store to buy clothes", "All of these"],
+        correct: 2,
+        exp: "Booking a hotel room online is a transaction completed over the internet, making it an e-commerce service."
+    },
+    {
+        q: "Q.3. Which of the following is a benefit of e-commerce for consumers?",
+        options: ["Limited product choices", "High prices", "Time savings", "Limited payment options", "None of these"],
+        correct: 2,
+        exp: "Consumers save time by purchasing products online from home instead of visiting physical stores."
+    },
+    {
+        q: "Q.4. What is B2B e-commerce?",
+        options: ["Business-to-business e-commerce", "Business-to-consumer e-commerce", "Consumer-to-consumer e-commerce", "Government-to-consumer e-commerce", "None of these"],
+        correct: 0,
+        exp: "B2B stands for Business-to-Business, where transactions take place between commercial entities/companies."
+    },
+    {
+        q: "Q.5. Which of the following is a disadvantage of e-commerce for small businesses?",
+        options: ["Increased visibility", "Reduced marketing costs", "Limited access to customer data", "Increased competition", "None of these"],
+        correct: 3,
+        exp: "Small businesses face intense competition globally from large e-commerce sellers and established brands online."
+    },
+    {
+        q: "Q.6. What is a payment gateway?",
+        options: ["A website where customers can make payments", "A software application that processes payments", "A physical location where payments are accepted", "A bank that provides payment services", "None of these"],
+        correct: 1,
+        exp: "A payment gateway is an application service provider that authorizes and processes credit card or direct payments for e-businesses."
+    },
+    {
+        q: "Q.7. What is a shopping cart?",
+        options: ["A physical cart used for shopping in a store", "A virtual cart used for shopping online", "A loyalty program offered by online retailers", "A type of online auction", "None of these"],
+        correct: 1,
+        exp: "An online shopping cart is software on an e-commerce site that allows customers to accumulate a list of items for purchase."
+    },
+    {
+        q: "Q.8. What is a chargeback?",
+        options: ["A refund issued by the seller", "A dispute initiated by the buyer with their bank", "A fee charged by the payment processor", "A discount offered by the seller", "None of these"],
+        correct: 1,
+        exp: "A chargeback is a transaction reversal initiated by the customer's bank after a dispute over a charge."
+    },
+    {
+        q: "Q.9. ________ is an early form of E-commerce.",
+        options: ["SCM", "EDI", "FTP", "All of these", "None of these"],
+        correct: 1,
+        exp: "Electronic Data Interchange (EDI) was one of the earliest electronic transaction technologies used before modern web e-commerce."
+    },
+    {
+        q: "Q.10. ________ is a set of standards developed in the 1960s to exchange business information and to do electronic transactions.",
+        options: ["EDI", "Protocols", "TCP/IP", "All of these", "None of these"],
+        correct: 0,
+        exp: "EDI standards were developed in the 1960s to standardize data formatting for B2B digital communications."
+    },
+    {
+        q: "Q.11. ________ is essentially a business process that connects manufacturers, retailers, customers and suppliers in the form of a chain to develop and deliver products.",
+        options: ["E-commerce", "EDI", "Networking", "SCM", "None of these"],
+        correct: 3,
+        exp: "Supply Chain Management (SCM) oversees the flow of goods, data, and finances from point of origin to final delivery."
+    },
+    {
+        q: "Q.12. Which of the following is not a party of SCM?",
+        options: ["Suppliers", "Manufacturers", "Distributors", "Customers", "None of these"],
+        correct: 4,
+        exp: "Suppliers, manufacturers, distributors, and customers are all integral primary entities within SCM, so 'None of these' is the correct choice."
+    },
+    {
+        q: "Q.13. ________ is basically a concept of online marketing and distributing of products and services over the internet.",
+        options: ["B2G", "B2E", "B2C", "B2B", "None of these"],
+        correct: 2,
+        exp: "B2C (Business-to-Consumer) represents businesses marketing and directly selling products or services to end users over the internet."
+    },
+    {
+        q: "Q.14. ________ is a function of E commerce.",
+        options: ["Marketing", "Supply Chain", "Finance", "All of the above", "None of these"],
+        correct: 3,
+        exp: "E-Commerce integrates multiple functional areas including marketing, financial transactions, and supply chain logistics."
+    },
+    {
+        q: "Q.15. ________ mainly deals with buying and selling, especially on a large scale.",
+        options: ["Shopping", "Commerce", "Retailing", "Distribution", "All of these"],
+        correct: 1,
+        exp: "Commerce refers to the large-scale buying and selling of commodities and services."
+    },
+    {
+        q: "Q.16. Companies like Flipkart, Amazon and Myntra belong to which type of Ecommerce (EC) segment?",
+        options: ["B2B", "B2C", "P2P", "C2B", "None of these"],
+        correct: 1,
+        exp: "Flipkart, Amazon, and Myntra directly serve consumers, categorizing them primarily under the B2C segment."
+    },
+    {
+        q: "Q.17. Customers pay a fixed amount, commonly month-to-month or quarterly or annually, to get a few types of service referred to as ________ E-Commerce Business Model.",
+        options: ["Licensing", "Subscription", "Transaction", "Affiliate", "None of these"],
+        correct: 1,
+        exp: "The Subscription model charges customers a recurring fee at set intervals for ongoing access to services."
+    },
+    {
+        q: "Q.18. Which type of e-commerce focuses on consumers dealing with each other?",
+        options: ["B2B", "B2C", "C2B", "C2C", "None of these"],
+        correct: 3,
+        exp: "Consumer-to-Consumer (C2C) provides an environment where individual consumers can trade with one another directly."
+    },
+    {
+        q: "Q.19. The best products to sell in B2C e-commerce are?",
+        options: ["Small products", "Digital products", "Specialty products", "Fresh products", "None of these"],
+        correct: 1,
+        exp: "Digital products (software, eBooks, media) are optimal for B2C as they incur zero shipping costs and instant delivery."
+    },
+    {
+        q: "Q.20. Which products are people most likely to be more uncomfortable buying on the Internet?",
+        options: ["Books", "Furniture", "Movies", "All of the above", "None of these"],
+        correct: 1,
+        exp: "Furniture often requires physical evaluation of comfort, material quality, and dimension fit, making buyers hesitant."
+    },
+    {
+        q: "Q.21. Which products are people most likely to be comfortable buying on the Internet?",
+        options: ["Books", "PCs", "CDs", "All of the above", "None of these"],
+        correct: 3,
+        exp: "Standardized commoditized items like Books, PCs, and CDs have clear technical specs and uniform quality."
+    },
+    {
+        q: "Q.22. The solution for all business needs is?",
+        options: ["EDI", "ERP", "SCM", "All of these", "None of the above"],
+        correct: 1,
+        exp: "Enterprise Resource Planning (ERP) integrates core operational processes into a single unified business management system."
+    },
+    {
+        q: "Q.23. Which is not a function of E-commerce?",
+        options: ["marketing", "advertising", "warehousing", "All of these", "None of the above"],
+        correct: 2,
+        exp: "Warehousing involves physical storage and logistics, whereas marketing and advertising are primary digital operations of e-commerce."
+    },
+    {
+        q: "Q.24. Most individuals are familiar with which form of e-commerce?",
+        options: ["B2B", "B2C", "C2B", "C2C", "None of these"],
+        correct: 1,
+        exp: "B2C is the most visible form of e-commerce for regular retail shoppers."
+    },
+    {
+        q: "Q.25. Which form of e-commerce currently accounts for about 97% of all e-commerce revenues?",
+        options: ["B2B", "B2C", "C2B", "C2C", "None of these"],
+        correct: 0,
+        exp: "B2B commands the largest market share in monetary terms due to massive transaction volumes and high order values."
+    },
+    {
+        q: "Q.26. Which of the following are advantages normally associated with B2B e-commerce?",
+        options: ["Shorter cycle times", "Reduction in costs", "Reaches wider audiences", "All of the above", "None of these"],
+        correct: 3,
+        exp: "B2B e-commerce automates operations, reduces procurement costs, speeds processing, and extends global reach."
+    },
+    {
+        q: "Q.27. Amazon.com is well-known for which e-commerce marketing technique?",
+        options: ["Banner ads", "Pop-up ads", "Affiliate programs", "Viral marketing", "None of these"],
+        correct: 2,
+        exp: "Amazon Associates is one of the earliest and most successful affiliate marketing programs on the web."
+    },
+    {
+        q: "Q.28. OLX is an example of ________ E-commerce segment.",
+        options: ["B2B", "B2C", "C2B", "C2C", "None of these"],
+        correct: 3,
+        exp: "OLX is a C2C platform where users buy and sell pre-owned products directly from each other."
+    },
+    {
+        q: "Q.29. The E-payment mechanism widely used in B2B is?",
+        options: ["Credit card", "Master card", "E-cheque", "Debit card", "None of these"],
+        correct: 2,
+        exp: "Electronic Cheques (E-cheques) are standard for high-value B2B transactions requiring paperless bank transfers."
+    },
+    {
+        q: "Q.30. Which of the following model is part of E- Governance?",
+        options: ["G2B", "G2C", "B2G", "C2G", "None of these"],
+        correct: 3,
+        exp: "Citizen-to-Government (C2G) facilitates interaction, tax payment, and feedback between individual citizens and governments."
+    },
+    {
+        q: "Q.31. This is a 3-party marketing process when a publisher and an advertiser join forces to market to the consumer.",
+        options: ["Brick and Mortar", "EDI", "ERP", "Affiliate Marketing", "None of these"],
+        correct: 3,
+        exp: "Affiliate Marketing involves three distinct entities: the merchant, the affiliate/publisher, and the end customer."
+    },
+    {
+        q: "Q.32. A business that has a physical store that customers can go to rather than just having an online presence called?",
+        options: ["Brick and Mortar", "EDI", "ERP", "SCM", "None of these"],
+        correct: 0,
+        exp: "'Brick and Mortar' refers to traditional street-side business operations with physical store locations."
+    },
+    {
+        q: "Q.33. The process of selling services or products to another business, which typically then sells to the consumer.",
+        options: ["C2B", "C2C", "C2G", "B2B", "None of these"],
+        correct: 3,
+        exp: "In B2B e-commerce, goods are traded between corporate entities prior to reaching retail markets."
+    },
+    {
+        q: "Q.34. ________ is often the instruction on what to do next, such as placing an order or inquiring further.",
+        options: ["Conversion", "Call-to-Action", "Cookies", "EDI", "None of these"],
+        correct: 1,
+        exp: "A Call-to-Action (CTA) prompts visitors toward immediate engagement (e.g., 'Buy Now', 'Subscribe')."
+    },
+    {
+        q: "Q.35. ________ is one of the most crucial part of eCommerce, It can be revenue driven, but not necessarily.",
+        options: ["Call-to-Action", "Cyber Monday", "Conversion", "All of these", "None of these"],
+        correct: 2,
+        exp: "Conversion tracks users completing desired actions (purchases, registrations, or downloads)."
+    },
+    {
+        q: "Q.36. These are text files sent to a user's browser related to how the customer interacts with the website.",
+        options: ["SCM", "Advertisements", "Flash", "Cookies", "All of these"],
+        correct: 3,
+        exp: "Cookies store browsing state, preferences, and session data locally on client browsers."
+    },
+    {
+        q: "Q.37. Historically, this day has more deals and discounts than any other day of the year.",
+        options: ["Cyber Monday", "Offer Day", "Rose Day", "Digital Day", "None of these"],
+        correct: 0,
+        exp: "Cyber Monday is a major online retail shopping day featuring major commercial discounts."
+    },
+    {
+        q: "Q.38. ________ is the platform that processes payments for online purchases.",
+        options: ["Payment Gateway", "ERP", "SCM", "All of these", "None of these"],
+        correct: 0,
+        exp: "Payment Gateways securely authorize and route electronic funds for e-commerce checkouts."
+    },
+    {
+        q: "Q.39. ________ is the process of enhancing websites to increase the visibility of the site and gain rankings.",
+        options: ["SERP", "Shopping Cart", "SEO", "All of these", "None of these"],
+        correct: 2,
+        exp: "Search Engine Optimization (SEO) improves unpaid web page search rankings and search engine visibility."
+    },
+    {
+        q: "Q.40. Which of the following describes e-commerce?",
+        options: ["Doing business electronically", "Doing business", "Sale of goods", "All of the above", "None of these"],
+        correct: 0,
+        exp: "E-Commerce is explicitly defined as performing commercial transactions electronically."
+    },
+    {
+        q: "Q.41. Which segment do Flipkart, Amazon.com belong?",
+        options: ["B2B", "B2C", "C2B", "C2C", "All of the above"],
+        correct: 1,
+        exp: "Retail aggregators like Amazon and Flipkart target individual consumers under B2C."
+    },
+    {
+        q: "Q.42. Which segment is eBay an example?",
+        options: ["B2B", "B2C", "C2B", "C2C", "All of the above"],
+        correct: 3,
+        exp: "eBay pioneered online C2C peer-to-peer customer auctions and market listings."
+    },
+    {
+        q: "Q.43. Which type deals with auction?",
+        options: ["B2B", "B2C", "C2B", "C2C", "All of the above"],
+        correct: 3,
+        exp: "Consumer-to-Consumer (C2C) platforms typically manage peer auctions."
+    },
+    {
+        q: "Q.44. In which website Global Easy Buy is facilitated.",
+        options: ["Ebay.com", "Amazon.com", "Yepme.com", "All of these", "None of these"],
+        correct: 0,
+        exp: "Global Easy Buy is a specialized international purchasing tool provided by eBay."
+    },
+    {
+        q: "Q.45. Digital products are best suited for B2C e-commerce because they.",
+        options: ["Are commodity like products", "Can be mass-customized and personalized", "Can be delivered at the time of purchase", "All of the above", "None of these"],
+        correct: 3,
+        exp: "Digital goods can be customized, instantly delivered digitally, and scaled efficiently."
+    },
+    {
+        q: "Q.46. All of the following are techniques B2C e-commerce companies use to attract customers, except.",
+        options: ["Registering with search engines", "Viral marketing", "Online ads", "Virtual marketing", "All of these"],
+        correct: 3,
+        exp: "'Virtual marketing' is not a standard promotional classification compared to viral or search engine tactics."
+    },
+    {
+        q: "Q.47. Which term represents a count of the number of people who visit one site, click on an ad, and are taken to the site of the advertiser?",
+        options: ["Affiliate programs", "Click-through", "Spam", "All of the above", "None of these"],
+        correct: 1,
+        exp: "Click-through measures the process of clicking an advertisement link to visit the destination URL."
+    },
+    {
+        q: "Q.48. What is the percentage of customers who visit a Web site and actually buy something called?",
+        options: ["Affiliate programs", "Click-through", "Spam", "Conversion rate", "All of these"],
+        correct: 3,
+        exp: "Conversion rate reflects the percentage of web visitors who finalize an online transaction."
+    },
+    {
+        q: "Q.49. How the transactions occur in e-commerce.",
+        options: ["Using e-medias", "Using computers only", "Using mobile phones only", "1 & 2 Only", "None of the above"],
+        correct: 0,
+        exp: "E-Commerce transactions leverage electronic media devices, including computers and mobile equipment."
+    },
+    {
+        q: "Q.50. Which type of products is lesser purchased using ecommerce?",
+        options: ["automobiles", "books", "softwares", "CD", "All of these"],
+        correct: 0,
+        exp: "High-value physical assets like automobiles are bought online less frequently compared to digital media or books."
+    },
+    {
+        q: "Q.51. Which of the following refers to creating products tailored to individual customers?",
+        options: ["Customization", "Aggregation", "Direct materials", "Reverse auction", "All of these"],
+        correct: 0,
+        exp: "Customization alters goods or services according to individual client specifications."
+    },
+    {
+        q: "Q.52. Materials used in the normal operation of a business but not related to primary business operations are called what?",
+        options: ["Supplies", "Direct materials", "Indirect materials", "Daily stuff", "All of these"],
+        correct: 2,
+        exp: "Indirect materials support operational tasks but are not incorporated into finished manufacturing goods."
+    },
+    {
+        q: "Q.53. Amazon.com is well-known for which e-commerce marketing technique.",
+        options: ["Banner ads", "Pop-up ads", "Affiliate programs", "Viral marketing", "Both 2 & 3"],
+        correct: 2,
+        exp: "Amazon widely popularized modern affiliate marketing models."
+    },
+    {
+        q: "Q.54. What is the name given to an interactive business providing a centralized market where many buyers and suppliers can come together for e-commerce or commerce-related activities?",
+        options: ["Direct marketplace", "B2B", "B2C", "Electronic marketplace", "None of these"],
+        correct: 3,
+        exp: "An Electronic Marketplace provides a digital trading hub connecting buyers and business sellers."
+    },
+    {
+        q: "Q.55. Which type of add appears on a web page.",
+        options: ["pop-under ad", "Pop-up ad", "Banner ad", "Discount ad", "All of these"],
+        correct: 2,
+        exp: "Banner ads are embedded directly into fixed spaces on a web page."
+    },
+    {
+        q: "Q.56. What type of ad appears on top of a web page?",
+        options: ["pop-uner ad", "Pop-up ad", "Banner ad", "Discount ad", "All of these"],
+        correct: 1,
+        exp: "Pop-up advertisements render in foreground windows over active browser viewports."
+    },
+    {
+        q: "Q.57. What type of ad appears under a web page?",
+        options: ["pop-under ad", "Pop-up ad", "Banner ad", "Discount ad", "All of these"],
+        correct: 0,
+        exp: "Pop-under ads open new browser windows beneath active application windows."
+    },
+    {
+        q: "Q.58. Which, if any, of the following types of ads are people most willing to tolerate.",
+        options: ["pop-under ad", "pop-up ad", "banner ad", "All of these", "None of the above"],
+        correct: 4,
+        exp: "Intrusive promotional displays are commonly disliked by users, making 'None of the above' the correct choice."
+    },
+    {
+        q: "Q.59. Which of the following is an Internet-based company that makes it easy for one person to pay another over the Internet?",
+        options: ["electronic check", "electronic bill presentment and payment", "conversion rates", "financial cybermediary", "All of these"],
+        correct: 3,
+        exp: "Financial Cybermediaries (e.g., PayPal) process secure web-based financial transfers."
+    },
+    {
+        q: "Q.60. What is the name for direct computer-to-computer transfer of transaction information contained in standard business documents?",
+        options: ["internet commerce", "e-commerce", "transaction information transfer", "electronic data interchange", "All of these"],
+        correct: 3,
+        exp: "Electronic Data Interchange (EDI) handles automated paperless system-to-system document transfers."
+    },
+    {
+        q: "Q.61. What is a type of virus that spreads itself, not just from file to file, but from computer to computer via e-mail and other Internet traffic?",
+        options: ["Computer virus", "Worm", "Denial-of-service attack", "All of these", "None of the above"],
+        correct: 1,
+        exp: "Computer Worms replicate autonomously across network channels without requiring host intervention."
+    }
+];
+
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-body');
+    container.innerHTML = '';
+
+    quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.innerText = item.q;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        // Prepare option objects tracking their original index
+        let optionsObj = item.options.map((optText, origIdx) => {
+            return { text: optText, originalIndex: origIdx };
+        });
+
+        // Shuffle options on every page load
+        optionsObj = shuffleArray(optionsObj);
+
+        optionsObj.forEach(optObj => {
+            const li = document.createElement('li');
+            const btn = document.createElement('a');
+            btn.className = 'option-btn';
+            btn.href = 'javascript:void(0);';
+            btn.innerText = optObj.text;
+
+            btn.onclick = function() {
+                checkAnswer(card, optObj.originalIndex, item.correct);
+            };
+
+            li.appendChild(btn);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+function checkAnswer(card, selectedIdx, correctIdx) {
+    const buttons = card.querySelectorAll('.option-btn');
+    const expDiv = card.querySelector('.explanation');
+
+    buttons.forEach(btn => {
+        btn.onclick = null; // Disable further clicking on this question
+        btn.style.cursor = 'default';
+    });
+
+    // Locate clicked option and show correctness
+    const optionsList = card.querySelectorAll('.options-list li');
+    
+    buttons.forEach(btn => {
+        btn.classList.remove('correct', 'wrong');
+    });
+
+    // Re-verify clicked element
+    event.target.classList.add(selectedIdx === correctIdx ? 'correct' : 'wrong');
+
+    expDiv.style.display = 'block';
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
