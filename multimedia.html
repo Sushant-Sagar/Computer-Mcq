@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimedia MCQs Interactive Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not([disabled]) {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            font-weight: bold;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #e7f5ff;
+            border-left: 4px solid #1c7ed6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #1864ab;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Multimedia MCQs Interactive Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. Which of the following is a collection of multiple media resources e.g. text, graphics, images, sound/audio, animation & video.?[cite: 14]",
+        options: ["Desktop Publishing", "OCR", "Hypertext", "Multimedia", "All of these"],
+        correct: "Multimedia",
+        exp: "Multimedia combines multiple content forms such as text, audio, images, animations, and video into a single interactive system."
+    },
+    {
+        q: "Q.2. ______ is the process of digitally manipulating an image such that any shapes portrayed in the image have been significantly distorted.?[cite: 14]",
+        options: ["Morphing", "Warping", "Padding", "Fitting", "All of these"],
+        correct: "Warping",
+        exp: "Warping is a digital image processing technique used to significantly distort shapes and geometry within an image."
+    },
+    {
+        q: "Q.3. Which of the following is a technique to blend two or more images to form a new image.?[cite: 14]",
+        options: ["Modeling", "Morphing", "Animating", "Warping", "All of these"],
+        correct: "Morphing",
+        exp: "Morphing is an animation and image processing technique that smoothly transitions or blends one image into another."
+    },
+    {
+        q: "Q.4. In 3D image, after animation is created adding special effects are called as[cite: 14]",
+        options: ["Modeling & Rendering", "Rendering & Morphing", "Modeling & Warping", "Morphing & Warping", "None of these"],
+        correct: "Morphing & Warping",
+        exp: "Morphing and warping techniques are applied in 3D graphics to generate dynamic transformations and special effects."
+    },
+    {
+        q: "Q.5. Process in which Vector images are converted into Bitmap Image called[cite: 14]",
+        options: ["Pixelation", "Quantization", "Rasterization", "Sampling", "All of these"],
+        correct: "Rasterization",
+        exp: "Rasterization is the process of converting vector graphics (lines and shapes) into a raster or bitmap image (pixels)."
+    },
+    {
+        q: "Q.6. A Digital Image is made up of thousands of.?[cite: 14]",
+        options: ["pixels", "bitmap", "resolution", "vector images", "All of These"],
+        correct: "pixels",
+        exp: "A digital image is composed of tiny individual color elements organized in rows and columns called pixels."
+    },
+    {
+        q: "Q.7. Bitmap images are made of.?[cite: 14]",
+        options: ["picture", "pixels", "lines and curves", "All of these", "none of the above"],
+        correct: "pixels",
+        exp: "Bitmap (raster) images store graphic information as a grid of individual pixels."
+    },
+    {
+        q: "Q.8. RGB Stands for.?[cite: 14]",
+        options: ["raster, gray, black", "red, green, blue", "black and white", "All of these", "none of the above"],
+        correct: "red, green, blue",
+        exp: "RGB stands for Red, Green, and Blue, which are the primary additive colors used in electronic displays."
+    },
+    {
+        q: "Q.9. Photoshop file format.?[cite: 14]",
+        options: ["jpeg", "psd", "odt", "Doc", "All of these"],
+        correct: "psd",
+        exp: "PSD (Photoshop Document) is the default native file format used by Adobe Photoshop."
+    },
+    {
+        q: "Q.10. Tiff Stands for.?[cite: 14]",
+        options: ["tiled image format", "Tag Image File Format", "typical information format", "title Interchange format", "All of these"],
+        correct: "Tag Image File Format",
+        exp: "TIFF stands for Tagged Image File Format, a standard format for high-quality raster graphics."
+    },
+    {
+        q: "Q.11. A movie contains?[cite: 14]",
+        options: ["still images", "audio", "simulation", "Video", "All of these"],
+        correct: "Video",
+        exp: "A movie primarily consists of continuous video motion tracks along with synchronized sound."
+    },
+    {
+        q: "Q.12. Tool used to increase or decrease the magnification of an image.?[cite: 14]",
+        options: ["Hand tool", "gradient tool", "lasso tool", "zoom tool", "All of these"],
+        correct: "zoom tool",
+        exp: "The Zoom tool allows users to zoom in (magnify) or zoom out to view specific areas of an image."
+    },
+    {
+        q: "Q.13. An image editing software.?[cite: 14]",
+        options: ["PageMaker", "MS-Word", "Photoshop", "All of the above", "None of these"],
+        correct: "Photoshop",
+        exp: "Adobe Photoshop is a dedicated graphic design and digital image editing software."
+    },
+    {
+        q: "Q.14. Who created the name multimedia in 1996.?[cite: 14]",
+        options: ["BOB GOLDSTEIN", "JOHN VON NEUMANN", "CHARLES BABBAGE", "ANDY RUBIN", "None of these"],
+        correct: "BOB GOLDSTEIN",
+        exp: "Bob Goldstein first coined and popularized the term 'multimedia' during an interactive light and music show."
+    },
+    {
+        q: "Q.15. Which format usually works best for photos.?[cite: 14]",
+        options: ["HTML", "GIF", "JPG", "All of the above", "None of these"],
+        correct: "JPG",
+        exp: "JPG/JPEG uses lossy compression designed specifically for continuous-tone photographic images."
+    },
+    {
+        q: "Q.16. Which of the following is NOT a video editing tool.?[cite: 14]",
+        options: ["Adobe After Effects", "Adobe Premiere", "Adobe Illustrator", "Final Cut Pro", "All of these"],
+        correct: "Adobe Illustrator",
+        exp: "Adobe Illustrator is a vector graphics editor used for drawing, not a video editing tool."
+    },
+    {
+        q: "Q.17. Which extension is used for Video Files.?[cite: 14]",
+        options: [".gif", ".mid", ".dbf", ".avi", "All of these"],
+        correct: ".avi",
+        exp: ".avi (Audio Video Interleave) is a standard multimedia video container file format."
+    },
+    {
+        q: "Q.18. FLV is a file extension of which type of files.?[cite: 14]",
+        options: ["Audio", "Image", "Video", "Flash", "None of these"],
+        correct: "Video",
+        exp: "FLV (Flash Video) is a container format used to deliver video content over the internet via Adobe Flash."
+    },
+    {
+        q: "Q.19. Which of the following is an audio file extension.?[cite: 14]",
+        options: ["MP5", "MOV", "WMV", "WMA", "All of these"],
+        correct: "WMA",
+        exp: "WMA stands for Windows Media Audio, an audio file compression format developed by Microsoft."
+    },
+    {
+        q: "Q.20. Which of the following is not a video file extension.?[cite: 14]",
+        options: [".avi", "wav", ".mpeg", "mov", "None of these"],
+        correct: "wav",
+        exp: ".wav (Waveform Audio File Format) is an uncompressed audio format, not a video format."
+    },
+    {
+        q: "Q.21. Which of the following is the extension name for an image file.?[cite: 14]",
+        options: ["JPEG", ".CSV", "BSP", "JEG", "None of these"],
+        correct: "JPEG",
+        exp: "JPEG (Joint Photographic Experts Group) is a widely recognized standard extension for digital image files."
+    },
+    {
+        q: "Q.22. PNG File format is best for.?[cite: 14]",
+        options: ["High Quality prints", "Archival copies", "Scans", "Web images", "None of these"],
+        correct: "Web images",
+        exp: "PNG provides lossless compression and transparency features, making it ideal for web graphics."
+    },
+    {
+        q: "Q.23. Which file format is excellent for animation.?[cite: 14]",
+        options: ["Tif", "GIF", "JPEG", "PNG", "None of these"],
+        correct: "GIF",
+        exp: "GIF (Graphics Interchange Format) natively supports basic frame-by-frame animated sequences."
+    },
+    {
+        q: "Q.24. A ________ is a small program embedded inside of a GIF image.?[cite: 14]",
+        options: ["Web bug", "Cookie", "Spyware application", "Spam", "None of these"],
+        correct: "Web bug",
+        exp: "A Web bug (or web beacon) is a tiny graphic embedded in a GIF file used to monitor user tracking metrics."
+    },
+    {
+        q: "Q.25. Which of the following is a Multimedia Authoring Tool.?[cite: 14]",
+        options: ["Microsoft Word", "Adobe Photoshop", "Adobe Flash", "More than one of the above", "None of these"],
+        correct: "Adobe Flash",
+        exp: "Adobe Flash is a specialized authoring environment used to create interactive multimedia applications."
+    },
+    {
+        q: "Q.26. Which of the following is a Multimedia Authoring Tool.?[cite: 14]",
+        options: ["Adobe Fireworks", "CyberLink PowerDirector", "Adobe Freehand", "Adobe Director", "All of these"],
+        correct: "Adobe Director",
+        exp: "Adobe Director is a powerful multimedia authoring platform used for constructing interactive software."
+    },
+    {
+        q: "Q.27. A small representation of larger image is called.?[cite: 14]",
+        options: ["Portable Network Graphics", "Thumbnail", "Clipart", "Bitmap", "All of these"],
+        correct: "Thumbnail",
+        exp: "A thumbnail is a miniature preview image representing a full-sized picture."
+    },
+    {
+        q: "Q.28. Which of the following is the phase for developing Multimedia Applications.?[cite: 14]",
+        options: ["Planning", "Designing", "Developing", "More than one of the above", "None of these"],
+        correct: "More than one of the above",
+        exp: "Developing multimedia software incorporates multiple structured stages including planning, designing, and coding."
+    },
+    {
+        q: "Q.29. ______ is used to reduce the size of multimedia files.?[cite: 14]",
+        options: ["Data Handling", "Data Coupling", "Data Compression", "Data Dependency", "All of these"],
+        correct: "Data Compression",
+        exp: "Data compression encodes digital information using fewer bits to minimize storage footprint and transfer time."
+    },
+    {
+        q: "Q.30. The shockwave format was developed by.?[cite: 14]",
+        options: ["IBM", "Apple", "Macromedia", "Microsoft", "All of these"],
+        correct: "Macromedia",
+        exp: "Shockwave format was created by Macromedia to display rich interactive multimedia elements online."
+    },
+    {
+        q: "Q.31. Which image files are a lossy format.?[cite: 14]",
+        options: ["GIF", "WAV", "JPEG", "PNG", "All of these"],
+        correct: "JPEG",
+        exp: "JPEG uses lossy compression algorithms that reduce file size by permanently discarding less perceptibility details."
+    },
+    {
+        q: "Q.32. Multimedia is also used for _____ communications and presentations.?[cite: 14]",
+        options: ["Corporate", "Company", "Commercial", "More than one of the above", "All of these"],
+        correct: "Corporate",
+        exp: "Corporate environments extensively utilize multimedia presentations for staff training and investor relations."
+    },
+    {
+        q: "Q.33. How many step process for creating a 3D animation.?[cite: 14]",
+        options: ["2", "3", "4", "5", "None of these"],
+        correct: "3",
+        exp: "3D animation typically follows a 3-step core production pipeline: Pre-production, Production, and Post-production."
+    },
+    {
+        q: "Q.34. Which of the following is a multimedia authoring tool?[cite: 14]",
+        options: ["Microsoft Word", "Adobe Photoshop", "Adobe Flash", "More than one of the above", "None of these"],
+        correct: "Adobe Flash",
+        exp: "Adobe Flash is an authoring tool designed to build interactive media, animations, and web applications."
+    },
+    {
+        q: "Q.35. Which of the following is a multimedia authoring tool?[cite: 14]",
+        options: ["Adobe Fireworks", "CyberLink PowerDirector", "Adobe Freehand", "Adobe Director", "All of these"],
+        correct: "Adobe Director",
+        exp: "Adobe Director provides a full multimedia authoring suite using scriptable timeline structures."
+    },
+    {
+        q: "Q.36. A small image representation of a larger image is called:[cite: 14]",
+        options: ["Portable Network Graphic", "Thumbnail", "ClipArt", "Bitmap", "None of these"],
+        correct: "Thumbnail",
+        exp: "A thumbnail is a compressed preview graphic representing a higher-resolution original file."
+    }
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+
+    quizData.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        const shuffledOptions = shuffleArray([...item.options]);
+
+        shuffledOptions.forEach((optionText) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = optionText;
+
+            btn.onclick = () => {
+                const siblings = optionsDiv.querySelectorAll('.option-btn');
+                siblings.forEach(s => s.disabled = true);
+
+                if (optionText === item.correct) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                    siblings.forEach(s => {
+                        if (s.textContent === item.correct) {
+                            s.classList.add('correct');
+                        }
+                    });
+                }
+
+                const expBox = card.querySelector('.explanation');
+                expBox.style.display = 'block';
+            };
+
+            optionsDiv.appendChild(btn);
+        });
+
+        card.appendChild(optionsDiv);
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
