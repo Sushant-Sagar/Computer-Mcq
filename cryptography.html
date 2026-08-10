@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography Practice Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #1a365d;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3182ce;
+            padding-bottom: 10px;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 600px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .btn {
+            background-color: #ffffff;
+            border: 2px solid #cbd5e0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95em;
+            color: #4a5568;
+            transition: all 0.2s ease;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #edf2f7;
+            border-color: #cbd5e0;
+        }
+        .btn.correct {
+            background-color: #38a169 !important;
+            color: white !important;
+            border-color: #38a169 !important;
+        }
+        .btn.incorrect {
+            background-color: #e53e3e !important;
+            color: white !important;
+            border-color: #e53e3e !important;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            border-radius: 4px;
+            display: none;
+            font-size: 0.95em;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Cryptography Practice Quiz</h1>
+    <div id="quiz"></div>
+</div>
+
+<script>
+const rawQuizData = [
+    {
+        q: "1. RSA algorithm is best example of.?",
+        options: ["Asymmetric key cryptography", "Symmetric key cryptography", "Elliptic curve cryptography", "Block cipher cryptography"],
+        ans: 0,
+        exp: "RSA is an asymmetric cryptography algorithm that uses a public key for encryption and a private key for decryption."
+    },
+    {
+        q: "2. It is the message after transformation?",
+        options: ["Cipher text", "Plaintext", "Secret-text", "Encoded message"],
+        ans: 0,
+        exp: "Ciphertext is the encrypted or transformed output text produced after applying an encryption algorithm to plaintext."
+    },
+    {
+        q: "3. An algorithm transforms plaintext to cipher text?",
+        options: ["Encryption", "Decryption", "Translation", "Hashing"],
+        ans: 0,
+        exp: "Encryption is the process of converting readable plaintext into unreadable ciphertext."
+    },
+    {
+        q: "4. An algorithm transforms cipher text to plain text?",
+        options: ["Encryption", "Decryption", "Translation", "De-hashing"],
+        ans: 1,
+        exp: "Decryption is the reverse process of converting ciphertext back into its original readable plaintext format."
+    },
+    {
+        q: "5. In _______ Cipher, the same key is used by both the sender and receiver?",
+        options: ["Symmetric Key", "Asymmetric Key", "Parallel Key", "Public Key"],
+        ans: 0,
+        exp: "Symmetric key cryptography uses a single shared secret key for both encryption and decryption operations."
+    },
+    {
+        q: "6. Cryptography, a word with Greek origins, means?",
+        options: ["Corrupting Data", "Secret Writing", "Open Writing", "Closed Writing"],
+        ans: 1,
+        exp: "The word 'Cryptography' originates from the Greek words 'kryptos' (hidden) and 'graphein' (writing), meaning 'secret writing'."
+    },
+    {
+        q: "7. Hide Information Inside A Picture, What Technology Is Used.?",
+        options: ["Rootkits", "Bitmapping", "Steganography", "Image Rendering"],
+        ans: 2,
+        exp: "Steganography is the technique of hiding secret information within ordinary files like images or videos to conceal the communication."
+    },
+    {
+        q: "8. Data Encryption Standard was designed by.?",
+        options: ["Intel", "IBM", "HP", "Sony"],
+        ans: 1,
+        exp: "Data Encryption Standard (DES) was developed by IBM in the early 1970s and later adopted as a national standard."
+    },
+    {
+        q: "9. It is the process of converting data from a readable, plaintext format into an unreadable, encoded format called.?",
+        options: ["SSL Security", "HTTPS", "Virtual Private Network", "Encryption"],
+        ans: 3,
+        exp: "Encryption encodes data so that only authorized parties with the key can read the contents."
+    },
+    {
+        q: "10. Which of the following option is used to protect data and passwords.?",
+        options: ["Authorization", "Authentication", "Encryption", "Non-repudiation"],
+        ans: 2,
+        exp: "Encryption protects confidentiality by encoding stored and transmitted data/passwords so unauthorized users cannot read them."
+    },
+    {
+        q: "11. It is a process that transforms encrypted information into its original format.?",
+        options: ["Encryption", "Decryption", "Cipher Text", "Hashing"],
+        ans: 1,
+        exp: "Decryption converts unreadable encrypted ciphertext back into its original plain text format."
+    },
+    {
+        q: "12. Among these which is/are major types of Encryption.?",
+        options: ["DES", "AES", "RSA", "All of these"],
+        ans: 3,
+        exp: "DES, AES (symmetric encryption methods), and RSA (asymmetric encryption method) are all major encryption standards."
+    },
+    {
+        q: "13. An asymmetric-key cipher uses.?",
+        options: ["1 Key", "2 Key", "3 Key", "4 Key"],
+        ans: 1,
+        exp: "Asymmetric key cryptography utilizes a pair of 2 mathematically linked keys: a public key and a private key."
+    },
+    {
+        q: "14. Cryptography term is used to transforming messages to make them secure and to prevent from.?",
+        options: ["Change", "Defend", "Idle", "Attacks"],
+        ans: 3,
+        exp: "Cryptography is used to secure data from security attacks, eavesdropping, and unauthorized modifications."
+    },
+    {
+        q: "15. Which one is the Heart of Data Encryption Standard (DES).?",
+        options: ["DES function", "Encryption", "Rounds", "Cipher"],
+        ans: 0,
+        exp: "The core non-linear processing component of DES is the DES function (Feistel function) executed in each round."
+    },
+    {
+        q: "16. DES stands for.?",
+        options: ["Data Encryption Slots", "Data Encryption Subscription", "Data Encryption Standard", "Data Encryption Solutions"],
+        ans: 2,
+        exp: "DES is an acronym for Data Encryption Standard."
+    },
+    {
+        q: "17. Conventional cryptography also known as_______ encryption.?",
+        options: ["asymmetric-key", "logical-key", "symmetric-key", "public-key"],
+        ans: 2,
+        exp: "Traditional or conventional cryptography relies on a single shared secret key, also termed symmetric-key encryption."
+    },
+    {
+        q: "18. Public key cryptography is a _______cryptosystem.?",
+        options: ["Symmetric", "Asymmetric", "Symmetric & Asymmetric both", "Simple"],
+        ans: 1,
+        exp: "Public key cryptography is an asymmetric cryptosystem because it relies on two different keys (public and private)."
+    },
+    {
+        q: "19. Which is the cryptographic protocol that is used to protect an HTTP connection?",
+        options: ["Resource reservation protocol", "SCTP", "TLS", "ECN"],
+        ans: 2,
+        exp: "Transport Layer Security (TLS) encrypts HTTP traffic to provide secure web communication (HTTPS)."
+    },
+    {
+        q: "20. The _______method provides a one- time session key for two parties.?",
+        options: ["Diffie-Hellman", "RSA", "DES", "AES"],
+        ans: 0,
+        exp: "The Diffie-Hellman key exchange algorithm allows two parties to establish a shared symmetric session key securely."
+    },
+    {
+        q: "21. Confidentiality can be achieved with?",
+        options: ["Encryption", "Decryption", "Networking", "Compression"],
+        ans: 0,
+        exp: "Encryption ensures data confidentiality by preventing unauthorized entities from reading the contents."
+    },
+    {
+        q: "22. Name that person who attempts to break a cypher text message to obtain the original plaintext message?",
+        options: ["Encryptalyst", "Cryptanalyst", "Decryptanalyst", "Hacker"],
+        ans: 1,
+        exp: "A cryptanalyst studies cryptographic systems to analyze and find weaknesses or break ciphers without knowing the key."
+    },
+    {
+        q: "23. Asymmetric or public-key encryption systems use ?",
+        options: ["Public Key", "Private Key", "Both of these", "Simple Key"],
+        ans: 2,
+        exp: "Asymmetric systems use both a public key (for encryption/verification) and a private key (for decryption/signing)."
+    },
+    {
+        q: "24. One commonly used public-key cryptography method is the ________algorithm.?",
+        options: ["RSS", "RAS", "RSA", "RAA"],
+        ans: 2,
+        exp: "RSA (Rivest–Shamir–Adleman) is one of the most widely used public-key algorithms."
+    },
+    {
+        q: "25. In an asymmetric-key cipher, the sender uses the ________key.",
+        options: ["private", "public", "either (1) or (2)", "protected"],
+        ans: 1,
+        exp: "To send a confidential message, the sender encrypts it using the receiver's public key."
+    },
+    {
+        q: "26. In an asymmetric-key cipher, the receiver uses the ________key.?",
+        options: ["private", "public", "either (1) or (2)", "protected"],
+        ans: 0,
+        exp: "The receiver uses their own secret private key to decrypt messages encrypted with their public key."
+    },
+    {
+        q: "27. In a(n) ________cipher, a pair of keys is used.?",
+        options: ["symmetric-key", "asymmetric-key", "either (1) or (2)", "neither (1) nor (2)"],
+        ans: 1,
+        exp: "An asymmetric-key cipher relies on a key pair consisting of a public key and a private key."
+    },
+    {
+        q: "28. In a(n) ________the key is called the secret key.?",
+        options: ["symmetric-key", "asymmetric-key", "either (1) or (2)", "neither (1) nor (2)"],
+        ans: 0,
+        exp: "In symmetric-key encryption, the shared key must be kept secret between communicating parties."
+    },
+    {
+        q: "29. In a(n) ________ cipher, the same key is used by both the sender and receiver.?",
+        options: ["symmetric-key", "asymmetric-key", "either (1) or (2)", "neither (1) nor (2)"],
+        ans: 0,
+        exp: "Symmetric-key ciphers use the identical key for both encryption by the sender and decryption by the receiver."
+    },
+    {
+        q: "30. The ________ is a number or a set of numbers on which the cipher operates.?",
+        options: ["cipher", "secret", "Key", "id"],
+        ans: 2,
+        exp: "A key is a numerical parameter supplied to a cryptographic algorithm to transform plaintext into ciphertext or vice versa."
+    },
+    {
+        q: "31. In asymmetric key cryptography, the private key is kept by.?",
+        options: ["sender", "receiver", "sender and receiver", "all connected devices"],
+        ans: 1,
+        exp: "In asymmetric encryption, the private key is kept confidential and secret strictly by its owner (receiver)."
+    },
+    {
+        q: "32. Among these which is not Symmetric Key Encryption Method.?",
+        options: ["AES", "DES", "RC4", "RSA"],
+        ans: 3,
+        exp: "RSA is an asymmetric (public-key) encryption method, whereas AES, DES, and RC4 are symmetric methods."
+    },
+    {
+        q: "33. Among these which is not Asymmetric Key Encryption Method.?",
+        options: ["RSA", "DSA", "Diffie-Hellman", "AES"],
+        ans: 3,
+        exp: "AES (Advanced Encryption Standard) is a symmetric-key encryption standard."
+    },
+    {
+        q: "34. It is a mathematical algorithm routinely used to validate the authenticity and integrity of a message.?",
+        options: ["Cryptography", "Digital Signature", "Hashing", "VPN"],
+        ans: 1,
+        exp: "A Digital Signature provides message authentication, non-repudiation, and integrity verification."
+    },
+    {
+        q: "35. Example of Asymmetric Encryption are.?",
+        options: ["HTTPS", "Bitcoin", "Digital Signature", "All of these"],
+        ans: 3,
+        exp: "HTTPS (via TLS), Bitcoin transactions, and Digital Signatures all rely on public-key asymmetric algorithms."
+    },
+    {
+        q: "36. Example of Symmetric Encryption are.?",
+        options: ["Card Transaction", "Hashing Function", "Bulk Encryption", "All of these"],
+        ans: 3,
+        exp: "Symmetric algorithms are widely used for bulk data encryption, fast payment card processing, and integrated hash schemes."
+    },
+    {
+        q: "37. This Encryption technique only provides Confidentiality.?",
+        options: ["Symmetric Encryption", "Asymmetric Encryption", "Simple Encryption", "Digital Signatures"],
+        ans: 0,
+        exp: "Symmetric encryption primarily ensures confidentiality of data; it requires additional mechanisms for non-repudiation."
+    },
+    {
+        q: "38. It provides confidentiality, authenticity & non repudiation.?",
+        options: ["Symmetric Encryption", "Asymmetric Encryption", "Asynchronous Encryption", "Simple Encryption"],
+        ans: 1,
+        exp: "Asymmetric encryption provides confidentiality along with non-repudiation and authenticity using digital signatures."
+    }
+];
+
+function prepareQuizData() {
+    return rawQuizData.map(item => {
+        let optionsCopy = [...item.options];
+        let correctText = optionsCopy[item.ans];
+        
+        // Fisher-Yates shuffle to randomize 4 options on page reload
+        for (let i = optionsCopy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [optionsCopy[i], optionsCopy[j]] = [optionsCopy[j], optionsCopy[i]];
+        }
+        
+        let newAnsIdx = optionsCopy.indexOf(correctText);
+        
+        return {
+            q: item.q,
+            options: optionsCopy,
+            ans: newAnsIdx,
+            exp: item.exp
+        };
+    });
+}
+
+function renderQuiz() {
+    const quizData = prepareQuizData();
+    const quizContainer = document.getElementById('quiz');
+    
+    quizData.forEach((item, index) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'question-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-text';
+        qTitle.innerText = item.q;
+        qCard.appendChild(qTitle);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'options';
+
+        item.options.forEach((opt, optIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = (optIdx + 1) + ") " + opt;
+            btn.onclick = () => checkAnswer(btn, index, optIdx, item.ans);
+            optionsContainer.appendChild(btn);
+        });
+
+        qCard.appendChild(optionsContainer);
+
+        const expDiv = document.createElement('div');
+        expDiv.id = `exp-${index}`;
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        qCard.appendChild(expDiv);
+
+        quizContainer.appendChild(qCard);
+    });
+}
+
+function checkAnswer(selectedBtn, qIndex, selectedIdx, correctIdx) {
+    const card = selectedBtn.closest('.question-card');
+    const buttons = card.querySelectorAll('.btn');
+
+    buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === correctIdx) {
+            btn.classList.add('correct');
+        }
+    });
+
+    if (selectedIdx !== correctIdx) {
+        selectedBtn.classList.add('incorrect');
+    }
+
+    const expDiv = document.getElementById(`exp-${qIndex}`);
+    expDiv.style.display = 'block';
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
