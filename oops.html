@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOPS Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .question-box {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .question {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 8px 0;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            text-align: left;
+            text-decoration: none;
+            color: #495057;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-sizing: border-box;
+        }
+        .option-btn:hover {
+            background-color: #dee2e6;
+        }
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+        }
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
+        }
+        .explanation {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+            font-style: italic;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>Object-Oriented Programming System (OOPS) Quiz</h2>
+    <div id="quiz"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "Q.1. Among these Which Programming Language is Object Oriented Language.?",
+            options: [
+                { text: "1) Java & C++", correct: false },
+                { text: "2) C# & Python", correct: false },
+                { text: "3) PHP & Visual Basic", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Java, C++, C#, Python, PHP, and Visual Basic all support object-oriented programming features."
+        },
+        {
+            q: "Q.2. Name the first object-oriented programming language.?",
+            options: [
+                { text: "1) Java", correct: false },
+                { text: "2) Python", correct: false },
+                { text: "3) Simula", correct: true },
+                { text: "4) Smalltalk", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Simula (developed in the 1960s) is widely accepted as the first object-oriented programming language."
+        },
+        {
+            q: "Q.3. Which is the first purely OOP language.?",
+            options: [
+                { text: "1) Java", correct: false },
+                { text: "2) Python", correct: false },
+                { text: "3) Simula", correct: false },
+                { text: "4) Smalltalk", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Smalltalk is considered the first truly pure object-oriented programming language."
+        },
+        {
+            q: "Q.4. Who developed object-oriented programming.?",
+            options: [
+                { text: "1) Adele Goldberg", correct: false },
+                { text: "2) Dennis Ritchie", correct: false },
+                { text: "3) Alan Kay", correct: true },
+                { text: "4) Andrea Ferro", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Alan Kay is credited with originating the term object-oriented programming and developing Smalltalk."
+        },
+        {
+            q: "Q.5. Which is not a feature of OOP in general definitions.?",
+            options: [
+                { text: "1) Efficient Code", correct: false },
+                { text: "2) Code reusability", correct: false },
+                { text: "3) Modularity", correct: false },
+                { text: "4) Duplicate/Redundant data", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: OOP aims to reduce data redundancy, so 'Duplicate/Redundant data' is not a feature of OOP."
+        },
+        {
+            q: "Q.6. When OOP concept did first came into picture.?",
+            options: [
+                { text: "1) 1980's", correct: false },
+                { text: "2) 1995", correct: false },
+                { text: "3) 1970's", correct: true },
+                { text: "4) 1993", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: The foundational concepts of OOP gained prominence and structured definition during the 1970s."
+        },
+        {
+            q: "Q.7. Which feature of OOP indicates code reusability.?",
+            options: [
+                { text: "1) Abstraction", correct: false },
+                { text: "2) Polymorphism", correct: false },
+                { text: "3) Encapsulation", correct: false },
+                { text: "4) Inheritance", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Inheritance allows a new class to adopt properties and behaviors of an existing class, promoting code reusability."
+        },
+        {
+            q: "Q.8. Which among the following doesn't come under OOP concept.?",
+            options: [
+                { text: "1) Data hiding", correct: false },
+                { text: "2) Message passing", correct: false },
+                { text: "3) Platform independent", correct: true },
+                { text: "4) Data binding", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Platform independence is a feature of specific execution environments (like JVM), not a core pillar of OOP."
+        },
+        {
+            q: "Q.9. What is an abstraction in object-oriented programming.?",
+            options: [
+                { text: "1) Hiding the implementation and showing only the features", correct: true },
+                { text: "2) Hiding the important data", correct: false },
+                { text: "3) Hiding the implementation", correct: false },
+                { text: "4) Showing the important data", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Abstraction focuses on showing essential features while hiding background implementation details."
+        },
+        {
+            q: "Q.10. Encapsulation and abstraction differ as.?",
+            options: [
+                { text: "1) Hiding and hiding respectively", correct: false },
+                { text: "2) Binding and Hiding respectively", correct: true },
+                { text: "3) Hiding and Binding respectively", correct: false },
+                { text: "4) Can be used any way", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Encapsulation is about binding data and code together, whereas abstraction is about hiding implementation."
+        },
+        {
+            q: "Q.11. Which feature can be implemented using encapsulation.?",
+            options: [
+                { text: "1) Polymorphism", correct: false },
+                { text: "2) Overloading", correct: false },
+                { text: "3) Inheritance", correct: false },
+                { text: "4) Abstraction", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Data hiding achieved through encapsulation forms the foundation of data abstraction."
+        },
+        {
+            q: "Q.12. A single program of OOPS contains classes.?",
+            options: [
+                { text: "1) Only 1", correct: false },
+                { text: "2) Only 999", correct: false },
+                { text: "3) Only 100", correct: false },
+                { text: "4) Any number", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: An OOP program can contain any number of classes depending on the application requirements."
+        },
+        {
+            q: "Q.13. Which two features of object-oriented programming are the same.?",
+            options: [
+                { text: "1) Abstraction and Polymorphism features are the same", correct: false },
+                { text: "2) Inheritance and Encapsulation features are the same", correct: false },
+                { text: "3) Encapsulation and Polymorphism features are the same", correct: false },
+                { text: "4) Encapsulation and Abstraction", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Encapsulation and abstraction are closely related as encapsulation packages information to enable abstraction."
+        },
+        {
+            q: "Q.14. Which language does not support polymorphism but supports classes.?",
+            options: [
+                { text: "1) Ada", correct: true },
+                { text: "2) C++", correct: false },
+                { text: "3) Java", correct: false },
+                { text: "4) SmallTalk", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Early versions of Ada supported packages/classes without object-oriented polymorphism."
+        },
+        {
+            q: "Q.15. What is the most striking feature of class.?",
+            options: [
+                { text: "1) Data encapsulation", correct: true },
+                { text: "2) Collection of objects of similar type", correct: false },
+                { text: "3) Inheritance", correct: false },
+                { text: "4) All of the above", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Data encapsulation is a primary and fundamental feature implemented directly by classes."
+        },
+        {
+            q: "Q.16. Object-oriented languages follow which approach.?",
+            options: [
+                { text: "1) Top-down approach", correct: false },
+                { text: "2) Bottom-up approach", correct: true },
+                { text: "3) Both of these", correct: false },
+                { text: "4) None of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: OOP typically follows a bottom-up approach where individual objects are built first and then combined."
+        },
+        {
+            q: "Q.17. Which features of OOP are extensively used in implementing inheritance.?",
+            options: [
+                { text: "1) Dynamic binding", correct: false },
+                { text: "2) Abstraction", correct: false },
+                { text: "3) Operator overloading", correct: false },
+                { text: "4) Polymorphism", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Polymorphism works hand-in-hand with inheritance (such as method overriding)."
+        },
+        {
+            q: "Q.18. Under which pillar of OOPS do base class and derived class relationships come.?",
+            options: [
+                { text: "1) Abstraction", correct: false },
+                { text: "2) Encapsulation", correct: false },
+                { text: "3) Inheritance", correct: true },
+                { text: "4) Polymorphism", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Base class and derived class relationships define the concept of inheritance."
+        },
+        {
+            q: "Q.19. Wrapping data and its related functionality into a single entity is known as.?",
+            options: [
+                { text: "1) Abstraction", correct: false },
+                { text: "2) Encapsulation", correct: true },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Modularity", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Encapsulation wraps data and methods into a single unit (class)."
+        },
+        {
+            q: "Q.20. Which concept allows you to reuse the written code.?",
+            options: [
+                { text: "1) Encapsulation", correct: false },
+                { text: "2) Abstraction", correct: false },
+                { text: "3) Inheritance", correct: true },
+                { text: "4) Polymorphism", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Inheritance enables classes to reuse existing code from parent classes."
+        },
+        {
+            q: "Q.21. C++ is?ekt",
+            options: [
+                { text: "1) procedural programming language", correct: false },
+                { text: "2) object oriented programming language", correct: false },
+                { text: "3) functional programming language", correct: false },
+                { text: "4) both procedural and object oriented programming language", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: C++ supports both procedural programming and object-oriented programming paradigms."
+        },
+        {
+            q: "Q.22. What does modularity mean.?",
+            options: [
+                { text: "1) Hiding part of program", correct: false },
+                { text: "2) Subdividing program into small independent parts", correct: true },
+                { text: "3) Overriding parts of program", correct: false },
+                { text: "4) Wrapping things into single unit", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Modularity refers to dividing a software system into separate, interchangeable components or modules."
+        },
+        {
+            q: "Q.23. Which among the following, for a pure OOP language, is true.?",
+            options: [
+                { text: "1) The language should follow at least 1 feature of OOP", correct: false },
+                { text: "2) The language must follow only 3 features of OOP", correct: false },
+                { text: "3) The language must follow all the rules of OOP", correct: true },
+                { text: "4) The language should follow 3 or more features of OOP", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: A pure OOP language must adhere strictly to all established rules and features of object-oriented programming."
+        },
+        {
+            q: "Q.24. Where is the memory allocated for the objects.?",
+            options: [
+                { text: "1) Cache", correct: false },
+                { text: "2) ROM", correct: false },
+                { text: "3) HDD", correct: false },
+                { text: "4) RAM", correct: true },
+                { text: "5) SSD", correct: false }
+            ],
+            exp: "Explanation: Objects are instantiated dynamically in the system's RAM (Heap memory)."
+        },
+        {
+            q: "Q.25. Instance of Which Kind of Class Cannot be Created.?",
+            options: [
+                { text: "1) Parent class", correct: false },
+                { text: "2) Abstract class", correct: true },
+                { text: "3) Nested class", correct: false },
+                { text: "4) Anonymous class", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Abstract classes contain incomplete methods and cannot be instantiated directly."
+        },
+        {
+            q: "Q.26. How many types of access specifiers are provided in OOP.?",
+            options: [
+                { text: "1) 4", correct: false },
+                { text: "2) 3", correct: true },
+                { text: "3) 2", correct: false },
+                { text: "4) 1", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            exp: "Explanation: Standard access specifiers in OOP are Public, Private, and Protected (total 3)."
+        },
+        {
+            q: "Q.27. Which feature of OOPS derives the class from another class.?",
+            options: [
+                { text: "1) Inheritance", correct: true },
+                { text: "2) Data hiding", correct: false },
+                { text: "3) Encapsulation", correct: false },
+                { text: "4) Polymorphism", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            exp: "Explanation: Inheritance allows a new class to be derived from an existing class."
+        },
+        {
+            q: "Q.28. Using the concept of encapsulation security of the data is.?",
+            options: [
+                { text: "1) Ensured to some extent", correct: true },
+                { text: "2) Purely ensured", correct: false },
+                { text: "3) Not ensured", correct: false },
+                { text: "4) Very low", correct: false },
+                { text: "5) More than one of the above", correct: false }
+            ],
+            exp: "Explanation: Encapsulation provides data hiding, ensuring data security to a considerable extent."
+        },
+        {
+            q: "Q.29. Which of the following is NOT a basic concept of OOP.?",
+            options: [
+                { text: "1) Classes", correct: false },
+                { text: "2) Objects", correct: false },
+                { text: "3) Functions", correct: true },
+                { text: "4) Inheritance", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: 'Functions' belong primarily to procedural programming, whereas classes, objects, and inheritance define OOP."
+        },
+        {
+            q: "Q.30. OOP aims to make software development more.?",
+            options: [
+                { text: "1) Error-prone", correct: false },
+                { text: "2) Flexible", correct: true },
+                { text: "3) Complicated", correct: false },
+                { text: "4) Sequential", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: OOP enhances flexibility, maintainability, and reusability in software development."
+        },
+        {
+            q: "Q.31. The concept of hiding the internal implementation details of a class and showing only its functionality is known as.?",
+            options: [
+                { text: "1) Encapsulation", correct: false },
+                { text: "2) Abstraction", correct: true },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Inheritance", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Abstraction hides internal implementation and displays only the required functionality."
+        },
+        {
+            q: "Q.32. What is an object in programming.?",
+            options: [
+                { text: "1) A piece of data", correct: false },
+                { text: "2) A runtime entity", correct: true },
+                { text: "3) A template for creating objects", correct: false },
+                { text: "4) A function", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: An object is an instance of a class and exists as a runtime entity."
+        },
+        {
+            q: "Q.33. In the context of OOP, what does a class provide.?",
+            options: [
+                { text: "1) A blueprint for objects", correct: true },
+                { text: "2) A specific data type", correct: false },
+                { text: "3) A method implementation", correct: false },
+                { text: "4) A programming pattern", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: A class acts as a blueprint or prototype from which objects are created."
+        },
+        {
+            q: "Q.34. Which of the following is a characteristic of an object.?",
+            options: [
+                { text: "1) Encapsulation", correct: false },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Identity", correct: true },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Every object has state, behavior, and a unique identity."
+        },
+        {
+            q: "Q.35. The process of creating an object from a class is known as.?",
+            options: [
+                { text: "1) Encapsulation", correct: false },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Identity", correct: false },
+                { text: "5) Instantiation", correct: true }
+            ],
+            exp: "Explanation: Instantiation is the process of creating an instance (object) of a class."
+        },
+        {
+            q: "Q.36. The process of minimizing the exposure of details from one part of a program to another is known as.?",
+            options: [
+                { text: "1) Encapsulation", correct: true },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Identity", correct: false },
+                { text: "5) Instantiation", correct: false }
+            ],
+            exp: "Explanation: Encapsulation restricts direct access to data, minimizing exposure between components."
+        },
+        {
+            q: "Q.37. Which OOP feature provides a way to protect objects from unintended direct field access.?",
+            options: [
+                { text: "1) Encapsulation", correct: true },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Identity", correct: false },
+                { text: "5) Instantiation", correct: false }
+            ],
+            exp: "Explanation: Encapsulation shields internal object fields using access modifiers."
+        },
+        {
+            q: "Q.38. Which of the Following Underlines the Feature of Polymorphism in a Class.?",
+            options: [
+                { text: "1) Virtual function", correct: true },
+                { text: "2) Enclosing class", correct: false },
+                { text: "3) Inline function", correct: false },
+                { text: "4) Nested class", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Virtual functions are used to implement runtime polymorphism in C++."
+        },
+        {
+            q: "Q.39. Instance of Which Kind of Class Cannot be Created.?",
+            options: [
+                { text: "1) Parent class", correct: false },
+                { text: "2) Abstract class", correct: true },
+                { text: "3) Nested class", correct: false },
+                { text: "4) Anonymous class", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Abstract classes cannot be instantiated directly."
+        },
+        {
+            q: "Q.40. Which of the Following Features of OOP Decreases the Use of Nested Classes.?",
+            options: [
+                { text: "1) Inheritance", correct: true },
+                { text: "2) Binding", correct: false },
+                { text: "3) Abstraction", correct: false },
+                { text: "4) Encapsulation", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Inheritance allows hierarchical reuse, decreasing the need for complex nested class structures."
+        },
+        {
+            q: "Q.41. Objects are Executed.?",
+            options: [
+                { text: "1) Sequentially", correct: false },
+                { text: "2) In Parallel", correct: false },
+                { text: "3) Sequentially & Parallel", correct: true },
+                { text: "4) Randomly", correct: false },
+                { text: "5) None of the mentioned", correct: false }
+            ],
+            exp: "Explanation: Objects can execute sequentially or in parallel depending on the program's threading model."
+        },
+        {
+            q: "Q.42. Which of the Following Comes Under the Disadvantages of OOP.?",
+            options: [
+                { text: "1) Easier maintenance", correct: false },
+                { text: "2) Objects may be understood as stand-alone entities", correct: false },
+                { text: "3) Objects are potentially reusable components", correct: false },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: true }
+            ],
+            exp: "Explanation: Easier maintenance and reusability are advantages, making 'None of these' correct for disadvantages."
+        },
+        {
+            q: "Q.43. How many types of abstractions are there in an object-oriented programming language.?",
+            options: [
+                { text: "1) 2 Types", correct: false },
+                { text: "2) 3 Types", correct: false },
+                { text: "3) 4 Types", correct: true },
+                { text: "4) 5 Types", correct: false },
+                { text: "5) 6 Types", correct: false }
+            ],
+            exp: "Explanation: Abstraction is commonly classified into 4 types (Data abstraction, Control abstraction, Process abstraction, etc.)."
+        },
+        {
+            q: "Q.44. What are the 4 concepts of OOPS.?",
+            options: [
+                { text: "1) Polymorphism", correct: false },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Encapsulation", correct: false },
+                { text: "4) Abstraction", correct: false },
+                { text: "5) All of these", correct: true }
+            ],
+            exp: "Explanation: Polymorphism, Inheritance, Encapsulation, and Abstraction are all core 4 concepts of OOPS."
+        },
+        {
+            q: "Q.45. Smalltalk language is 100% Object Oriented but why Java is 99% Object Oriented.?",
+            options: [
+                { text: "1) Because Java allows for primitive data types like int, float, and char.", correct: false },
+                { text: "2) Java supports static members.", correct: false },
+                { text: "3) Java does not support multiple Inheritance.", correct: false },
+                { text: "4) All of these", correct: true },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: Java uses primitive data types, static members, and omits direct multiple inheritance, making it 99% OOP."
+        },
+        {
+            q: "Q.46. [Blank] is used as a template for declaring and creating the objects. An object is an instance of a [Blank]?",
+            options: [
+                { text: "1) Class, Function", correct: false },
+                { text: "2) Method, Class", correct: false },
+                { text: "3) Class, Class", correct: true },
+                { text: "4) All of these", correct: false },
+                { text: "5) None of these", correct: false }
+            ],
+            exp: "Explanation: A Class is a template for objects, and an object is an instance of a Class."
+        },
+        {
+            q: "Q.47. [Blank] is the process of grouping functions and data into a single entity.?",
+            options: [
+                { text: "1) Object", correct: false },
+                { text: "2) Class", correct: false },
+                { text: "3) Inheritance", correct: false },
+                { text: "4) Polymorphism", correct: false },
+                { text: "5) Encapsulation", correct: true }
+            ],
+            exp: "Explanation: Encapsulation groups data and methods operating on that data into a single unit."
+        },
+        {
+            q: "Q.48. Broadly polymorphism is classifies into how many types.?",
+            options: [
+                { text: "1) 2 types", correct: true },
+                { text: "2) 3 types", correct: false },
+                { text: "3) 4 types", correct: false },
+                { text: "4) 5 types", correct: false },
+                { text: "5) 6 types", correct: false }
+            ],
+            exp: "Explanation: Broadly, polymorphism is classified into 2 types: Compile-time (static) and Run-time (dynamic) polymorphism."
+        },
+        {
+            q: "Q.49. Python is not pure object-oriented language as it does not support property which is the feature of Object Oriented Programming Languages.?",
+            options: [
+                { text: "1) Encapsulation", correct: true },
+                { text: "2) Inheritance", correct: false },
+                { text: "3) Polymorphism", correct: false },
+                { text: "4) Abstraction", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: Python lacks strict private access modifiers, limiting true encapsulation."
+        },
+        {
+            q: "Q.50. An example of a pure object-oriented language is where primitive data types are considered as objects.?",
+            options: [
+                { text: "1) Java", correct: false },
+                { text: "2) Simula", correct: false },
+                { text: "3) Smalltalk", correct: true },
+                { text: "4) Python", correct: false },
+                { text: "5) All of these", correct: false }
+            ],
+            exp: "Explanation: In Smalltalk, everything is an object, including primitive data types and numbers."
+        }
+    ];
+
+    // Function to shuffle array
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    const quizContainer = document.getElementById('quiz');
+
+    quizDataforEach = quizData.forEach((item, index) => {
+        // Shuffle options for each question on page reload
+        let shuffledOptions = shuffle([...item.options]);
+
+        const questionBox = document.createElement('div');
+        questionBox.className = 'question-box';
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'question';
+        questionTitle.innerText = item.q;
+        questionBox.appendChild(questionTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options';
+
+        const explanationDiv = document.createElement('div');
+        explanationDiv.className = 'explanation';
+        explanationDiv.innerText = item.exp;
+
+        shuffledOptions.forEach(opt => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.className = 'option-btn';
+            a.href = "#";
+            a.innerText = opt.text;
+
+            a.onclick = function(e) {
+                e.preventDefault();
+                // Disable all options in this question after selection
+                const allButtons = optionsList.getElementsByTagName('a');
+                for (let btn of allButtons) {
+                    btn.style.pointerEvents = 'none';
+                }
+
+                if (opt.correct) {
+                    a.classList.add('correct');
+                } else {
+                    a.classList.add('incorrect');
+                    // Highlight the correct one
+                    for (let btn of allButtons) {
+                        // Find original option matching correct
+                        let matchedOpt = shuffledOptions.find(o => o.text === btn.innerText);
+                        if (matchedOpt && matchedOpt.correct) {
+                            btn.classList.add('correct');
+                        }
+                    }
+                }
+                explanationDiv.style.display = 'block';
+            };
+
+            li.appendChild(a);
+            optionsList.appendChild(li);
+        });
+
+        questionBox.appendChild(optionsList);
+        questionBox.appendChild(explanationDiv);
+        quizContainer.appendChild(questionBox);
+    });
+</script>
+
+</body>
+</html>
