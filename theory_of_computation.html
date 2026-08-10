@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory of Computation Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            margin: 8px 0;
+        }
+        .option-link {
+            display: block;
+            padding: 10px 15px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-link:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .option-link.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+            font-weight: bold;
+        }
+        .option-link.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.95em;
+            color: #1e40af;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Theory of Computation Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    const questionsData = [
+        {
+            q: "Q.1. Turing machine was invented by?",
+            options: [
+                { text: "Alan Turing", correct: true },
+                { text: "Turing man", correct: false },
+                { text: "Ginsburg", correct: false },
+                { text: "Charles Babbage", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Alan Turing introduced the conceptual model of the Turing machine in 1936 to formalize the notion of computation."
+        },
+        {
+            q: "Q.2. Alan Turing introduced Turing machine late in?",
+            options: [
+                { text: "1936", correct: true },
+                { text: "1956", correct: false },
+                { text: "1940", correct: false },
+                { text: "1935", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Alan Turing published his landmark paper introducing Turing machines in 1936."
+        },
+        {
+            q: "Q.3. The language recognized by Turing machine is?",
+            options: [
+                { text: "Context free language", correct: false },
+                { text: "Context sensitive language", correct: false },
+                { text: "Recursively enumerable language", correct: true },
+                { text: "Regular language", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Unrestricted grammars and Turing machines recognize Recursively Enumerable languages (Type 0)."
+        },
+        {
+            q: "Q.4. Turing machine consist of?",
+            options: [
+                { text: "Input tape", correct: false },
+                { text: "Blank symbol", correct: false },
+                { text: "Tape head", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A standard Turing machine consists of an infinite input tape, a tape head for reading/writing, and a state control containing a blank symbol."
+        },
+        {
+            q: "Q.5. Turing machine is more powerful than?",
+            options: [
+                { text: "Finite automata", correct: false },
+                { text: "Push down automata", correct: false },
+                { text: "Both (1) and (2)", correct: true },
+                { text: "Not powerful", correct: false },
+                { text: "1,2 & 3", correct: false }
+            ],
+            explanation: "Explanation: Turing machines have unrestricted memory access via a tape, making them strictly more powerful than both finite automata and pushdown automata."
+        },
+        {
+            q: "Q.6. In definition of Turing Machine, what does this symbol represent? T = (Q, Σ, Γ, q0, δ) what is Γ?",
+            options: [
+                { text: "Tape alphabets", correct: true },
+                { text: "Input symbols", correct: false },
+                { text: "Transition function", correct: false },
+                { text: "Initial state", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: In the 5-tuple/7-tuple definition of a Turing machine, Γ represents the finite set of tape alphabet symbols."
+        },
+        {
+            q: "Q.7. In one move the Turing machine?",
+            options: [
+                { text: "May change its state", correct: false },
+                { text: "May write a symbol on the cell being scanned.", correct: false },
+                { text: "May move the head one position left or right", correct: false },
+                { text: "All of the above", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A single transition step of a Turing machine can change the state, write a symbol to the tape cell, and move the head left or right."
+        },
+        {
+            q: "Q.8. A Turing machine has how many states?",
+            options: [
+                { text: "Finite", correct: true },
+                { text: "Infinite", correct: false },
+                { text: "Can not be determined", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: A Turing machine has a finite set of internal states, while its tape provides infinite memory."
+        },
+        {
+            q: "Q.9. Halting state of Turing machine are:",
+            options: [
+                { text: "Start and stop", correct: false },
+                { text: "Accept and reject", correct: true },
+                { text: "Start and reject", correct: false },
+                { text: "Reject and allow", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Computations in a Turing machine typically halt in designated accept or reject states."
+        },
+        {
+            q: "Q.10. Which of the following is an extension to the basic model of Turing machine?",
+            options: [
+                { text: "Multi tape Turing machine", correct: false },
+                { text: "Multi head Turing machine", correct: false },
+                { text: "Nondeterministic Turing machine", correct: false },
+                { text: "All of the above", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Multi-tape, multi-head, and nondeterministic variants are standard extensions that remain equivalent in computational power to the basic Turing machine."
+        },
+        {
+            q: "Q.11. According to Chomsky hierarchy, which of the following is recognized by Recursively Enumerable language?",
+            options: [
+                { text: "Type 3", correct: false },
+                { text: "Type 2", correct: false },
+                { text: "Type 1", correct: false },
+                { text: "Type 0", correct: true },
+                { text: "Type 4", correct: false }
+            ],
+            explanation: "Explanation: Type 0 languages correspond to unrestricted grammars and are recognized by Turing machines (Recursively Enumerable)."
+        },
+        {
+            q: "Q.12. Why Turing machine is more powerful than Finite automata?",
+            options: [
+                { text: "Turing machine head movement is continued to one direction.", correct: false },
+                { text: "Turing machine head moment is in both directions", correct: false },
+                { text: "Turing machine has capability to remember arbitrary long sequence of input string.", correct: true },
+                { text: "All are correct", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The unrestricted bidirectional tape allows a Turing machine to store and recall arbitrarily long sequences of data."
+        },
+        {
+            q: "Q.13. A universal Turing machine is a?",
+            options: [
+                { text: "Single tape Turing machine", correct: false },
+                { text: "Two-tape Turing machine", correct: false },
+                { text: "Reprogrammable Turing machine", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A universal Turing machine can simulate any other Turing machine given its description, functioning as a reprogrammable model."
+        },
+        {
+            q: "Q.14. A Turing machine that is able to simulate other Turing machines?",
+            options: [
+                { text: "Nested Turing machines", correct: false },
+                { text: "Multi tape Turing machine", correct: false },
+                { text: "Universal Turing machines", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Universal Turing machines are specifically designed to interpret and simulate arbitrary Turing machine descriptions."
+        },
+        {
+            q: "Q.15. A Turing machine with several tapes is known as:",
+            options: [
+                { text: "Multi-tape Turing machine", correct: true },
+                { text: "Universal Turing machine", correct: false },
+                { text: "Poly-tape Turing machine", correct: false },
+                { text: "All of the mentioned", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A multi-tape Turing machine features multiple independent tapes and corresponding heads."
+        },
+        {
+            q: "Q.16. Church's Thesis supports:",
+            options: [
+                { text: "Both TM as a general-purpose computer and TM as an algorithm and vice-versa are correct", correct: true },
+                { text: "A Turing machine as an algorithm and an algorithm as a Turing machine", correct: false },
+                { text: "A Turing machine as a general-purpose computer system", correct: false },
+                { text: "All are correct", correct: false },
+                { text: "None of them is correct", correct: false }
+            ],
+            explanation: "Explanation: The Church-Turing thesis equates the informal notion of an effective algorithm with what can be computed by a Turing machine."
+        },
+        {
+            q: "Q.17. Any function whose values can be computed by an algorithm, can be computed by a Turing machine.",
+            options: [
+                { text: "Smn theorem", correct: false },
+                { text: "Structured Program theorem", correct: false },
+                { text: "Church-Turing thesis", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: The Church-Turing thesis states that effectively calculable functions are precisely those computable by a Turing machine."
+        },
+        {
+            q: "Q.18. Which of the functions can a Turing machine not perform?",
+            options: [
+                { text: "Copying a string", correct: false },
+                { text: "Deleting a symbol", correct: false },
+                { text: "Accepting a palindrome", correct: false },
+                { text: "Inserting a symbol", correct: false },
+                { text: "All of these", correct: true }
+            ],
+            explanation: "Explanation: A Turing machine is capable of performing all standard symbol manipulations listed (copying, deleting, checking palindromes, and inserting)."
+        },
+        {
+            q: "Q.19. If T1 and T2 are two Turing machines. The composite can be represented using the:",
+            options: [
+                { text: "T1T2", correct: true },
+                { text: "T1 U T2", correct: false },
+                { text: "T1 X T2", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Sequential composition of two Turing machines T1 and T2 is commonly denoted as T1T2."
+        },
+        {
+            q: "Q.20. Which of the problems are unsolvable?",
+            options: [
+                { text: "Halting problem", correct: false },
+                { text: "Boolean Satisfiability problem", correct: false },
+                { text: "Halting problem & Boolean Satisfiability problem", correct: true },
+                { text: "All above are solvable", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: The halting problem is undecidable (unsolvable), though SAT is decidable (NP-complete)."
+        },
+        {
+            q: "Q.21. Which of the following a Turing machine does not consist of?",
+            options: [
+                { text: "input tape", correct: false },
+                { text: "head", correct: false },
+                { text: "state register", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: true }
+            ],
+            explanation: "Explanation: A Turing machine consists of all these components: an input tape, a read/write head, and a finite state register."
+        },
+        {
+            q: "Q.22. The value of n if Turing machine is defined using n-tuples?",
+            options: [
+                { text: "6", correct: false },
+                { text: "7", correct: true },
+                { text: "8", correct: false },
+                { text: "5", correct: false },
+                { text: "4", correct: false }
+            ],
+            explanation: "Explanation: Formally, a Turing machine is frequently defined as a 7-tuple: (Q, Σ, Γ, δ, q0, b, F)."
+        },
+        {
+            q: "Q.23. Which of the following are the models equivalent to Turing machine?",
+            options: [
+                { text: "Multi tape Turing machine", correct: false },
+                { text: "Multi track Turing machine", correct: false },
+                { text: "Register machine", correct: false },
+                { text: "All of the mentioned", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Multi-tape TMs, multi-track TMs, and register machines are all computationally equivalent to standard Turing machines."
+        },
+        {
+            q: "Q.24. Which is not a feature of Turing Machine?",
+            options: [
+                { text: "Finite Tape", correct: true },
+                { text: "Read/write head", correct: false },
+                { text: "State register", correct: false },
+                { text: "Abstract computing model", correct: false },
+                { text: "Can modify input", correct: false }
+            ],
+            explanation: "Explanation: A Turing machine has a semi-infinite or infinite tape, not a strictly finite tape."
+        },
+        {
+            q: "Q.25. What does Σ symbol in Turing Machine denotes?",
+            options: [
+                { text: "A finite set of states", correct: false },
+                { text: "A finite set of input symbols", correct: true },
+                { text: "A finite set of tape symbols", correct: false },
+                { text: "The initial state", correct: false },
+                { text: "The blank symbol", correct: false }
+            ],
+            explanation: "Explanation: Σ represents the input alphabet subset used for initial input strings."
+        },
+        {
+            q: "Q.26. What does δ symbol in Turing Machine denotes?",
+            options: [
+                { text: "A finite set of states", correct: false },
+                { text: "A finite set of input symbols", correct: false },
+                { text: "A finite set of tape symbols", correct: false },
+                { text: "The initial state", correct: false },
+                { text: "Transition function", correct: true }
+            ],
+            explanation: "Explanation: δ denotes the transition function mapping current state and tape symbol to next state, written symbol, and head direction."
+        },
+        {
+            q: "Q.27. Among these which is not a type of Automata?",
+            options: [
+                { text: "Finite automata", correct: false },
+                { text: "Pushdown automata", correct: false },
+                { text: "Linear-bounded automata", correct: false },
+                { text: "Turing machines", correct: false },
+                { text: "None of these", correct: true }
+            ],
+            explanation: "Explanation: All listed choices (finite automata, pushdown automata, linear-bounded automata, and Turing machines) are standard types of automata."
+        },
+        {
+            q: "Q.28. Which line describes Automata in TOC?",
+            options: [
+                { text: "Automata are abstract machines", correct: false },
+                { text: "Automata are mathematical models", correct: false },
+                { text: "Automata are used in compiler design", correct: false },
+                { text: "Automata theory is used in natural language processing", correct: false },
+                { text: "More than one of the above", correct: true }
+            ],
+            explanation: "Explanation: Automata serve as abstract mathematical models and find extensive applications in compiler design and NLP."
+        },
+        {
+            q: "Q.29. Unrestricted grammar is also called Grammar?",
+            options: [
+                { text: "Type 0", correct: true },
+                { text: "Type 1", correct: false },
+                { text: "Type 2", correct: false },
+                { text: "Type 3", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Unrestricted grammars occupy the top level of the Chomsky hierarchy as Type 0 grammars."
+        },
+        {
+            q: "Q.30. Which of the following statement is not true?",
+            options: [
+                { text: "Type 0 grammar is called unrestricted grammar", correct: false },
+                { text: "Chomsky hierarchy define only one grammar", correct: true },
+                { text: "Type 3 grammar is recognized by FA", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: The Chomsky hierarchy defines four distinct types of grammars (Type 0, 1, 2, 3), so stating it defines only one is false."
+        },
+        {
+            q: "Q.31. Context free grammar is called Type 2 grammar because of hierarchy?",
+            options: [
+                { text: "Grelbach", correct: false },
+                { text: "Backus", correct: false },
+                { text: "Chomsky", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Noam Chomsky formulated the Chomsky hierarchy classifying grammars into Types 0 through 3."
+        },
+        {
+            q: "Q.32. The language accepted by a Push down Automata?",
+            options: [
+                { text: "Type 0", correct: false },
+                { text: "Type 1", correct: false },
+                { text: "Type 2", correct: true },
+                { text: "Type 3", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Pushdown automata accept Context-Free Languages (Type 2)."
+        },
+        {
+            q: "Q.33. That finite automata which does not contain any ambiguity is called?",
+            options: [
+                { text: "DFA", correct: true },
+                { text: "NFA", correct: false },
+                { text: "PDA", correct: false },
+                { text: "Regular Expression", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Deterministic Finite Automata (DFA) have unique transitions for every input symbol, avoiding ambiguity."
+        },
+        {
+            q: "Q.34. Machine without output?",
+            options: [
+                { text: "DFA", correct: true },
+                { text: "Mealy machine", correct: false },
+                { text: "Moore machine", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Standard finite automata (like DFA and NFA) are acceptors/recognizers without explicit output alphabets per transition."
+        },
+        {
+            q: "Q.35. A Language for which no DFA exist is a?",
+            options: [
+                { text: "Non-Regular Language", correct: true },
+                { text: "Regular Language", correct: false },
+                { text: "May be Regular", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: By Kleene's theorem, a language is regular if and only if it is accepted by a DFA."
+        },
+        {
+            q: "Q.36. Which of the following is correct for Chomsky hierarchy?",
+            options: [
+                { text: "CSL < Unrestricted < CF < Regular", correct: false },
+                { text: "Regular < CFL < CSL < Unrestricted", correct: true },
+                { text: "CFL < CSL < Unrestricted < Regular", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Regular languages are a subset of context-free languages, which are subsets of context-sensitive languages, which are subsets of recursively enumerable languages."
+        },
+        {
+            q: "Q.37. The context free languages are closed under?",
+            options: [
+                { text: "Intersection", correct: false },
+                { text: "Complement", correct: false },
+                { text: "Kleene", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Context-free languages are closed under union, concatenation, and Kleene star operations."
+        },
+        {
+            q: "Q.38. Context free languages are not closed under?",
+            options: [
+                { text: "Intersection", correct: false },
+                { text: "Intersection with Regular Language", correct: false },
+                { text: "Complement", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Context-free languages are not closed under general intersection and complementation."
+        },
+        {
+            q: "Q.39. Any regular language can be accepted by a finite automaton is?",
+            options: [
+                { text: "Arden's Theorem", correct: false },
+                { text: "Kleene's Theorem", correct: true },
+                { text: "Rice Theorem", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Kleene's theorem establishes that regular expressions and finite automata describe the exact same class of languages."
+        },
+        {
+            q: "Q.40. Which of the technique can be used to prove that a language is non regular?",
+            options: [
+                { text: "Pumping Lemma", correct: true },
+                { text: "Arden's theorem", correct: false },
+                { text: "Ogden's Lemma", correct: false },
+                { text: "Thompson's rule", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The Pumping Lemma for regular languages is the standard tool used to prove non-regularity."
+        },
+        {
+            q: "Q.41. Moore Machine is an application of?",
+            options: [
+                { text: "Finite automata without input", correct: false },
+                { text: "Non Deterministic Finite automata with output", correct: false },
+                { text: "Finite automata with output", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A Moore machine is a finite-state machine whose outputs are determined solely by its current state."
+        },
+        {
+            q: "Q.42. In Moore machine, output is produced over the change of?",
+            options: [
+                { text: "transitions", correct: false },
+                { text: "States", correct: true },
+                { text: "functions", correct: false },
+                { text: "All of the mentioned", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: In a Moore machine, outputs are associated with states rather than transitions."
+        },
+        {
+            q: "Q.43. In Moore machine the output alphabet can be represented as?",
+            options: [
+                { text: "δ", correct: false },
+                { text: "Δ", correct: true },
+                { text: "Σ", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of the mentioned", correct: false }
+            ],
+            explanation: "Explanation: Δ (Delta) is standardly used to denote the output alphabet in finite state machines with output."
+        },
+        {
+            q: "Q.44. Output values of Moore type are determined by its?",
+            options: [
+                { text: "Input values", correct: false },
+                { text: "Output values", correct: false },
+                { text: "Clock input", correct: false },
+                { text: "Current state", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Moore machine outputs depend strictly on the current state."
+        },
+        {
+            q: "Q.45. Moore machine has _________ states than a mealy machine?",
+            options: [
+                { text: "Fewer", correct: false },
+                { text: "More", correct: true },
+                { text: "Equal", correct: false },
+                { text: "Negligible", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A Moore machine typically requires more or equal states compared to an equivalent Mealy machine."
+        },
+        {
+            q: "Q.46. What is a Moore machine?",
+            options: [
+                { text: "A finite state machine where outputs depend only on the current state.", correct: true },
+                { text: "A finite state machine where outputs depend on both the current state and the input.", correct: false },
+                { text: "A type of Turing machine.", correct: false },
+                { text: "A type of pushdown automaton.", correct: false },
+                { state: "None of these", correct: false }
+            ],
+            explanation: "Explanation: By definition, a Moore machine output relies only on the current state."
+        },
+        {
+            q: "Q.47. What is a Mealy machine?",
+            options: [
+                { text: "A finite state machine where outputs depend only on the current state.", correct: false },
+                { text: "A finite state machine where outputs depend on both the current state and the input.", correct: true },
+                { text: "A type of Turing machine.", correct: false },
+                { text: "A type of pushdown automaton.", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A Mealy machine generates output based on both the current state and the incoming transition input."
+        },
+        {
+            q: "Q.48. In a Moore machine, when is the output generated?",
+            options: [
+                { text: "On state transitions.", correct: false },
+                { text: "On entering a state.", correct: true },
+                { text: "On exiting a state.", correct: false },
+                { text: "On receiving input.", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The output in a Moore machine is produced whenever the machine enters a state."
+        },
+        {
+            q: "Q.49. In a Mealy machine, when is the output generated?",
+            options: [
+                { text: "On state transitions.", correct: true },
+                { text: "On entering a state.", correct: false },
+                { text: "On exiting a state.", correct: false },
+                { text: "On receiving input.", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Mealy machine outputs are produced during state transitions triggered by input symbols."
+        },
+        {
+            q: "Q.50. The major difference between Mealy and Moore machine can be identified by?",
+            options: [
+                { text: "input", correct: false },
+                { text: "output", correct: true },
+                { text: "states", correct: false },
+                { text: "final state", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: The key distinction lies in how and where output is mapped (states vs. transitions)."
+        },
+        {
+            q: "Q.51. Language recognized by finite automata is?",
+            options: [
+                { text: "Type 0", correct: false },
+                { text: "Type 1", correct: false },
+                { text: "Type 2", correct: false },
+                { text: "Type 3", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Finite automata recognize Regular languages, which are Type 3 in the Chomsky hierarchy."
+        },
+        {
+            q: "Q.52. Finite automata require minimum number of stack?",
+            options: [
+                { text: "0", correct: true },
+                { text: "1", correct: false },
+                { text: "2", correct: false },
+                { text: "3", correct: false },
+                { text: "4", correct: false }
+            ],
+            explanation: "Explanation: Finite automata have no stack memory (requiring 0 stacks)."
+        },
+        {
+            q: "Q.53. Which of the following are an application of Finite Automaton?",
+            options: [
+                { text: "Compiler Design", correct: false },
+                { text: "Grammar Parsers", correct: false },
+                { text: "Text Search", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Finite automata are widely used in lexical analysis for compilers, pattern matching, and text search."
+        },
+        {
+            q: "Q.54. Finite Automata has ________ memory?",
+            options: [
+                { text: "Unlimited Memory", correct: false },
+                { text: "No memory at all", correct: false },
+                { text: "Limited Memory", correct: true },
+                { text: "More than one of the above", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Finite automata have fixed, limited memory corresponding to their finite states."
+        },
+        {
+            q: "Q.55. Limitations of finite state machine (FA) can be overcome by?",
+            options: [
+                { text: "Push down automata", correct: false },
+                { text: "Turing machine", correct: false },
+                { text: "Both 1 and 2", correct: true },
+                { text: "None of these", correct: false },
+                { text: "No any limitations of FA", correct: false }
+            ],
+            explanation: "Explanation: Adding stack or tape memory via PDA or Turing machines overcomes finite automata limitations."
+        },
+        {
+            q: "Q.56. A finite automata accepts?",
+            options: [
+                { text: "Any Language", correct: false },
+                { text: "Regular Language", correct: true },
+                { text: "Context Free Language", correct: false },
+                { text: "Context Sensitive Language", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Finite automata strictly accept regular languages."
+        },
+        {
+            q: "Q.57. There are __________ tuples in finite state machine (FA)?",
+            options: [
+                { text: "4", correct: false },
+                { text: "5", correct: true },
+                { text: "6", correct: false },
+                { text: "Unlimited", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: A DFA is formally defined as a 5-tuple: (Q, Σ, δ, q0, F)."
+        },
+        {
+            q: "Q.58. A push down automata is different than finite automata by?",
+            options: [
+                { text: "Its memory", correct: true },
+                { text: "Number of states", correct: false },
+                { text: "Both (1) and (2)", correct: false },
+                { text: "None of these", correct: false },
+                { text: "Turing Machine", correct: false }
+            ],
+            explanation: "Explanation: The primary distinction is that a pushdown automaton includes a stack for auxiliary memory."
+        },
+        {
+            q: "Q.59. Which automata takes stack as storage?",
+            options: [
+                { text: "Finite automata", correct: false },
+                { text: "Push down automata", correct: true },
+                { text: "Turing machine", correct: false },
+                { text: "Regular expression", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Pushdown automata use a LIFO stack as their storage mechanism."
+        },
+        {
+            q: "Q.60. Limitation of PDA can be overcome by?",
+            options: [
+                { text: "Finite automata", correct: false },
+                { text: "Mealy machine", correct: false },
+                { text: "Moore machine", correct: false },
+                { text: "Turing machine", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Turing machines provide unrestricted memory, overcoming the limitations of stack-based pushdown automata."
+        },
+        {
+            q: "Q.61. A universal Turing machine is a?",
+            options: [
+                { text: "Single tape Turing machine", correct: false },
+                { text: "Two-tape Turing machine", correct: false },
+                { text: "Reprogrammable Turing machine", correct: true },
+                { text: "All of these", correct: false },
+                { text: "None of them", correct: false }
+            ],
+            explanation: "Explanation: Universal Turing machines can simulate any other Turing machine model."
+        },
+        {
+            q: "Q.62. Recursive languages are also known as?",
+            options: [
+                { text: "Undecidable", correct: false },
+                { text: "Decidable", correct: true },
+                { text: "Sometimes decidable", correct: false },
+                { text: "All of these", correct: false },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Recursive languages correspond to decidable problems where a Turing machine always halts."
+        },
+        {
+            q: "Q.63. A formal language is recursive if?",
+            options: [
+                { text: "A total Turing machine exists", correct: false },
+                { text: "A Turing machine that halts for every input", correct: false },
+                { text: "Turing machine rejects if the input does not belong to the language", correct: false },
+                { text: "All of these", correct: true },
+                { text: "None of these", correct: false }
+            ],
+            explanation: "Explanation: Recursive languages require a decider Turing machine that always halts and correctly accepts or rejects every input."
+        },
+        {
+            q: "Q.64. Recursive languages are?",
+            options: [
+                { text: "A proper superset of CFG", correct: false },
+                { text: "Always recognized by PDA", correct: false },
+                { text: "Recognized by Turing machine", correct: true },
+                { text: "Also called type 0 language", correct: false },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Recursive languages are decided by Turing machines that always halt."
+        },
+        {
+            q: "Q.65. _________ is the first type of automata that is studied in automata theory?",
+            options: [
+                { text: "Type 0", correct: false },
+                { text: "Type 1", correct: false },
+                { text: "Type 2", correct: false },
+                { text: "Type 3", correct: true },
+                { text: "All of these", correct: false }
+            ],
+            explanation: "Explanation: Introductory courses in automata theory typically begin with Type 3 (Finite Automata) before advancing to PDAs and Turing machines."
+        }
+    ];
+
+    // Shuffle function (Fisher-Yates)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function renderQuiz() {
+        const quizContainer = document.getElementById('quiz-container');
+        quizContainer.innerHTML = '';
+
+        questionsData.forEach((qItem) => {
+            // Shuffle all 5 options on page load/reload
+            let shuffledOptions = shuffleArray([...qItem.options]);
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const title = document.createElement('div');
+            title.className = 'question-title';
+            title.innerText = qItem.q;
+            card.appendChild(title);
+
+            const ul = document.createElement('ul');
+            ul.className = 'options-list';
+
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'explanation';
+            explanationDiv.innerText = qItem.explanation;
+
+            shuffledOptions.forEach((opt) => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'option-link';
+                link.innerText = opt.text;
+                link.href = '#';
+
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (card.getAttribute('data-answered') === 'true') return;
+                    card.setAttribute('data-answered', 'true');
+
+                    const allLinks = ul.querySelectorAll('.option-link');
+                    allLinks.forEach(l => {
+                        const matchingOpt = shuffledOptions.find(o => o.text === l.innerText);
+                        if (matchingOpt.correct) {
+                            l.classList.add('correct');
+                        }
+                    });
+
+                    if (!opt.correct) {
+                        link.classList.add('incorrect');
+                    }
+
+                    explanationDiv.style.display = 'block';
+                });
+
+                li.appendChild(link);
+                ul.appendChild(li);
+            });
+
+            card.appendChild(ul);
+            card.appendChild(explanationDiv);
+            quizContainer.appendChild(card);
+        });
+    }
+
+    window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
