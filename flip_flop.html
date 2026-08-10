@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip-Flop & Digital Electronics Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 20px;
+            padding: 0;
+        }
+        .quiz-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question-card {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+        .question-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #222;
+        }
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #333;
+            text-decoration: none;
+            box-sizing: border-box;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #eef2f5;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
+        }
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 12px;
+            background-color: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            font-size: 13px;
+            color: #0c5460;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Flip-Flop & Digital Electronics Quiz (48 Questions)</h1>
+    <div id="quiz-body"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. Parity check usually can detect?",
+        options: ["1 bit error", "2 bit error", "8 bit error", "Any bit error", "None of these"],
+        correct: 0,
+        exp: "Standard simple parity checking is designed to detect single-bit errors in transmitted data."
+    },
+    {
+        q: "Q.2. Single parity check is not reliable in case of?",
+        options: ["Paper Tape", "Magnetic Drum", "Magnetic Tape", "Cores", "All of these"],
+        correct: 1,
+        exp: "Single parity check fails when multiple bit errors occur simultaneously, which frequently happens on magnetic drum storage media."
+    },
+    {
+        q: "Q.3. What is the main purpose of a parity bit?",
+        options: ["Maintain odd number of 1s in a bit stream", "Maintain even number of 1s in a bit stream", "Error detection", "Increase the stream length", "All of these"],
+        correct: 2,
+        exp: "The fundamental purpose of adding a parity bit to data is simple error detection during transmission."
+    },
+    {
+        q: "Q.4. A digital communication system sends and receives 7-bit data packages. In which of the following cases a parity bit 1 will be needed if an even parity transmission system is used?",
+        options: ["0110010", "0110110", "1100110", "0010001", "None of these"],
+        correct: 0,
+        exp: "'0110010' has 3 ones (odd). To make the overall parity even, an additional parity bit of 1 is required."
+    },
+    {
+        q: "Q.5. How many states are there in the state machine of a sequential parity checker?",
+        options: ["1", "2", "3", "4", "None of these"],
+        correct: 1,
+        exp: "A sequential parity checker state machine requires only 2 states: Even parity state and Odd parity state."
+    },
+    {
+        q: "Q.6. Which pair is the correct match for an odd parity transmission system?",
+        options: ["Data=1101 000 Parity=1", "Data=1001 000 Parity=0", "Data=1101 000 Parity=0", "Data=1101 110 Parity=1", "None of these"],
+        correct: 2,
+        exp: "Data '1101 000' has 3 ones (which is odd). Adding parity bit 0 maintains the required odd parity count of 3."
+    },
+    {
+        q: "Q.7. Which one of the following is not true?",
+        options: ["Parity checking procedure can detect errors", "Parity bits can be both 0 and 1", "Only one parity bit is added after a data pack", "Parity bit can only be 1 but not 0", "None of these"],
+        correct: 3,
+        exp: "It is false that parity bits can only be 1; a parity bit can be either 0 or 1 depending on data content."
+    },
+    {
+        q: "Q.8. What parity bit will be added to the following data pack after examined by an even parity checker? 100100101",
+        options: ["1", "0", "-1", "Can't be determined", "No parity bit will be added"],
+        correct: 1,
+        exp: "The sequence '100100101' already contains 4 ones (even count), so an even parity checker appends a 0."
+    },
+    {
+        q: "Q.9. For which one of the following, sequential parity checker is useful?",
+        options: ["Analog Communication", "Digital Communication", "Both analog or digital", "In specific cases of digital communication", "None of these"],
+        correct: 1,
+        exp: "Sequential parity checkers process streams of binary data, making them ideal for digital communication."
+    },
+    {
+        q: "Q.10. Parity check bit coding is used for?",
+        options: ["Error correction", "Error detection", "Error correction and detection", "Error creation", "None of the above"],
+        correct: 1,
+        exp: "Parity bit coding detects whether an odd number of bit errors occurred, but cannot correct them."
+    },
+    {
+        q: "Q.11. Parity bit coding may not be used for?",
+        options: ["Error in more than single bit", "Which bit is in error", "Both 1) and 2)", "Single Bit Error", "None of the above"],
+        correct: 2,
+        exp: "Parity coding fails to detect multiple bit errors and cannot specify the exact bit location that holds an error."
+    },
+    {
+        q: "Q.12. In an odd-parity system, the parity bit is one?",
+        options: ["when there is an odd number of one bits in the data.", "when there is an odd number of data bits.", "when there is an even number of one bits in the data.", "when there is an even number of one bits in the data and when there is an odd number of data bits.", "None of these"],
+        correct: 2,
+        exp: "When data contains an even number of 1s, setting the parity bit to 1 makes the total number of 1s odd."
+    },
+    {
+        q: "Q.13. Which flip flop is generally used to build a sequential even parity checker?",
+        options: ["SR flip-flop", "JK flip-flop", "T flip-flop", "Master Slave flip-flop", "None of these"],
+        correct: 2,
+        exp: "A T (Toggle) flip-flop toggles its state whenever a input '1' is received, making it ideal for parity generation."
+    },
+    {
+        q: "Q.14. The checksum is used for?",
+        options: ["data recovery", "data transfer", "error detection", "error recovery", "All of these"],
+        correct: 2,
+        exp: "A checksum is a mathematical value calculated to verify data integrity and perform error detection."
+    },
+    {
+        q: "Q.15. Traditionally, the Internet checksum is?",
+        options: ["8-bit", "16-bit", "24-bit", "32-bit", "None of these"],
+        correct: 1,
+        exp: "Internet protocols such as IPv4, TCP, and UDP use a standard 16-bit checksum algorithm."
+    },
+    {
+        q: "Q.16. Which error detection method uses one's complement arithmetic?",
+        options: ["Simple parity check", "CRC", "Checksum", "All of these", "None of these"],
+        correct: 2,
+        exp: "The Internet Checksum algorithm calculates sums using 16-bit one's complement addition."
+    },
+    {
+        q: "Q.17. Calculate the checksum for the following numbers: 7, 11, 12, 0, 6.",
+        options: ["00111100", "00100100", "00011011", "11011000", "11000011"],
+        correct: 0,
+        exp: "Summing 7+11+12+0+6 yields 36 (00100100 in 8-bit). Taking its 1's complement gives '00111100'."
+    },
+    {
+        q: "Q.18. In cyclic redundancy checking, what is the CRC?",
+        options: ["The divisor", "The quotient", "The dividend", "The remainder", "None of these"],
+        correct: 3,
+        exp: "In Cyclic Redundancy Check (CRC), the remainder obtained from modulo-2 binary division serves as the CRC code."
+    },
+    {
+        q: "Q.19. What is the primary advantage of using CRC over other error detection techniques?",
+        options: ["Higher error detection capability", "Simplicity of implementation", "Lower computational overhead", "Compatibility with ASCII encoding", "All of these"],
+        correct: 0,
+        exp: "CRC offers superior error detection capability, particularly for burst errors in data channels."
+    },
+    {
+        q: "Q.20. The most common hamming codes are a generalized version of?",
+        options: ["Hamming(7, 4) code", "Hamming(8, 4) code", "Hamming(6, 3) code", "Hamming(5, 7) code", "None of these"],
+        correct: 0,
+        exp: "The Hamming(7, 4) code inserts 3 parity bits into 4 data bits, forming the benchmark Hamming architecture."
+    },
+    {
+        q: "Q.21. What is the minimal Hamming distance between any two correct codewords in a single error correction code?",
+        options: ["1", "2", "3", "4", "5"],
+        correct: 2,
+        exp: "A minimum Hamming distance of 3 is required to detect up to 2 errors or correct 1 single-bit error."
+    },
+    {
+        q: "Q.22. Why do we require hamming codes?",
+        options: ["Error correction", "Encryption only", "Decryption", "Bit stuffing", "None of these"],
+        correct: 0,
+        exp: "Hamming codes belong to the family of linear error-correcting codes capable of auto-correcting single-bit errors."
+    },
+    {
+        q: "Q.23. Who invented Hamming codes?",
+        options: ["Richard Hamming", "Ross Hamming", "Shannon", "Huffman", "None of these"],
+        correct: 0,
+        exp: "Richard W. Hamming invented Hamming codes in 1950 for automated error correction."
+    },
+    {
+        q: "Q.24. A flip flop is a ________ circuit.",
+        options: ["Combinational", "Sequential", "Programming", "Both 1 and 2", "None of these"],
+        correct: 1,
+        exp: "A flip-flop is a sequential circuit because its output depends on both present inputs and past states."
+    },
+    {
+        q: "Q.25. A digital circuit that can store one bit is a?",
+        options: ["gate", "XOR gate", "flip-flop", "register", "All of these"],
+        correct: 2,
+        exp: "A flip-flop is the basic 1-bit memory storage element in digital electronics."
+    },
+    {
+        q: "Q.26. The momentary change in the output/state of the flip-flops is known as?",
+        options: ["tri-state", "unstable state", "inverter", "trigger", "None of these"],
+        correct: 3,
+        exp: "Triggering refers to applying a signal or clock pulse that causes a flip-flop to transition between states."
+    },
+    {
+        q: "Q.27. The state of a flip-flop can be switched by changing its?",
+        options: ["Input", "Output", "Triggering", "Clearing", "All of these"],
+        correct: 0,
+        exp: "Applying different logic signals to the input lines switches the internal state of a flip-flop."
+    },
+    {
+        q: "Q.28. A combinational logic circuit?",
+        options: ["must contain flip-flops", "may contain flip-flops", "does not contain flip-flops", "contains latches", "None of these"],
+        correct: 2,
+        exp: "Combinational circuits depend solely on present inputs and contain no memory storage elements like flip-flops."
+    },
+    {
+        q: "Q.29. The basic memory element in a digital circuit?",
+        options: ["consists of a NAND gate", "consists of a NOR gate", "is a flip-flop", "is a shift register", "None of these"],
+        correct: 2,
+        exp: "The fundamental unit of data storage in digital systems is the flip-flop."
+    },
+    {
+        q: "Q.30. A flip-flop has two outputs which are?",
+        options: ["always 0", "always 1", "always complementary", "all of the above states", "None of these"],
+        correct: 2,
+        exp: "Standard flip-flops provide two outputs, Q and Q', which are strictly complementary to each other."
+    },
+    {
+        q: "Q.31. A flip-flop can be made using?",
+        options: ["basic gates such as AND, OR and NOT", "NAND gates", "NOR gates", "any of the above", "None of these"],
+        correct: 3,
+        exp: "Flip-flops can be constructed using cross-coupled NAND gates, NOR gates, or combinations of basic logic gates."
+    },
+    {
+        q: "Q.32. Which of the following flip-flop is used as a latch?",
+        options: ["J-K flip-flop", "Master-slave flip-flop", "T flip-flop", "D flip-flop", "All of these"],
+        correct: 3,
+        exp: "A D (Data) flip-flop directly stores input states and is widely used as a digital latch."
+    },
+    {
+        q: "Q.33. Which of the following flip-flop is used as a latch?",
+        options: ["J-K flip-flop", "Master-slave flip-flop", "T flip-flop", "S-R flip-flop", "All of these"],
+        correct: 3,
+        exp: "An S-R (Set-Reset) circuit acts as the primary elementary bistable latch."
+    },
+    {
+        q: "Q.34. Which flip flop is generally used to build a sequential even parity checker?",
+        options: ["SR flip-flop", "JK flip-flop", "T flip-flop", "Master Slave flip-flop", "None of these"],
+        correct: 2,
+        exp: "T flip-flops feature state-toggling functionality which simplifies parity evaluation."
+    },
+    {
+        q: "Q.35. When an inverter is placed between the inputs of an S-R flip-flop, the resulting flip-flop is a?",
+        options: ["J-K flip-flop", "Master-slave flip-flop", "T flip-flop", "D flip-flop", "None of these"],
+        correct: 3,
+        exp: "Placing an inverter between S and R ensures input compliance and creates a single-input D flip-flop."
+    },
+    {
+        q: "Q.36. Which of the following input combinations is not allowed in an S-R flip-flop?",
+        options: ["S=0 R=0", "S=0 R=1", "S=1 R=0", "S=1 R=1", "None of these"],
+        correct: 3,
+        exp: "S=1 and R=1 forces both outputs to 0 simultaneously, resulting in an invalid/forbidden state."
+    },
+    {
+        q: "Q.37. Flip-flops can be used to make?",
+        options: ["latches", "bounce-elimination switches", "registers", "all of the above", "None of these"],
+        correct: 2,
+        exp: "Cascading multiple flip-flops together forms digital storage registers."
+    },
+    {
+        q: "Q.38. In the J-K flip-flop, what does J and K stand for?",
+        options: ["Jack Kilby", "James Kingston", "Jones Kane", "Jill Katie", "None of these"],
+        correct: 0,
+        exp: "The J-K flip-flop was named in honor of Jack Kilby, the Texas Instruments engineer who invented the IC."
+    },
+    {
+        q: "Q.39. Both the J-K & the T flip-flop are derived from the basic?",
+        options: ["S-R flip-flop", "S-R latch", "D latch", "D flip-flop", "All of these"],
+        correct: 0,
+        exp: "J-K and T flip-flops are extensions built upon modified S-R flip-flop feedback architectures."
+    },
+    {
+        q: "Q.40. The flip-flops which do not have any invalid states are?",
+        options: ["S-R, J-K, D", "S-R, J-K, T", "J-K, D, S-R", "J-K, D, T", "All of these"],
+        correct: 3,
+        exp: "J-K, D, and T flip-flops eliminate invalid states present in standard S-R latches."
+    },
+    {
+        q: "Q.41. How is a J-K flip-flop made to toggle?",
+        options: ["J = 0 K = 0", "J = 1 K = 0", "J = 0 K = 1", "J = 1 K = 1", "None of these"],
+        correct: 3,
+        exp: "Setting both J=1 and K=1 causes the flip-flop output to toggle on every active clock edge."
+    },
+    {
+        q: "Q.42. T Flip flop is used as?",
+        options: ["Transfer data circuit", "Toggle switch", "Time delay switch", "All of these", "None of the above"],
+        correct: 1,
+        exp: "The T in T flip-flop stands for 'Toggle', making it ideal for toggle switches and frequency division."
+    },
+    {
+        q: "Q.43. D flip flop is used as?",
+        options: ["Differentiator", "Divider circuit", "Delay switch", "All of these", "None of the above"],
+        correct: 2,
+        exp: "The D in D flip-flop stands for 'Data' or 'Delay', as it introduces a 1-clock pulse delay to signals."
+    },
+    {
+        q: "Q.44. Race condition occurs in?",
+        options: ["Synchronous circuit", "Asynchronous circuit", "Combinational circuit", "All of the digital circuit", "None of these"],
+        correct: 1,
+        exp: "Race conditions occur in asynchronous sequential circuits due to propagation delay differences between signals."
+    },
+    {
+        q: "Q.45. In T flip flop the output frequency is?",
+        options: ["Same as the input frequency", "One half its input frequency", "Double of its input frequency", "All of these", "None of the above"],
+        correct: 1,
+        exp: "A T flip-flop toggles output once per full clock cycle, cutting the output signal frequency in half."
+    },
+    {
+        q: "Q.46. Following flip flop is used to eliminate race around problem?",
+        options: ["R-S flip flop", "Master slave J-K flip flop", "J-K flip flop", "All of these", "None of the above"],
+        correct: 1,
+        exp: "Master-Slave J-K flip-flops prevent race-around conditions by isolating input sampling from output updates."
+    },
+    {
+        q: "Q.47. ________ flip-flop ensures that the output follows the input with every clock pulse.",
+        options: ["JK Flip-Flop", "SR Flip-Flop", "D Flip-Flop", "T Flip-Flop", "All of these"],
+        correct: 2,
+        exp: "A D flip-flop directly transfers its input value D to output Q on every clock trigger."
+    },
+    {
+        q: "Q.48. Which flip-flop is used to make all types of shift register?",
+        options: ["JK flip-flop", "D flip-flop", "T flip-flop", "All the options", "None of these"],
+        correct: 1,
+        exp: "D flip-flops are the primary building block used to construct serial and parallel shift registers."
+    }
+];
+
+// Fisher-Yates Shuffle algorithm for options
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-body');
+    container.innerHTML = '';
+
+    quizData.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question-title';
+        qTitle.innerText = item.q;
+        card.appendChild(qTitle);
+
+        const optionsList = document.createElement('ul');
+        optionsList.className = 'options-list';
+
+        // Map options with their original index to verify correct answer after shuffle
+        let optionsObj = item.options.map((optText, origIdx) => {
+            return { text: optText, originalIndex: origIdx };
+        });
+
+        // Shuffle options dynamically on every page load/reload
+        optionsObj = shuffleArray(optionsObj);
+
+        optionsObj.forEach(optObj => {
+            const li = document.createElement('li');
+            const btn = document.createElement('a');
+            btn.className = 'option-btn';
+            btn.href = 'javascript:void(0);';
+            btn.innerText = optObj.text;
+
+            btn.onclick = function(e) {
+                checkAnswer(card, e.target, optObj.originalIndex, item.correct);
+            };
+
+            li.appendChild(btn);
+            optionsList.appendChild(li);
+        });
+
+        card.appendChild(optionsList);
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+function checkAnswer(card, clickedBtn, selectedIdx, correctIdx) {
+    const buttons = card.querySelectorAll('.option-btn');
+    const expDiv = card.querySelector('.explanation');
+
+    // Disable further clicks on this question
+    buttons.forEach(btn => {
+        btn.onclick = null;
+        btn.style.cursor = 'default';
+    });
+
+    if (selectedIdx === correctIdx) {
+        clickedBtn.classList.add('correct');
+    } else {
+        clickedBtn.classList.add('wrong');
+    }
+
+    expDiv.style.display = 'block';
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
