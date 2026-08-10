@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBMS MCQ Quiz (218 Questions)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #1a365d;
+      margin-bottom: 25px;
+      border-bottom: 3px solid #3182ce;
+      padding-bottom: 10px;
+    }
+    .question-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 18px;
+      border: 2px solid #cbd5e0;
+      background-color: #f7fafc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.98rem;
+      color: #2d3748;
+      transition: all 0.2s ease-in-out;
+      text-decoration: none;
+    }
+    .option-btn:hover {
+      background-color: #edf2f7;
+      border-color: #a0aec0;
+    }
+    .option-btn.correct {
+      background-color: #38a169 !important;
+      color: #ffffff !important;
+      border-color: #38a169 !important;
+      font-weight: bold;
+    }
+    .option-btn.wrong {
+      background-color: #e53e3e !important;
+      color: #ffffff !important;
+      border-color: #e53e3e !important;
+      font-weight: bold;
+    }
+    .option-btn.disabled {
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .explanation {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 16px;
+      background-color: #ebf8ff;
+      border-left: 4px solid #3182ce;
+      border-radius: 4px;
+      font-size: 0.92rem;
+      color: #2b6cb0;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h1>DBMS MCQ Practice Quiz</h1>
+    <div id="quiz-list"></div>
+  </div>
+
+  <script>
+    // Raw Quiz Data Array (Questions, Options, Correct Answer Index (0-4), Explanation)
+    const quizData = [
+      {
+        q: "Q.1. The level of data abstraction which describes how the data is actually stored is.?",
+        options: ["Conceptual Level", "Physical Level", "File Level", "All of these", "More than one of the above"],
+        correctIndex: 1,
+        exp: "Physical level (or internal level) describes low-level data structures and how data is actually stored in storage devices."
+      },
+      {
+        q: "Q.2. Application resides in client machine & database is at server machine is called.?",
+        options: ["One-tier architecture", "Two-tier architecture", "Three-tier architecture", "More than one of the above", "All of these"],
+        correctIndex: 1,
+        exp: "In two-tier architecture, the application user interface runs on the client and the database service runs on the server."
+      },
+      {
+        q: "Q.3. Before the use of the DBMS info was stored in the.?",
+        options: ["Data System", "Cloud Storage", "File System", "Record System", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Prior to DBMS, organizations used traditional File Systems to store and manage data files."
+      },
+      {
+        q: "Q.4. A database is the complex type of the.?",
+        options: ["Application", "Data Structure", "Manager", "File", "More than one of the above"],
+        correctIndex: 1,
+        exp: "A database is a complex data structure that organizes, stores, and retrieves data efficiently."
+      },
+      {
+        q: "Q.5. Which of the following is not one of the three schemas used in the ANSI/SPARC.?",
+        options: ["External", "Internal", "Implementation", "Conceptual", "More than one of the above"],
+        correctIndex: 2,
+        exp: "The ANSI/SPARC 3-schema architecture consists of External, Conceptual, and Internal levels. 'Implementation' is not one."
+      },
+      {
+        q: "Q.6. Which of three schemas used in three-schema model represents how users view database.?",
+        options: ["Internal", "External", "Implementation", "Conceptual", "More than one of the above"],
+        correctIndex: 1,
+        exp: "The External Schema (or view level) describes how individual users view and interact with specific database subsets."
+      },
+      {
+        q: "Q.7. Which of three schemas used in three-schema model is a complete logical View of database.?",
+        options: ["Conceptual", "External", "Internal", "Implementation", "More than one of the above"],
+        correctIndex: 0,
+        exp: "The Conceptual Schema describes the logical structure of the entire database for all users."
+      },
+      {
+        q: "Q.8. Which of three schemas used in three-schema model shows physical storage using a particular product or technique.?",
+        options: ["Internal", "External", "Conceptual", "Implementation", "More than one of the above"],
+        correctIndex: 0,
+        exp: "The Internal Schema describes physical storage structures and access paths."
+      },
+      {
+        q: "Q.9. Database _________ which is the logical design of the database, and the database _________ which is a snapshot of the data in the database at a given instant in time.?",
+        options: ["Instance, Schema", "Schema, Instance", "Relation, Domain", "Relation, Schema", "More than one of the above"],
+        correctIndex: 1,
+        exp: "Schema refers to the overall design/structure, whereas Instance refers to data stored at a specific point in time."
+      },
+      {
+        q: "Q.10. Relational schemas and other metadata about relations are stored in a structure called the _________.?",
+        options: ["Catalog", "Log", "Data Dictionary", "Data Warehouse", "More than one of the above"],
+        correctIndex: 2,
+        exp: "The Data Dictionary (or system catalog) stores metadata such as schema definitions, constraints, and user privileges."
+      },
+      {
+        q: "Q.11. The view of total database content is?",
+        options: ["Conceptual View", "Internal View", "External View", "Physical View", "More than one of the above"],
+        correctIndex: 0,
+        exp: "Conceptual view represents the combined logical view of the entire database."
+      },
+      {
+        q: "Q.12. Architecture of a database can be viewed as?",
+        options: ["2 Level", "4 Level", "3 Level", "One Level", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Standard database architecture follows a 3-level schema architecture (External, Conceptual, Internal)."
+      },
+      {
+        q: "Q.13. A Subschema expresses?",
+        options: ["The logical view", "The physical view", "The external view", "More than one of the above", "All of these"],
+        correctIndex: 2,
+        exp: "A subschema specifies the external view visible to a specific group of users."
+      },
+      {
+        q: "Q.14. Which of the following is the advantage of view?",
+        options: ["Data Security", "Hiding complexity", "Output focused", "All of these", "None of these"],
+        correctIndex: 3,
+        exp: "Views enhance security by restricting access, hide structural query complexity, and tailor output for users."
+      },
+      {
+        q: "Q.15. It is the standard language for relational database management systems.?",
+        options: ["PHP", "C", "C++", "SQL", "More than one of the above"],
+        correctIndex: 3,
+        exp: "SQL (Structured Query Language) is the standardized ANSI/ISO language for RDBMS."
+      },
+      {
+        q: "Q.16. SQL statements are used to perform which task.?",
+        options: ["Storing Data", "Manipulating Data", "Retrieving Data", "All of these", "None of these"],
+        correctIndex: 3,
+        exp: "SQL handles data definition, manipulation, retrieval, and storage management."
+      },
+      {
+        q: "Q.17. SQL stands for.?",
+        options: ["Structured Query Language", "Structured Query List", "Simple Query Language", "All of these", "None of these"],
+        correctIndex: 0,
+        exp: "SQL expands to Structured Query Language."
+      },
+      {
+        q: "Q.18. SQL was initially developed at.?",
+        options: ["Google", "Microsoft", "Apple", "IBM", "All of these"],
+        correctIndex: 3,
+        exp: "SQL was originally created at IBM by Donald Chamberlin and Raymond Boyce in the 1970s."
+      },
+      {
+        q: "Q.19. SQL was developed by.?",
+        options: ["Donald D. Chamberlin", "Raymond F. Boyce", "Both of these", "James Gosling", "None of these"],
+        correctIndex: 2,
+        exp: "Both Donald D. Chamberlin and Raymond F. Boyce jointly developed SQL."
+      },
+      {
+        q: "Q.20. When was SQL developed.?",
+        options: ["1954", "1964", "1974", "1984", "None of these"],
+        correctIndex: 2,
+        exp: "SQL was initially developed at IBM in 1974."
+      },
+      {
+        q: "Q.21. Old name of SQL is.?",
+        options: ["SEQUEL", "SEEQL", "SQQLL", "All of these", "None of these"],
+        correctIndex: 0,
+        exp: "The original acronym was SEQUEL (Structured English Query Language)."
+      },
+      {
+        q: "Q.22. SEQUEL stands for.?",
+        options: ["Structured English Query Language", "Sequential English Query Language", "Systematic English Query Language", "Structured English Quantum Language", "None of these"],
+        correctIndex: 0,
+        exp: "SEQUEL stands for Structured English Query Language."
+      },
+      {
+        q: "Q.23. How many types of SQL languages are there.?",
+        options: ["2", "3", "4", "5", "7"],
+        correctIndex: 3,
+        exp: "SQL sub-languages are broadly categorized into 5 types: DDL, DML, DCL, TCL, and DQL."
+      },
+      {
+        q: "Q.24. Which standard groups officially adopted the standard 'Database Language SQL'.?",
+        options: ["ANSI", "ISO", "ANSI & ISO", "IETF", "None of these"],
+        correctIndex: 2,
+        exp: "ANSI adopted SQL in 1986 and ISO adopted it in 1987."
+      },
+      {
+        q: "Q.25. Which of the following are TCL commands.?",
+        options: ["UPDATE and TRUNCATE", "SELECT and INSERT", "GRANT and REVOKE", "COMMIT and ROLLBACK", "None of these"],
+        correctIndex: 3,
+        exp: "TCL (Transaction Control Language) commands include COMMIT, ROLLBACK, and SAVEPOINT."
+      },
+      {
+        q: "Q.26. Which of the following are DCL commands.?",
+        options: ["UPDATE and TRUNCATE", "SELECT and INSERT", "GRANT and REVOKE", "COMMIT and ROLLBACK", "None of these"],
+        correctIndex: 2,
+        exp: "DCL (Data Control Language) includes GRANT and REVOKE commands for privilege management."
+      },
+      {
+        q: "Q.27. Which of the following is not a DDL command.?",
+        options: ["CREATE", "ALTER", "INSERT", "All of these", "None of these"],
+        correctIndex: 2,
+        exp: "INSERT is a DML (Data Manipulation Language) command, whereas CREATE and ALTER are DDL."
+      },
+      {
+        q: "Q.28. It removes all rows from a table without logging the individual row deletions.?",
+        options: ["DELETE", "REMOVE", "DROP", "TRUNCATE", "More than one of the above"],
+        correctIndex: 3,
+        exp: "TRUNCATE removes all rows rapidly by deallocating pages rather than logging individual row deletions."
+      },
+      {
+        q: "Q.29. Which SQL function is used to count the number of rows in a SQL query.?",
+        options: ["COUNT()", "NUMBER()", "SUM()", "COUNT(*)", "All of these"],
+        correctIndex: 3,
+        exp: "COUNT(*) counts all rows matching the query criteria including NULL values."
+      },
+      {
+        q: "Q.30. Which SQL keyword is used to retrieve a maximum value.?",
+        options: ["MOST", "TOP", "MAX", "UPPER", "More than one of the above"],
+        correctIndex: 2,
+        exp: "MAX() is the standard SQL aggregate function used to return the maximum value."
+      },
+      {
+        q: "Q.31. Which of the following SQL clauses is used to DELETE tuples from a database table.?",
+        options: ["DELETE", "REMOVE", "DROP", "CLEAR", "More than one of the above"],
+        correctIndex: 0,
+        exp: "The DELETE command removes rows from a table based on specified conditions."
+      },
+      {
+        q: "Q.32. What does DML stand for.?",
+        options: ["Different Mode Level", "Data Model Language", "Data Mode Lane", "Data Manipulation language", "None of these"],
+        correctIndex: 3,
+        exp: "DML stands for Data Manipulation Language."
+      },
+      {
+        q: "Q.33. Which SQL keyword is used to sort the result-set.?",
+        options: ["ORDER BY", "SORT", "ORDER", "SORT BY", "More than one of the above"],
+        correctIndex: 0,
+        exp: "ORDER BY sorts the returned query rows in ascending or descending order."
+      },
+      {
+        q: "Q.34. Which of the following command makes the updates performed by the transaction permanent in the database.?",
+        options: ["ROLLBACK", "COMMIT", "TRUNCATE", "DELETE", "More than one of the above"],
+        correctIndex: 1,
+        exp: "COMMIT saves all transaction changes permanently to the database."
+      },
+      {
+        q: "Q.35. Which command undo all the updates performed by the SQL in the transaction.?",
+        options: ["ROLLBACK", "COMMIT", "TRUNCATE", "DELETE", "More than one of the above"],
+        correctIndex: 0,
+        exp: "ROLLBACK undoes changes made in the current uncommitted transaction."
+      },
+      {
+        q: "Q.36. Which of the following is a comparison operator in SQL.?",
+        options: ["Double equal sign (==)", "LIKE", "BETWEEN", "Single equal sign ( = )", "More than one of the above"],
+        correctIndex: 3,
+        exp: "SQL uses a single equal sign (=) as the standard equality comparison operator."
+      },
+      {
+        q: "Q.37. It is the first graphical query language.?",
+        options: ["SQL", "QBE", "SEQUEL", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "QBE (Query-By-Example) was the first graphical query language created in the 1970s."
+      },
+      {
+        q: "Q.38. It is a user interface that simplifies SQL procedures?",
+        options: ["JAVA", "QBE", "SEQUEL", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "QBE provides a fill-in-the-blanks user interface that simplifies relational query building."
+      },
+      {
+        q: "Q.39. QBE was developed by.?",
+        options: ["Charles Babbage", "Moshé M. Zloof", "Donald B Chamberlin", "E.F Codd", "Tim Berners Lee"],
+        correctIndex: 1,
+        exp: "Moshé M. Zloof developed Query-by-Example (QBE) at IBM in the mid-1970s."
+      },
+      {
+        q: "Q.40. The database schema is written in.?",
+        options: ["DDL", "DML", "DCL", "TCL", "More than one of the above"],
+        correctIndex: 0,
+        exp: "Data Definition Language (DDL) is used to define and specify the database schema."
+      },
+      {
+        q: "Q.41. It is a type of cyber attack against web applications that use SQL databases.?",
+        options: ["Ransomware", "Trojan Horse", "Retrovirus", "SQL Injection", "More than one of the above"],
+        correctIndex: 3,
+        exp: "SQL Injection (SQLi) injects malicious SQL queries to manipulate backend database queries."
+      },
+      {
+        q: "Q.42. In this we don't write complete queries like SQL or other database languages it comes with some blank so we need to just fill that blanks.?",
+        options: ["MySQL", "QBE", "Oracle", "Sybase", "More than one of the above"],
+        correctIndex: 1,
+        exp: "QBE uses a grid visual format where users fill in parameters instead of writing code."
+      },
+      {
+        q: "Q.43. The most open source DBMS is.?",
+        options: ["Microsoft SQL Server", "Microsoft Access", "MySQL", "Oracle", "More than one of the above"],
+        correctIndex: 2,
+        exp: "MySQL is one of the world's most widely adopted open-source relational DBMS."
+      },
+      {
+        q: "Q.44. Which of the following is not database management software.?",
+        options: ["Sybase", "Cobol", "Oracle", "MySql", "All of these"],
+        correctIndex: 1,
+        exp: "COBOL is a programming language, not a database management system."
+      },
+      {
+        q: "Q.45. Which of these query will display the given table (Name)?",
+        options: ["Select employee from name", "Select name", "Select name from employee", "Select employee", "None of these"],
+        correctIndex: 2,
+        exp: "The standard syntax is `SELECT column_name FROM table_name;` -> `SELECT name FROM employee;`."
+      },
+      {
+        q: "Q.46. Which employee_id will be displayed for 'SELECT * FROM employee WHERE employee_id > 1009;'?",
+        options: ["1009, 1001, 1018", "1009, 1018", "1001", "1018", "None of these"],
+        correctIndex: 3,
+        exp: "Only ID 1018 strictly satisfies the condition `id > 1009`."
+      },
+      {
+        q: "Q.47. Which Symbol is used to see every column of a table.?",
+        options: ["/", "\\", "*", "!", "None of these"],
+        correctIndex: 2,
+        exp: "The asterisk (*) wildcard character selects all columns in SQL."
+      },
+      {
+        q: "Q.48. Which of the following is not a transaction control command in SQL.?",
+        options: ["Rollback", "Savepoint", "Grant", "Commit", "More than one of the above"],
+        correctIndex: 2,
+        exp: "GRANT is a DCL command, whereas Rollback, Savepoint, and Commit are TCL commands."
+      },
+      {
+        q: "Q.49. Which of the following represents the three basic SQL DML Commands.?",
+        options: ["Drop, Update, Delete", "Insert, Alter, Delete", "Insert, Update, Create", "Insert, Update, Delete", "All of these"],
+        correctIndex: 3,
+        exp: "The three core DML commands are INSERT, UPDATE, and DELETE."
+      },
+      {
+        q: "Q.50. In SQL, the function -avg, min, max, sum, count are called as?",
+        options: ["Aggregate function", "Adjunct function", "Set operation", "Scalar Operation", "None of these"],
+        correctIndex: 0,
+        exp: "Functions that calculate values across multiple rows are Aggregate Functions."
+      },
+      {
+        q: "Q.51. In SQL, the function UCASE(), LCASE(), MID(), LEN(), ROUND() are called as?",
+        options: ["Aggregate function", "Scalar function", "Set operation", "Scalar Operation", "All of these"],
+        correctIndex: 1,
+        exp: "Scalar functions operate on an individual single value and return a single value."
+      },
+      {
+        q: "Q.52. SAP, Sybase, MySQL and Oracle are examples of.?",
+        options: ["DBMS", "RDBMS", "Database", "High Level Programming Language", "All of these"],
+        correctIndex: 1,
+        exp: "They are all popular Relational Database Management Systems (RDBMS)."
+      },
+      {
+        q: "Q.53. Truncating tables shall.?",
+        options: ["Empty a table completely", "Delete the selected rows only", "Delete the selected columns only", "Add one table with another", "More than one of the above"],
+        correctIndex: 0,
+        exp: "TRUNCATE empties all rows from the table while retaining its structure."
+      },
+      {
+        q: "Q.54. Which SQL keyword is used to retrieve only unique values.?",
+        options: ["DISTINCTIVE", "UNIQUE", "DISTINCT", "DIFFERENT", "More than one of the above"],
+        correctIndex: 2,
+        exp: "DISTINCT filters out duplicate records in the result set."
+      },
+      {
+        q: "Q.55. What is a view.?",
+        options: ["A view is a special stored procedure executed when certain event occurs.", "A view is a virtual table which results of executing a pre-compiled query.", "A view is a database diagram.", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "A View is a virtual table formed by saved, pre-compiled SQL queries."
+      },
+      {
+        q: "Q.56. Which of the following SQL commands is used to retrieve data.?",
+        options: ["DELETE", "INSERT", "SELECT", "JOIN", "More than one of the above"],
+        correctIndex: 2,
+        exp: "SELECT is used to query and retrieve data records from database tables."
+      },
+      {
+        q: "Q.57. Which SQL keyword is used to sort the result-set.?",
+        options: ["SORT BY", "ORDER", "ORDER BY", "SORT", "More than one of the above"],
+        correctIndex: 2,
+        exp: "ORDER BY is the standard clause for sorting query results."
+      },
+      {
+        q: "Q.58. The _________ clause of SELECT query allows us to select only those rows in the results that satisfy a specified condition.?",
+        options: ["Where", "from", "having", "Like", "None of these"],
+        correctIndex: 0,
+        exp: "WHERE filters individual rows matching specified conditions."
+      },
+      {
+        q: "Q.59. A _________ is normalized after it has been organized.?",
+        options: ["Table", "Database", "Row", "Column", "All of these"],
+        correctIndex: 1,
+        exp: "Normalization is applied to restructure and organize an entire relational database."
+      },
+      {
+        q: "Q.60. By normalizing relations or sets of relations, one minimizes _________.?",
+        options: ["Data", "Fields", "Redundancy", "Database", "All of these"],
+        correctIndex: 2,
+        exp: "The primary objective of database normalization is to minimize data redundancy."
+      },
+      {
+        q: "Q.61. In addition to removing undesirable characteristics, normalization also eliminates _________ anomalies.?",
+        options: ["Insert", "Update", "Delete", "All of these", "None of these"],
+        correctIndex: 3,
+        exp: "Normalization prevents Insertion, Update, and Deletion anomalies."
+      },
+      {
+        q: "Q.62. A common approach to normalization is to _________ the larger table into smaller tables and link them together by using relationships.?",
+        options: ["Add", "Subtract", "Multiply", "Divide", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Decomposition (dividing larger tables into smaller related tables) is central to normalization."
+      },
+      {
+        q: "Q.63. Redundancy is reduced in a database table by using the _________ form.?",
+        options: ["Abnormal", "Normal", "Special", "More than one of the above", "None of these"],
+        correctIndex: 1,
+        exp: "Organizing data into Normal Forms reduces redundancy."
+      },
+      {
+        q: "Q.64. In practical applications, how many types of Normal Forms are there.?",
+        options: ["3", "4", "5", "6", "9"],
+        correctIndex: 1,
+        exp: "Practically, 4 main normal forms (1NF, 2NF, 3NF, BCNF) are widely used in database design."
+      },
+      {
+        q: "Q.65. Which of the following is not a type of Normal Form.?",
+        options: ["1NF", "2NF", "3NF", "10NF", "BCNF"],
+        correctIndex: 3,
+        exp: "10NF does not exist in relational database theory."
+      },
+      {
+        q: "Q.66. Which of the following is a type of Normal Form.?",
+        options: ["ACNF", "BCNF", "CCNF", "DCNF", "None of these"],
+        correctIndex: 1,
+        exp: "BCNF (Boyce-Codd Normal Form) is a recognized normal form."
+      },
+      {
+        q: "Q.67. Relations produced from E-R Model will always be in?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 0,
+        exp: "Tables properly derived directly from ER diagrams inherently satisfy 1NF."
+      },
+      {
+        q: "Q.68. In the _________ normal form, a composite attribute is converted to individual attributes.?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 0,
+        exp: "1NF enforces atomic attribute values, breaking down composite attributes."
+      },
+      {
+        q: "Q.69. When a relation contains an atomic value, it is a _________ relation.?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 0,
+        exp: "A table whose attributes all contain atomic (indivisible) values is in 1NF."
+      },
+      {
+        q: "Q.70. What is TRUE about the First Normal Form (1NF).?",
+        options: ["If a relation contains an atomic value, it will be 1NF.", "A table attribute cannot contain more than one value, according to this rule.", "A single-valued attribute can only be stored in it.", "All of the above", "None of these"],
+        correctIndex: 3,
+        exp: "All statements correctly describe 1NF requirements (atomicity, single-valued attributes)."
+      },
+      {
+        q: "Q.71. A relation that has no partial dependencies is in which normal form.?",
+        options: ["First", "Second", "Third", "BCNF", "Fourth"],
+        correctIndex: 1,
+        exp: "2NF requires 1NF and the complete absence of partial functional dependencies."
+      },
+      {
+        q: "Q.72. Functional Dependencies are the types of constraints that are based on?",
+        options: ["Key", "Key Revisited", "Superset Key", "More than one of the above", "None of these"],
+        correctIndex: 0,
+        exp: "Functional dependencies express constraints based on keys within a relation."
+      },
+      {
+        q: "Q.73. 2NF relations are those that are in 1NF with all the non-prime attribute types dependent on the _________ key.?",
+        options: ["Primary", "Foreign", "Composite", "Alternate", "All of these"],
+        correctIndex: 0,
+        exp: "In 2NF, non-key attributes must fully depend on the complete primary key."
+      },
+      {
+        q: "Q.74. Third Normal Form is based on the concept of _________.?",
+        options: ["Closure Dependecy", "Transitive Dependecy", "Normal Dependency", "Functional Dependency", "All of these"],
+        correctIndex: 1,
+        exp: "3NF focuses on eliminating transitive functional dependencies."
+      },
+      {
+        q: "Q.75. Which Normal Form is considered as adequate for usual database design.?",
+        options: ["1NF", "2NF", "3NF", "BCNF", "4NF"],
+        correctIndex: 2,
+        exp: "3NF is widely regarded as optimal and sufficient for real-world commercial database design."
+      },
+      {
+        q: "Q.76. When a relation is in 2NF and there is _________ it is in 3NF.?",
+        options: ["Functional Dependency", "No Transitive Dependency", "Relational Dependency", "No Relational Dependency", "All of these"],
+        correctIndex: 1,
+        exp: "A 2NF relation with no transitive dependencies on non-prime attributes is in 3NF."
+      },
+      {
+        q: "Q.77. Non-prime attributes cannot be transitively dependent, so the relation must have the _________ normal form.?",
+        options: ["First", "Second", "Third", "Fourth", "None of these"],
+        correctIndex: 2,
+        exp: "This defines the requirement for Third Normal Form (3NF)."
+      },
+      {
+        q: "Q.78. A table is in 3NF if it is in 2NF and if it has no _________.?",
+        options: ["Functional Dependencies", "Transitive Dependencies", "Trivial Functional Dependency", "Multivalued Dependencies", "All of these"],
+        correctIndex: 1,
+        exp: "Eliminating transitive dependencies upgrades a 2NF table into 3NF."
+      },
+      {
+        q: "Q.79. What is TRUE about BCNF.?",
+        options: ["The advanced version of 3NF is BCNF.", "BCNF is stricter than 3NF.", "Eliminate all redundancy based on functional dependency", "All of the above", "None of these"],
+        correctIndex: 3,
+        exp: "BCNF is a stricter, extended version of 3NF handling edge cases of overlapping candidate keys."
+      },
+      {
+        q: "Q.80. A table is in BCNF If it is in 3NF and if every determinant is a _________ key.?",
+        options: ["Dependent", "Normal", "Candidate", "Both Normal and Candidate", "None of these"],
+        correctIndex: 2,
+        exp: "In BCNF, for every functional dependency X -> Y, X must be a candidate key (super key)."
+      },
+      {
+        q: "Q.81. Every Boyce-Codd normal form is In.?",
+        options: ["First normal form", "Second normal form", "Third normal form", "All of the above", "None of these"],
+        correctIndex: 3,
+        exp: "Normal forms are hierarchical; any BCNF relation automatically satisfies 1NF, 2NF, and 3NF."
+      },
+      {
+        q: "Q.82. BCNF is a more restrictive normal form than.?",
+        options: ["First normal form", "Second normal form", "Third normal form", "Fourth normal form", "Fifth normal form"],
+        correctIndex: 2,
+        exp: "BCNF is stricter/more restrictive than 3NF."
+      },
+      {
+        q: "Q.83. Boyce-Codd normal form eliminated all the _________ based on functional dependencies.?",
+        options: ["Inconsistency", "Atomicity", "Isolation", "Redundancy", "All of these"],
+        correctIndex: 3,
+        exp: "BCNF eliminates functional dependency-based redundancies."
+      },
+      {
+        q: "Q.84. A relation is in _________ if it is in Boyce Codd normal form and does not have any multivalued dependencies.?",
+        options: ["1NF", "2NF", "3NF", "4NF", "All of these"],
+        correctIndex: 3,
+        exp: "4NF eliminates multivalued dependencies from BCNF relations."
+      },
+      {
+        q: "Q.85. Which of the following is based on Multi Valued Dependency.?",
+        options: ["1NF", "2NF", "3NF", "4NF", "All of these"],
+        correctIndex: 3,
+        exp: "4NF addresses and removes Multi-Valued Dependencies (MVD)."
+      },
+      {
+        q: "Q.86. Fifth Normal form is concerned with.?",
+        options: ["Join dependency", "Domain-key", "Multivalued dependency", "Functional dependency", "All of these"],
+        correctIndex: 0,
+        exp: "5NF (Project-Join Normal Form) addresses Join Dependencies."
+      },
+      {
+        q: "Q.87. 5NF is also known as.?",
+        options: ["Dependency Medium", "BCNF", "Project-join normal form", "Domain-key normal form", "All of these"],
+        correctIndex: 2,
+        exp: "5NF is formally called Project-Join Normal Form (PJNF)."
+      },
+      {
+        q: "Q.88. 6NF is also known as.?",
+        options: ["Dependency Medium", "BCNF", "Project-join normal form", "Domain-key normal form", "All of these"],
+        correctIndex: 3,
+        exp: "Domain-Key Normal Form (DKNF) is associated with advanced normalization theory."
+      },
+      {
+        q: "Q.89. In the first normal form, only single values are permitted at the intersection of each row and column; hence, there are no repeating groups.?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 0,
+        exp: "This statement defines 1NF requirements."
+      },
+      {
+        q: "Q.90. The relation is automatically in _________ if, and only if, the PK comprises a single attribute.?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 1,
+        exp: "If a primary key has only one column, partial dependencies cannot exist, placing a 1NF table into 2NF."
+      },
+      {
+        q: "Q.91. In this Normal Form all Transitive dependencies must be removed.?",
+        options: ["1 NF", "2 NF", "3 NF", "BCNF", "4 NF"],
+        correctIndex: 2,
+        exp: "3NF eliminates transitive dependencies."
+      },
+      {
+        q: "Q.92. A relation is in BCNF If, and only if, every determinant is a.?",
+        options: ["Primary Key", "Super Key", "Unique Key", "Candidate Key", "More than one of the above"],
+        correctIndex: 3,
+        exp: "In BCNF, every determinant must be a candidate key."
+      },
+      {
+        q: "Q.93. If a table has been normalized so that all determinants are candidate keys, then that table is in?",
+        options: ["1NF", "2NF", "3NF", "BCNF", "4NF"],
+        correctIndex: 3,
+        exp: "This is the core definition of Boyce-Codd Normal Form (BCNF)."
+      },
+      {
+        q: "Q.94. Normalization _________ data duplication.?",
+        options: ["eliminates", "reduces", "increases", "Maximizes", "More than one of the above"],
+        correctIndex: 0,
+        exp: "Normalization eliminates data duplication and redundancy."
+      },
+      {
+        q: "Q.95. Considering the relational database, the functional dependency between two attributes A and B is denoted by.?",
+        options: ["A -> B", "B -> A", "ABR", "RAB", "None of these"],
+        correctIndex: 0,
+        exp: "Functional dependency is written as `A -> B` (A uniquely determines B)."
+      },
+      {
+        q: "Q.96. In the _________ normal form, a composite attribute is converted to individual attributes.?",
+        options: ["1NF", "2NF", "3NF", "BCNF", "4NF"],
+        correctIndex: 0,
+        exp: "1NF breaks down composite attributes into indivisible atomic fields."
+      },
+      {
+        q: "Q.97. Tables in second normal form (2NF).?",
+        options: ["Eliminate all hidden dependencies", "Eliminate the possibility of insertion anomalies", "Have a composite key", "Have all non key fields depend on the whole primary key", "All of these"],
+        correctIndex: 0,
+        exp: "2NF eliminates partial functional dependencies."
+      },
+      {
+        q: "Q.98. Which is a bottom-up approach to database design that designs by examining the relationship between attributes:?",
+        options: ["Functional dependency", "Database modeling", "Normalization", "Decomposition", "All of these"],
+        correctIndex: 2,
+        exp: "Normalization is a bottom-up design process analyzing attribute relationships."
+      },
+      {
+        q: "Q.99. The main task carried out in the _________ is to remove repeating attributes to separate tables.?",
+        options: ["1NF", "2NF", "3NF", "BCNF", "4NF"],
+        correctIndex: 0,
+        exp: "1NF removes repeating groups into separate tables."
+      },
+      {
+        q: "Q.100. Anomalies can be categorized in DBMS into _________ types.?",
+        options: ["1 Types", "2 Types", "3 Types", "4 Types", "More than one of the above"],
+        correctIndex: 2,
+        exp: "There are 3 types of modification anomalies: Insertion, Deletion, and Update."
+      },
+      {
+        q: "Q.101. _________ means inconsistency in the pattern from the normal form?",
+        options: ["Tuple", "Record", "Anomaly", "Views", "More than one of the above"],
+        correctIndex: 2,
+        exp: "An Anomaly refers to unexpected inconsistency occurring during operations."
+      },
+      {
+        q: "Q.102. Which of the following is a top down approach in which the entity's higher level can be divided into two lower sub entities.?",
+        options: ["Aggregation", "Generalization", "Specialization", "All of these", "None of these"],
+        correctIndex: 2,
+        exp: "Specialization is a top-down approach breaking a higher entity into sub-entities."
+      },
+      {
+        q: "Q.103. _________ is a process in DBMS of simplifying the complex data structure, It follows a bottom-up approach.?",
+        options: ["Aggregation", "Generalization", "Specialization", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Generalization combines lower entities into higher-level entities using a bottom-up approach."
+      },
+      {
+        q: "Q.104. _________ is a process in DBMS of combining two or more entities to form a more meaningful new entity.?",
+        options: ["Aggregation", "Generalization", "Specialization", "All of these", "None of these"],
+        correctIndex: 0,
+        exp: "Aggregation treats a relationship between entities as a higher-level entity."
+      },
+      {
+        q: "Q.105. Which statement is wrong about PRIMARY KEY constraint in SQL?",
+        options: ["One of the candidate key", "The Primary Key can't be a duplicate.", "A table can have more than one primary key..", "The primary key field cannot be null.", "More than one of the above"],
+        correctIndex: 2,
+        exp: "A table can have ONLY ONE primary key (though it can be composite)."
+      },
+      {
+        q: "Q.106. Which is/are correct statements about primary key of a table?",
+        options: ["Primary keys can contain NULL values", "Primary keys cannot contain NULL values.", "A table can have only one primary key with single or multiple fields", "2 & 3", "1 & 2"],
+        correctIndex: 3,
+        exp: "Statements 2 & 3 are correct: Primary keys reject NULLs and each table has exactly one PK."
+      },
+      {
+        q: "Q.107. What is the difference between a PRIMARY KEY and a UNIQUE KEY?",
+        options: ["Primary key can store null value, whereas a unique key cannot store null value.", "We can have only one primary key in a table while we can have multiple unique keys", "Primary key cannot be a date variable whereas unique key can be", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "A table allows only one Primary Key, but multiple Unique Key constraints."
+      },
+      {
+        q: "Q.108. Which of the following are the synonyms for Column and ROW of a table?",
+        options: ["Row = [Tuple, Record], Column = [Field, Attribute]", "Row = [Tuple, Attribute]", "Columns = [Field, Record]", "None of these", "All of these"],
+        correctIndex: 0,
+        exp: "Row synonyms are Tuple/Record; Column synonyms are Field/Attribute."
+      },
+      {
+        q: "Q.109. Which one of the following attribute can be taken as a primary key?",
+        options: ["Name", "Street", "Id", "Department", "More than one of the above"],
+        correctIndex: 2,
+        exp: "'Id' provides a guaranteed unique identifier suitable for a Primary Key."
+      },
+      {
+        q: "Q.110. Out of all candidate keys, only one gets selected as Primary key, remaining keys are known as ?",
+        options: ["Foreign keys", "Alternate keys", "Composite keys", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Unselected Candidate Keys are called Alternate Keys."
+      },
+      {
+        q: "Q.111. This key consist of two or more attributes that together uniquely identify an entity occurrence?",
+        options: ["Candidate key", "Composite Key", "Super key", "Foreign key", "More than one of the above"],
+        correctIndex: 1,
+        exp: "A key comprising multiple attributes is a Composite Key."
+      },
+      {
+        q: "Q.112. An attribute in a relation is a foreign key if the _________ key from one relation is used as an attribute in that relation.?",
+        options: ["Candidate", "Primary", "Super", "Sub", "More than one of the above"],
+        correctIndex: 1,
+        exp: "Foreign keys reference the Primary Key of another relation."
+      },
+      {
+        q: "Q.113. Which one of the following cannot be taken as a primary key. ?",
+        options: ["Id", "Register number", "Dept_id", "Street", "More than one of the above"],
+        correctIndex: 3,
+        exp: "'Street' contains duplicate values and is non-unique."
+      },
+      {
+        q: "Q.114. It is the columns of a table that points to the candidate key of another table. ?",
+        options: ["Primary Key", "Super key", "Candidate Key", "Foreign key", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Foreign keys establish connections by linking to primary/candidate keys of another table."
+      },
+      {
+        q: "Q.115. Which of the following describes the primary key.?",
+        options: ["It must be unique", "It helps in indexing of a large database", "It makes sorting quicker", "All of these", "None of these"],
+        correctIndex: 3,
+        exp: "Primary keys ensure uniqueness, generate clustered indexes, and speed up query processing."
+      },
+      {
+        q: "Q.116. Which of the following is NOT a good primary key?",
+        options: ["Social security number", "Order number", "Zip code", "Student ID number", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Zip code is shared by many households and lacks uniqueness."
+      },
+      {
+        q: "Q.117. How many primary keys can a table have?",
+        options: ["One", "At least one, but not more than two", "Between 1 and 5", "No limit", "More than one of the above"],
+        correctIndex: 0,
+        exp: "A relational table can possess exactly ONE primary key."
+      },
+      {
+        q: "Q.118. The columns of a table correspond to?",
+        options: ["Table", "Record", "Field", "Cell", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Columns in relational tables are called Fields."
+      },
+      {
+        q: "Q.119. The foreign key is found in?",
+        options: ["Parent table", "Dependent table", "Pivot table", "Index table", "More than one of the above"],
+        correctIndex: 1,
+        exp: "Foreign keys reside in the child/dependent table."
+      },
+      {
+        q: "Q.120. A Super keys for which no proper subset is a super key. Such minimal Super keys are called?",
+        options: ["Primary key", "Simple Key", "Candidate Key", "Foreign Key", "All of these"],
+        correctIndex: 2,
+        exp: "A minimal super key is formally defined as a Candidate Key."
+      },
+      {
+        q: "Q.121. _________ is the columns of a table that points to the candidate key of another table.?",
+        options: ["Primary key", "Super Key", "Candidate Key", "Foreign Key", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Foreign key references candidate keys in target tables."
+      },
+      {
+        q: "Q.122. The purpose of the foreign key is to Identify a particular row of?",
+        options: ["Parent table and Child table", "Referencing table", "Referenced table", "Both 2 and 3", "Both 1 and 2"],
+        correctIndex: 2,
+        exp: "Foreign keys identify matching rows in the Referenced (Parent) table."
+      },
+      {
+        q: "Q.123. Tuples can be uniquely identified by an attribute or set of attributes known as a?",
+        options: ["Primary", "Foreign", "Candidate", "Composite", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Candidate keys uniquely identify rows in a table."
+      },
+      {
+        q: "Q.124. Which of the following statements is TRUE?",
+        options: ["Candidate keys are subsets of super keys", "Candidate keys are supersets of super keys", "Candidate keys are sets of super keys", "Candidate keys are super keys", "All of these"],
+        correctIndex: 1,
+        exp: "Every candidate key is a minimal super key (a subset of super keys)."
+      },
+      {
+        q: "Q.125. Which of the following key is considered unique in a table?",
+        options: ["Primary key", "Candidate key", "Foreign key", "Super key", "All of these"],
+        correctIndex: 0,
+        exp: "Primary Key strictly enforces entity uniqueness."
+      },
+      {
+        q: "Q.126. A Primary Key is basically a.?",
+        options: ["Row", "Column", "Table", "Database", "All of these"],
+        correctIndex: 1,
+        exp: "A Primary Key is a column (or group of columns) in a table."
+      },
+      {
+        q: "Q.127. If multiple columns are used as Primary Key, it is known as.?",
+        options: ["Unique", "Composite", "Foreign", "All of these", "None of the above"],
+        correctIndex: 1,
+        exp: "A primary key composed of multiple columns is called a Composite Key."
+      },
+      {
+        q: "Q.128. Which of the following statement is TRUE about Primary Key.?",
+        options: ["Table integrity is not enforced by the primary key.", "The data in a primary key is always multiple.", "900 bytes is the maximum length of a primary key.", "Null values are allowed in primary keys.", "None of these"],
+        correctIndex: 2,
+        exp: "In SQL Server, the maximum key size for a primary key index is 900 bytes."
+      },
+      {
+        q: "Q.129. Primary keys can be contained in a table only _________.?",
+        options: ["Once", "Twice", "Thrice", "All of these", "None of the above"],
+        correctIndex: 0,
+        exp: "Only one primary key can be declared per table."
+      },
+      {
+        q: "Q.130. To add a Primary Key constraint after table is created, which clause is used.?",
+        options: ["UPDATE", "ADD", "ALTER", "JOIN", "All of these"],
+        correctIndex: 2,
+        exp: "`ALTER TABLE table_name ADD PRIMARY KEY (...)` statement is used."
+      },
+      {
+        q: "Q.131. In order to remove a primary key constraint, which clause is used.?",
+        options: ["DELETE", "DROP", "ALTER", "REMOVE", "All of these"],
+        correctIndex: 1,
+        exp: "`ALTER TABLE table_name DROP PRIMARY KEY;` drops primary keys."
+      },
+      {
+        q: "Q.132. In order to build a link between two tables, which key is used.?",
+        options: ["Primary", "Foreign", "Composite", "Unique", "All of these"],
+        correctIndex: 1,
+        exp: "Foreign keys establish relationships between tables."
+      },
+      {
+        q: "Q.133. Foreign key is a field in a table that is _________ key in another table.?",
+        options: ["Primary", "Unique", "Composite", "All of these", "None of the above"],
+        correctIndex: 0,
+        exp: "Foreign key maps to the Primary Key of a referenced table."
+      },
+      {
+        q: "Q.134. When two or more columns are combined to be used to uniquely identify each row in the table, it is known as.?",
+        options: ["Primary Key", "Unique Key", "Composite Key", "Foreign Key", "All of these"],
+        correctIndex: 2,
+        exp: "Combining two or more columns forms a Composite Key."
+      },
+      {
+        q: "Q.135. For one table, there can be _________ unique key constraint(s).",
+        options: ["1", "NULL", "Many", "All of these", "None of the above"],
+        correctIndex: 2,
+        exp: "A table can contain multiple UNIQUE key constraints."
+      },
+      {
+        q: "Q.136. All other columns other than the column which is termed as Primary Key, are known as?",
+        options: ["Super Keys", "Alternate Keys", "Composite Keys", "Foreign Keys", "Surrogate Keys"],
+        correctIndex: 1,
+        exp: "Candidate keys not chosen as the Primary Key are Alternate Keys."
+      },
+      {
+        q: "Q.137. A two-dimensional table of data is called a _________.?",
+        options: ["Group", "Set", "Declaration", "Relation", "More than one of the above"],
+        correctIndex: 3,
+        exp: "In relational model terminology, a table is called a Relation."
+      },
+      {
+        q: "Q.138. A table is perceived as two-dimensional structure composed of?",
+        options: ["X and y co-ordinates", "Matrix elements", "Rows and columns", "Intersection of data", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Tables consist of grid structures made of rows and columns."
+      },
+      {
+        q: "Q.139. A relation is analogous to a?",
+        options: ["File", "Field", "Record", "Row", "More than one of the above"],
+        correctIndex: 0,
+        exp: "In file processing terms, a Relation corresponds to a File."
+      },
+      {
+        q: "Q.140. A relation is also known as?",
+        options: ["Table", "Tuple", "Relationship", "Attribute", "More than one of the above"],
+        correctIndex: 0,
+        exp: "A Relation is informally referred to as a Table."
+      },
+      {
+        q: "Q.141. An attribute is also known as a?",
+        options: ["Table", "Relation", "Row", "Field", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Attributes correspond to columns/fields in a table."
+      },
+      {
+        q: "Q.142. A row of a relation is called a (n)?",
+        options: ["Attribute", "Entity", "Tuple", "All of these", "More than one of the above"],
+        correctIndex: 2,
+        exp: "A row in a relational database is called a Tuple."
+      },
+      {
+        q: "Q.143. A person, place, thing, event, or condition about which data is kept in the database is called?",
+        options: ["Attribute", "Field", "Record", "Entity", "More than one of the above"],
+        correctIndex: 3,
+        exp: "An Entity represents a real-world object or concept stored in database."
+      },
+      {
+        q: "Q.144. Among these which is not RDBMS Software?",
+        options: ["PostgreSQL", "MySQL", "MariaDB", "MongoDB", "More than one of the above"],
+        correctIndex: 3,
+        exp: "MongoDB is a NoSQL document database, not an RDBMS."
+      },
+      {
+        q: "Q.145. In an E-R diagram rectangle with rounded corners represents. ?",
+        options: ["Entity class", "Weak entity", "Relationship", "Attribute", "More than one of the above"],
+        correctIndex: 1,
+        exp: "Weak entities or specific extended ER notation shapes represent dependent entities."
+      },
+      {
+        q: "Q.146. In an E-R diagram an ellipse represents.?",
+        options: ["Weak entity", "Relationship", "Attribute", "Entity class", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Attributes are drawn as ovals/ellipses in ER diagrams."
+      },
+      {
+        q: "Q.147. In an E-R diagram a relationship is represented by?",
+        options: ["Ellipse", "Rectangle", "Rectangle with rounded corners", "Diamond", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Diamonds (rhombus) represent relationships in ER diagrams."
+      },
+      {
+        q: "Q.148. An entity type whose existence depends on another entity type is called _________ entity?",
+        options: ["Strong", "Weak", "Dependent", "Variant", "More than one of the above"],
+        correctIndex: 1,
+        exp: "A Weak Entity cannot exist without an owner strong entity."
+      },
+      {
+        q: "Q.149. A person name, birthday and social security number are all examples of?",
+        options: ["Entities", "Attributes", "Relationships", "Descriptors", "More than one of the above"],
+        correctIndex: 1,
+        exp: "These describe properties of a person entity, making them Attributes."
+      },
+      {
+        q: "Q.150. Which of the following is not Constraint in SQL?",
+        options: ["Primary Key", "Not Null", "Check", "Union", "All of these"],
+        correctIndex: 3,
+        exp: "UNION is a set operator, not a database constraint."
+      },
+      {
+        q: "Q.151. Which of the following database was designed first for enterprise grid computing?",
+        options: ["Oracle database", "SQL", "MongoDB", "Google database", "All of these"],
+        correctIndex: 0,
+        exp: "Oracle 10g (g for grid) was designed specifically for enterprise grid computing."
+      },
+      {
+        q: "Q.152. What is Oracle?",
+        options: ["Oracle is a programming language", "Oracle is a database", "Oracle is a scripting language", "Oracle is an operating system", "All of these"],
+        correctIndex: 1,
+        exp: "Oracle is a commercial Relational Database Management System."
+      },
+      {
+        q: "Q.153. _________ is a database commonly used for running online transaction processing (OLTP), data warehousing (DW) workloads.?",
+        options: ["MS Access", "FoxPro", "DB-2", "Oracle", "None of these"],
+        correctIndex: 3,
+        exp: "Oracle Database is widely used for enterprise OLTP and Data Warehousing."
+      },
+      {
+        q: "Q.154. _________ was a text-based procedurally oriented programming language and database management system (DBMS).?",
+        options: ["MS Access", "FoxPro", "DB-2", "Sybase", "All of these"],
+        correctIndex: 1,
+        exp: "FoxPro was a procedural programming language and DBMS."
+      },
+      {
+        q: "Q.155. Relationship of data in one database table with respect to another table is called?",
+        options: ["Degree", "Row", "Column", "Cardinality", "All of these"],
+        correctIndex: 3,
+        exp: "Cardinality expresses the number of linked records between tables (1:1, 1:N, N:M)."
+      },
+      {
+        q: "Q.156. Which of the following refers to the number of attributes in a relation?",
+        options: ["Degree", "Row", "Column", "Depth", "All of these"],
+        correctIndex: 0,
+        exp: "The Degree of a relation is its total number of attributes (columns)."
+      },
+      {
+        q: "Q.157. _________ is the most popular database management system in the embedded (mobile phones/tablets) category.?",
+        options: ["MySQL", "SQLite", "Oracle", "PostgreSQL", "All of these"],
+        correctIndex: 1,
+        exp: "SQLite is an embedded self-contained database used in Android and iOS."
+      },
+      {
+        q: "Q.158. Which of the following is a composite attribute.?",
+        options: ["Gender", "Number of dependents", "Age", "Date of Birth", "All of these"],
+        correctIndex: 3,
+        exp: "Date of Birth (or Address/Name) can be split into Day, Month, and Year components."
+      },
+      {
+        q: "Q.159. Which of the following is a single valued attribute?",
+        options: ["Bank Account", "E-Mail Id", "Telephone Number", "Gender", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Gender takes a single value per entity instance."
+      },
+      {
+        q: "Q.160. This key consist of two or more attributes that together uniquely identify an entity occurrence?",
+        options: ["Candidate key", "Composite Key", "Super key", "Foreign key", "All of these"],
+        correctIndex: 1,
+        exp: "A multi-attribute key is a Composite Key."
+      },
+      {
+        q: "Q.161. When single entity is related to itself then the relationship is termed as.?",
+        options: ["One to Many", "One to One", "Many to Many", "Recursive", "All of these"],
+        correctIndex: 3,
+        exp: "A Recursive (or unary) relationship relates an entity to itself."
+      },
+      {
+        q: "Q.162. It is a type of cyber attack against web applications that use SQL databases.?",
+        options: ["Ransomware", "Trojan Horse", "Retrovirus", "SQL Injection", "All of these"],
+        correctIndex: 3,
+        exp: "SQL Injection exploits web input vulnerabilities to run arbitrary SQL commands."
+      },
+      {
+        q: "Q.163. How many Codd's Rules are there in SQL Server.?",
+        options: ["13", "10", "12", "11", "None of these"],
+        correctIndex: 2,
+        exp: "E.F. Codd proposed 12 rules (numbered 0 to 12, total 13, but formally known as Codd's 12 rules)."
+      },
+      {
+        q: "Q.164. What is CRUD stands for in database operations.?",
+        options: ["Create, Read, Update, Delete", "Cache, Read, Update, Delete", "Copy, Replace, Update, Delete", "Collect, Read, Use, discard", "None of these"],
+        correctIndex: 0,
+        exp: "CRUD stands for Create, Read, Update, and Delete operations."
+      },
+      {
+        q: "Q.165. _________ is preferred method for enforcing data Integrity.?",
+        options: ["Constraints", "Stored Procedure", "Triggers", "Cursors", "All of these"],
+        correctIndex: 0,
+        exp: "Declarative constraints (PK, FK, Check, Unique) are preferred for maintaining data integrity."
+      },
+      {
+        q: "Q.166. Which data type is used in SQL to store true or false values.?",
+        options: ["INT", "Boolean", "VARCHAR", "FLOAT", "All of these"],
+        correctIndex: 1,
+        exp: "BOOLEAN data types store true/false truth values."
+      },
+      {
+        q: "Q.167. What data type would you use in SQL to store a date and time value together.?",
+        options: ["DATETIME", "DATE", "TIME", "TIMESTAMP", "All of these"],
+        correctIndex: 0,
+        exp: "DATETIME stores both date and time values combined."
+      },
+      {
+        q: "Q.168. Which SQL command is used to create a new table in a database.?",
+        options: ["Create", "Drop", "Alter", "Truncate", "All of these"],
+        correctIndex: 0,
+        exp: "`CREATE TABLE` statement builds new tables."
+      },
+      {
+        q: "Q.169. In SQL, what is the purpose of the TRUNCATE command.?",
+        options: ["Deletes specific rows from a table", "Removes all rows from a table", "Changes table structure", "Creates a new table", "All of these"],
+        correctIndex: 1,
+        exp: "TRUNCATE removes all table rows while maintaining schema structure."
+      },
+      {
+        q: "Q.170. Which of the following creates a virtual relation for storing the query.?",
+        options: ["Function", "View", "Procedure", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Views act as virtual relations defined by stored queries."
+      },
+      {
+        q: "Q.171. A _________ is a query that retrieves rows from more than one table or view.?",
+        options: ["Start", "End", "Join", "More than one of the above", "None of these"],
+        correctIndex: 2,
+        exp: "A JOIN query queries and combines records across multiple tables."
+      },
+      {
+        q: "Q.172. How many join types in join condition.?",
+        options: ["2", "3", "4", "5", "None of these"],
+        correctIndex: 3,
+        exp: "5 primary joins: Inner, Left Outer, Right Outer, Full Outer, and Cross Join."
+      },
+      {
+        q: "Q.173. Which operation are allowed in a join view.?",
+        options: ["UPDATE", "INSERT", "DELETE", "All of the mentioned", "None of these"],
+        correctIndex: 3,
+        exp: "Updatable views allow INSERT, UPDATE, and DELETE under proper constraint rules."
+      },
+      {
+        q: "Q.174. When there are no matching values between two tables of a database, which of the following join returns zero records.?",
+        options: ["Self join", "Full join", "Inner join", "Right join", "More than one of the above"],
+        correctIndex: 2,
+        exp: "Inner Join returns strictly matching records; if no match exists, 0 rows are returned."
+      },
+      {
+        q: "Q.175. Which of the following keyword can be used along with INNER JOIN in SQL.?",
+        options: ["Of", "On", "By", "Combine", "All of these"],
+        correctIndex: 1,
+        exp: "The `ON` clause specifies the join condition matching columns."
+      },
+      {
+        q: "Q.176. If and only if a given condition is met, a _________ operation will combine related tuples from separate relations.?",
+        options: ["Join", "Return", "Date", "Constraint", "All of these"],
+        correctIndex: 0,
+        exp: "Join combines tuples meeting specific relational predicates."
+      },
+      {
+        q: "Q.177. What is Join Operation denoted by in Relational Algebra.?",
+        options: ["U", "O", "&", "Bowtie symbol (⋈)", "None of these"],
+        correctIndex: 3,
+        exp: "The Bowtie symbol (⋈) denotes join operations in relational algebra."
+      },
+      {
+        q: "Q.178. How many types of outer joins are there.?",
+        options: ["2", "3", "4", "5", "None of these"],
+        correctIndex: 1,
+        exp: "3 Outer Join types: Left Outer, Right Outer, and Full Outer Join."
+      },
+      {
+        q: "Q.179. Which among the following is NOT an Outer Join Operation.?",
+        options: ["Left Outer Join", "Right Outer Join", "Natural Join", "Full Outer Join", "None of these"],
+        correctIndex: 2,
+        exp: "Natural Join is an inner join variation based on matching column names."
+      },
+      {
+        q: "Q.180. Which of the following operations is an extension of the Join Operation.?",
+        options: ["Natural", "Outer", "Inner", "Equi", "All of these"],
+        correctIndex: 1,
+        exp: "Outer join extends standard join by preserving unmatched rows."
+      },
+      {
+        q: "Q.181. What does Equi Join also known as.?",
+        options: ["Inner Join", "Outer Join", "Natural Join", "All of these", "None of these"],
+        correctIndex: 0,
+        exp: "An Equi Join uses equality conditions and is a form of Inner Join."
+      },
+      {
+        q: "Q.182. According to the _________ condition, Inner Join is derived from matched data.?",
+        options: ["Greater than", "Lesser than", "Equality", "Null", "None of these"],
+        correctIndex: 2,
+        exp: "Inner joins match tuples based on Equality conditions."
+      },
+      {
+        q: "Q.183. Which Join returns the Cartesian product of tables' rows.?",
+        options: ["Inner Join", "Outer Join", "Self Join", "Cross Join", "More than one of the above"],
+        correctIndex: 3,
+        exp: "Cross Join returns the Cartesian product (m x n rows) of two tables."
+      },
+      {
+        q: "Q.184. The result table consists of only the common rows in?",
+        options: ["Inner Join", "Outer Join", "Self Join", "Cross Join", "More than one of the above"],
+        correctIndex: 0,
+        exp: "Inner Join returns only matching/common rows from both relations."
+      },
+      {
+        q: "Q.185. This join is used to join tables on the basis of a common column.?",
+        options: ["Inner Join", "Outer Join", "Self Join", "Cross Join", "Natural Join"],
+        correctIndex: 4,
+        exp: "Natural Join implicitly matches tables on all columns sharing identical names."
+      },
+      {
+        q: "Q.186. The result table contains all the rows from the first (left) table.?",
+        options: ["Inner Join", "Left Outer Join", "Right Outer Join", "Self Join", "Cross Join"],
+        correctIndex: 1,
+        exp: "Left Outer Join keeps all records from left table regardless of matches."
+      },
+      {
+        q: "Q.187. The result table contains all the rows from the second (right) table.?",
+        options: ["Inner Join", "Left Outer Join", "Right Outer Join", "Self Join", "Cross Join"],
+        correctIndex: 2,
+        exp: "Right Outer Join keeps all records from right table."
+      },
+      {
+        q: "Q.188. The result table contains all the rows from both the tables.?",
+        options: ["Inner Join", "Left Outer Join", "Right Outer Join", "Full Outer Join", "Cross Join"],
+        correctIndex: 3,
+        exp: "Full Outer Join combines results of both Left and Right outer joins."
+      },
+      {
+        q: "Q.189. _________ Join is used to join a table to itself.?",
+        options: ["Inner Join", "Left Outer Join", "Right Outer Join", "Full Outer Join", "Self Join"],
+        correctIndex: 4,
+        exp: "Self Join joins a table with itself using aliases."
+      },
+      {
+        q: "Q.190. A _________ is a special kind of a stored procedure that executes in response to certain action on the table like insertion, deletion or updation of data.?",
+        options: ["Procedures", "Triggers", "Functions", "All of these", "None of the mentioned"],
+        correctIndex: 1,
+        exp: "Triggers automatically execute in response to DML events on tables."
+      },
+      {
+        q: "Q.191. Triggers are not supported for.?",
+        options: ["Delete", "Update", "Views", "Insert", "All of these"],
+        correctIndex: 2,
+        exp: "Standard DML triggers are defined on tables, not directly on standard views."
+      },
+      {
+        q: "Q.192. The variables in SQL triggers/procedures are declared using.?",
+        options: ["#", "@", "/", "/@", "None of these"],
+        correctIndex: 1,
+        exp: "Local/user variables in T-SQL begin with `@` symbol."
+      },
+      {
+        q: "Q.193. What are the different types of DML events in triggers.?",
+        options: ["Define, Create", "Drop, Comment", "Insert, Update, Delete", "All of the mentioned", "None of these"],
+        correctIndex: 2,
+        exp: "Triggers activate on INSERT, UPDATE, or DELETE operations."
+      },
+      {
+        q: "Q.194. Triggers _________ enabled or disabled.?",
+        options: ["Can be", "Cannot be", "Ought to be", "Always", "None of these"],
+        correctIndex: 0,
+        exp: "Triggers can be enabled or disabled via `ALTER TABLE DISABLE/ENABLE TRIGGER`."
+      },
+      {
+        q: "Q.195. Which of the following constraint ignores null value.?",
+        options: ["Unique", "Foreign", "Primary", "All of these", "None of these"],
+        correctIndex: 2,
+        exp: "Primary key strictly disallows NULL values entirely."
+      },
+      {
+        q: "Q.196. Which of the following constraint does not enforce uniqueness.?",
+        options: ["UNIQUE", "Primary key", "Foreign key", "All of these", "None of these"],
+        correctIndex: 2,
+        exp: "Foreign keys enforce referential integrity, not uniqueness."
+      },
+      {
+        q: "Q.197. Constraints can be applied on _________ .?",
+        options: ["Column", "Table", "Field", "All of these", "None of these"],
+        correctIndex: 3,
+        exp: "Constraints can be defined at column-level or table-level."
+      },
+      {
+        q: "Q.198. When we define database schema (Structure) database state is.?",
+        options: ["0", "1", "Null", "Equal to degree", "None of these"],
+        correctIndex: 0,
+        exp: "Initial database state upon creation is empty (0 records)."
+      },
+      {
+        q: "Q.199. _________ is the default join type for JOIN.?",
+        options: ["Inner Join", "Right Outer Join", "Left Outer Join", "Full Outer Join", "Self Join"],
+        correctIndex: 0,
+        exp: "Writing `JOIN` defaults to `INNER JOIN` in SQL."
+      },
+      {
+        q: "Q.200. A _________ join is a join that links tables based on a relationship other than equality between two columns.?",
+        options: ["Equi Join", "Natural Join", "Theta Join", "Outer Join", "Self Join"],
+        correctIndex: 2,
+        exp: "Theta Join uses arbitrary comparison operators (<, <=, >, >=, <>)."
+      },
+      {
+        q: "Q.201. _________ does not utilize any comparison operators. In this join, attributes have same name and domain.?",
+        options: ["Equi Join", "Natural Join", "Theta Join", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Natural join matches implicitly on same column names without explicit comparison operators."
+      },
+      {
+        q: "Q.202. In this type of join, the table retains each record even if no other matching record exists.?",
+        options: ["Inner Join", "Outer Join", "Normal Join", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Outer joins retain unmatched rows, filling missing values with NULL."
+      },
+      {
+        q: "Q.203. In a _________ all tuples from both relations are Included in the result, Irrespective of matching condition.?",
+        options: ["Inner Join", "Outer Join", "Normal Join", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "Full Outer Join includes all records from both relations."
+      },
+      {
+        q: "Q.204. _________ Join is one of the most frequently used joins.?",
+        options: ["Inner Join", "Outer Join", "Self Join", "All of these", "None of these"],
+        correctIndex: 0,
+        exp: "Inner Join is the most common relational database query join."
+      },
+      {
+        q: "Q.205. What is another name for Inner Join.?",
+        options: ["Simple Join", "Natural Join", "Self Join", "Both 1 & 2", "Both 2 & 3"],
+        correctIndex: 3,
+        exp: "Inner joins are also called Simple joins or Natural joins (when auto-matching attributes)."
+      },
+      {
+        q: "Q.206. What is another name for Cross Join.?",
+        options: ["Left Join", "Right Join", "Full Join", "Cartesian Products", "None of these"],
+        correctIndex: 3,
+        exp: "Cross Join produces the Cartesian Product of relations."
+      },
+      {
+        q: "Q.207. What is the purpose of the NULL value in SQL.?",
+        options: ["It represents an empty string.", "It represents a missing or unknown value.", "It represents the absence of a primary key.", "It represents a zero value.", "More than one of the above"],
+        correctIndex: 1,
+        exp: "NULL indicates missing, unknown, or inapplicable data."
+      },
+      {
+        q: "Q.208. What is the purpose of the INNER JOIN in SQL.?",
+        options: ["It retrieves the maximum value in a column.", "It combines rows from two or more tables based on a related column.", "It filters the rows returned by the SELECT statement.", "It performs a pattern match on a string.", "More than one of the above"],
+        correctIndex: 1,
+        exp: "INNER JOIN matches rows across tables based on key column relationships."
+      },
+      {
+        q: "Q.209. Which of the following can be used to create a relationship between two tables.?",
+        options: ["FOREIGN KEY", "DISTINCT KEY", "PRIMARY KEY", "UNIQUE KEY", "All of these"],
+        correctIndex: 0,
+        exp: "FOREIGN KEY constraints build relationships between tables."
+      },
+      {
+        q: "Q.210. How do you delete the employee with ID 5 from the Employees table.?",
+        options: ["DELETE FROM Employees WHERE ID = 5;", "DELETE* FROM Employees WHERE ID = 5;", "REMOVE FROM Employees WHERE ID = 5;", "DROP FROM Employees WHERE ID = 5;", "None of these"],
+        correctIndex: 0,
+        exp: "`DELETE FROM Employees WHERE ID = 5;` is correct syntax."
+      },
+      {
+        q: "Q.211. What SQL query is used to retrieve the average age of employees.?",
+        options: ["SELECT AVG(Age) FROM Employees;", "SELECT AVERAGE(Age) FROM Employees;", "SELECT SUM(Age)/COUNT(*) FROM Employees;", "SELECT AGE(AVG) FROM Employees;", "None of these"],
+        correctIndex: 0,
+        exp: "`SELECT AVG(Age) FROM Employees;` uses the aggregate function `AVG()`."
+      },
+      {
+        q: "Q.212. _________ is a mechanism associated with a table for restricting unauthorized access to the data.?",
+        options: ["Triggers", "Pointers", "Stored Procedures", "Joins", "Lock"],
+        correctIndex: 4,
+        exp: "Locks control concurrent access and data integrity."
+      },
+      {
+        q: "Q.213. _________ is mainly used to solve the concurrency problem in transactions.?",
+        options: ["Locks", "Pointers", "Stored Procedures", "Joins", "Normalization"],
+        correctIndex: 0,
+        exp: "Locks prevent concurrency conflicts (dirty reads, lost updates)."
+      },
+      {
+        q: "Q.214. We can apply a lock on.?",
+        options: ["row level", "database level", "table level", "page level", "All of these"],
+        correctIndex: 4,
+        exp: "Granular locking supports Row, Page, Table, and Database levels."
+      },
+      {
+        q: "Q.215. _________ in DBMS help synchronize access to the database items by concurrent transactions.?",
+        options: ["ACID", "Locks", "Triggers", "Pointers", "All of these"],
+        correctIndex: 1,
+        exp: "Locking mechanisms synchronize concurrent database transactions."
+      },
+      {
+        q: "Q.216. _________ databases use a flexible schema model that supports a wide variety of unstructured data.?",
+        options: ["SQL", "No SQL", "PL/SQL", "All of these", "None of these"],
+        correctIndex: 1,
+        exp: "NoSQL databases use dynamic schemas for unstructured data."
+      },
+      {
+        q: "Q.217. _________ databases are vertically scalable, while _________ databases are horizontally scalable.?",
+        options: ["SQL, No SQL", "No SQL, SQL", "File, Record", "More than one of the above", "None of these"],
+        correctIndex: 0,
+        exp: "Relational SQL databases scale vertically, whereas NoSQL scales horizontally."
+      },
+      {
+        q: "Q.218. _________ is Oracle's procedural language extension to SQL.?",
+        options: ["No SQL", "Trigger", "Foxpro", "PL/SQL", "All of these"],
+        correctIndex: 3,
+        exp: "PL/SQL (Procedural Language/SQL) is Oracle's procedural SQL extension."
+      }
+    ];
+
+    // Fisher-Yates Shuffle Algorithm
+    function shuffleArray(array) {
+      let shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    const quizListContainer = document.getElementById('quiz-list');
+
+    // Render Quiz Items
+    quizData.forEach((item, qIndex) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const title = document.createElement('div');
+      title.className = 'question-title';
+      title.innerText = item.q;
+      card.appendChild(title);
+
+      const optionsContainer = document.createElement('div');
+      optionsContainer.className = 'options-container';
+
+      // Create option objects with index tracking
+      let optionObjects = item.options.map((optText, originalIdx) => {
+        return {
+          text: optText,
+          isCorrect: originalIdx === item.correctIndex
+        };
+      });
+
+      // Shuffle options on page reload
+      optionObjects = shuffleArray(optionObjects);
+
+      const expBox = document.createElement('div');
+      expBox.className = 'explanation';
+      expBox.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+
+      optionObjects.forEach((optObj) => {
+        const btn = document.createElement('a');
+        btn.href = "javascript:void(0);";
+        btn.className = 'option-btn';
+        btn.innerText = optObj.text;
+
+        btn.addEventListener('click', function() {
+          const allButtons = optionsContainer.querySelectorAll('.option-btn');
+          
+          // Disable all buttons in this question card
+          allButtons.forEach(b => b.classList.add('disabled'));
+
+          if (optObj.isCorrect) {
+            btn.classList.add('correct');
+          } else {
+            btn.classList.add('wrong');
+            // Highlight the right option in green
+            allButtons.forEach((b, idx) => {
+              if (optionObjects[idx].isCorrect) {
+                b.classList.add('correct');
+              }
+            });
+          }
+
+          // Show explanation
+          expBox.style.display = 'block';
+        });
+
+        optionsContainer.appendChild(btn);
+      });
+
+      card.appendChild(optionsContainer);
+      card.appendChild(expBox);
+      quizListContainer.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
