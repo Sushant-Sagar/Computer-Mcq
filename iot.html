@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT MCQs Interactive Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not([disabled]) {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            font-weight: bold;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #e7f5ff;
+            border-left: 4px solid #1c7ed6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #1864ab;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>IoT Multiple Choice Questions</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. What is the full form of IoT?",
+        options: ["Internet of Technology", "Incorporate of Things", "Internet of Things", "Incorporate of Technology", "None of these"],
+        correct: "Internet of Things",
+        exp: "IoT stands for 'Internet of Things', which refers to the network of interconnected physical devices capable of collecting and sharing data."
+    },
+    {
+        q: "Q.2. Who coined the term 'Internet of Things'?",
+        options: ["Kevin Ashton", "John Wright", "Edward Jameson", "George Garton", "All of these"],
+        correct: "Kevin Ashton",
+        exp: "Kevin Ashton first coined the term 'Internet of Things' in 1999 during a presentation at Procter & Gamble."
+    },
+    {
+        q: "Q.3. When was the actual term 'Internet of Things' coined?",
+        options: ["1998", "1999", "2000", "2002", "1985"],
+        correct: "1999",
+        exp: "The term was coined in 1999 by Kevin Ashton."
+    },
+    {
+        q: "Q.4. Which wireless communication technology is commonly used in IoT devices for short range Communication?",
+        options: ["Bluetooth", "Wi-Fi", "4G LTE", "More than one of the above", "None of these"],
+        correct: "More than one of the above",
+        exp: "Both Bluetooth and Wi-Fi are widely used for short-range communication in IoT ecosystems."
+    },
+    {
+        q: "Q.5. Which of the following is an example of an IoT protocol used for device communication?",
+        options: ["HTTP", "FTP", "MQTT", "CoAP", "More than one of the above"],
+        correct: "More than one of the above",
+        exp: "HTTP, MQTT, and CoAP are all valid communication protocols used in various IoT setups."
+    },
+    {
+        q: "Q.6. Which among the followings are the limiting factors of IoT?",
+        options: ["Low Power", "Low Processing Power", "Low Memory", "All of these", "None of these"],
+        correct: "All of these",
+        exp: "IoT hardware devices are typically constrained by low power, limited processing capability, and low memory capacity."
+    },
+    {
+        q: "Q.7. Full Form of MQTT is?",
+        options: ["Multi Queue Telemetry Things", "Multiple Queue Telemetry Things", "Message Queue Telemetry Things", "Message Queuing Telemetry Transport", "None of these"],
+        correct: "Message Queuing Telemetry Transport",
+        exp: "MQTT stands for Message Queuing Telemetry Transport, a lightweight messaging protocol."
+    },
+    {
+        q: "Q.8. In RFID, R stands for?",
+        options: ["Remote", "Real", "Radio", "Reserved", "All of these"],
+        correct: "Radio",
+        exp: "RFID stands for Radio Frequency Identification."
+    },
+    {
+        q: "Q.9. Zigbee is a task group in?",
+        options: ["LAN", "PAN", "MAN", "WAN", "CAN"],
+        correct: "PAN",
+        exp: "Zigbee is based on the IEEE 802.15.4 standard and operates within a Wireless Personal Area Network (WPAN)."
+    },
+    {
+        q: "Q.10. ______ is a light weight IoT Protocol.",
+        options: ["IP", "CoAP", "HTTP", "MQTT", "All of these"],
+        correct: "MQTT",
+        exp: "MQTT is specifically engineered as a lightweight publish/subscribe messaging protocol for constrained networks."
+    },
+    {
+        q: "Q.11. Which one cannot be suitable communication technology for IoT?",
+        options: ["Zigbee", "NFC", "Bluetooth", "Wired Network", "More than one of the above"],
+        correct: "Wired Network",
+        exp: "Wired networks restrict device mobility and scalability, making them less suitable compared to wireless technologies in IoT setups."
+    },
+    {
+        q: "Q.12. The process of building IoT hardware and devices enhanced with smart sensors and embedded system using off the shelf components is called?",
+        options: ["Prototyping", "Casting", "Protocasting", "Protocol Typing", "More than one of the above"],
+        correct: "Prototyping",
+        exp: "Prototyping is the experimental creation of hardware/software systems to test design concepts."
+    },
+    {
+        q: "Q.13. Which one from the following is not compulsory technology for establishment of IoT Setup?",
+        options: ["RFID", "Nanotechnology", "Cloud Computing", "All of these", "None of these"],
+        correct: "None of these",
+        exp: "None of these technologies are absolute mandatory prerequisites; IoT setups can exist using various alternative hardware and protocols."
+    },
+    {
+        q: "Q.14. Which of the following is not similar to IoT?",
+        options: ["Ubiquitous Sensor networks", "Web of Things", "Cloud of Things", "Virtual things", "All of these"],
+        correct: "Virtual things",
+        exp: "IoT focuses primarily on physical objects embedded with sensors connected to networks, whereas 'Virtual things' purely exist in software."
+    },
+    {
+        q: "Q.15. Among these Which Statement is invalid for Zigbee?",
+        options: ["ZigBee is most Suitable communication standard for IoT", "ZigBee follows IEEE 802.15.4", "ZigBee batteries are rechargeable", "ZigBee frequency range is mostly 2.4 GHz", "All are valid statements"],
+        correct: "ZigBee batteries are rechargeable",
+        exp: "Zigbee refers to a networking standard, not a physical battery type; battery types depend on the specific end device."
+    },
+    {
+        q: "Q.16. Which statement is true in concern with Request-Response IoT communication model?",
+        options: ["Each request-response pair is dependent of others", "Request-response is a stateless communication model", "Client server architecture of Request-response uses queues", "In request-response publisher is a client and broker are server", "More than one of the above"],
+        correct: "Client server architecture of Request-response uses queues",
+        exp: "In a standard request-response architecture, requests and responses are frequently processed through queues on server endpoints."
+    },
+    {
+        q: "Q.17. Among these which one is not component of an IoT?",
+        options: ["Thing or Device", "Gateway", "Cloud & Analytics", "User Interface", "People"],
+        correct: "People",
+        exp: "While people interact with systems, the core technical components of IoT architecture are Devices, Gateways, Cloud, and UI."
+    },
+    {
+        q: "Q.18. Which of the following is not an application of IoT?",
+        options: ["Wearables", "Smart Grid", "Arduino", "Smart City", "All of these"],
+        correct: "Arduino",
+        exp: "Arduino is a hardware prototyping platform, not an end application of IoT."
+    },
+    {
+        q: "Q.19. We can deploy IoT feature in Refrigerator to make it smart device, but?",
+        options: ["Firstly extend connectivity feature", "Make it Smaller in size", "First trained the people to operate", "No prerequisites required", "All of these"],
+        correct: "Firstly extend connectivity feature",
+        exp: "A refrigerator must be granted network connectivity capabilities before it can function as a smart IoT appliance."
+    },
+    {
+        q: "Q.20. A huge amount of data is generated in IoT system that must be?",
+        options: ["Analysed", "Visualized", "Stored", "All of these", "None of these"],
+        correct: "All of these",
+        exp: "IoT telemetry data must undergo storage, processing/analysis, and visualization to provide practical utility."
+    },
+    {
+        q: "Q.21. What is IoT?",
+        options: ["network of physical objects embedded with sensors", "network of virtual objects", "network of objects in the ring structure", "network of sensors", "More than one of the above"],
+        correct: "network of physical objects embedded with sensors",
+        exp: "IoT refers to the interconnected network of physical devices integrated with electronics, sensors, and software."
+    },
+    {
+        q: "Q.22. Which of the following is not an IoT device?",
+        options: ["Table", "Laptop", "Arduino", "Tablet", "Smartphone"],
+        correct: "Table",
+        exp: "A traditional non-electronic table has no computational or sensor capabilities."
+    },
+    {
+        q: "Q.23. Which of the following is false about IoT devices?",
+        options: ["IoT devices use the internet for collecting and sharing data", "IoT devices need microcontrollers", "IoT devices use wireless technology", "IoT devices are completely safe", "All of these"],
+        correct: "IoT devices are completely safe",
+        exp: "IoT devices are inherently prone to cybersecurity risks and vulnerabilities."
+    },
+    {
+        q: "Q.24. Which of the following is not an IoT platform?",
+        options: ["Amazon Web Services", "Microsoft Azure", "Salesforce", "Flipkart", "More than one of the above"],
+        correct: "Flipkart",
+        exp: "Flipkart is an e-commerce platform, not a cloud IoT platform."
+    },
+    {
+        q: "Q.25. Which of the following is not a fundamental component of an IoT system?",
+        options: ["Sensors", "Connectivity and data processing", "User interface", "Transformer", "Gateways"],
+        correct: "Transformer",
+        exp: "Transformers are electrical power distribution hardware, not a core architectural component of IoT data paths."
+    },
+    {
+        q: "Q.26. What is the full form of IIoT?",
+        options: ["Index Internet of Things", "Incorporate Internet of Things", "Industrial Internet of Things", "Intense Internet of Things", "None of these"],
+        correct: "Industrial Internet of Things",
+        exp: "IIoT stands for Industrial Internet of Things."
+    },
+    {
+        q: "Q.27. Which layer is used for Ethernet & Wireless connection in IoT devices?",
+        options: ["Application layer", "Network layer", "Data link layer", "Transport layer", "All of these"],
+        correct: "Data link layer",
+        exp: "Ethernet and Wi-Fi framing protocols operate primarily at the Data Link (and Physical) layer."
+    },
+    {
+        q: "Q.28. Which of the following is used to capture data from the physical world in IoT devices?",
+        options: ["Sensors", "Actuators", "Microprocessors", "Microcontrollers", "All of these"],
+        correct: "Sensors",
+        exp: "Sensors detect physical attributes (temperature, light, motion) and convert them to readable signals."
+    },
+    {
+        q: "Q.29. Which of the following command is used to trigger the Amazon Echo IoT device?",
+        options: ["Hello", "Siri", "Alexa", "Hey", "More than one of the above"],
+        correct: "Alexa",
+        exp: "'Alexa' is the default wake word for Amazon Echo smart devices."
+    },
+    {
+        q: "Q.30. Which of the following is true about Arduino IoT devices?",
+        options: ["They are open-source software", "They can only read analog inputs", "They have their own operating systems", "They don't have pre-programmed firmware", "All of these"],
+        correct: "They are open-source software",
+        exp: "Arduino provides open-source hardware designs and open-source software (IDE)."
+    },
+    {
+        q: "Q.31. Which of the following is not an application of IoT?",
+        options: ["BMP280", "Smart home", "Smart city", "Self-driven cars", "More than one of the above"],
+        correct: "BMP280",
+        exp: "BMP280 is a specific pressure/temperature sensor module, not an IoT application domain."
+    },
+    {
+        q: "Q.32. Which of the following is false about the IoT components?",
+        options: ["A light sensor (photoresistor) is an analog sensor", "A microphone is a digital sensor", "A push button is a digital sensor", "A keyboard is a digital sensor", "More than one of the above"],
+        correct: "A microphone is a digital sensor",
+        exp: "Microphones capture continuous analog sound waves; they require an ADC (Analog to Digital Converter) to output digital data."
+    },
+    {
+        q: "Q.33. Which of the following is false about the MANET IoT network?",
+        options: ["It is a self-configuring network", "It has a low data rate", "It doesn't have any encryption", "Power is readily available for complex Security", "All of these"],
+        correct: "Power is readily available for complex Security",
+        exp: "MANET nodes are typically battery-powered constrained devices where power is limited."
+    },
+    {
+        q: "Q.34. Which of the following is not a sensor in IoT?",
+        options: ["BMP280", "DHT11", "Photoresistor", "LED", "More than one of the above"],
+        correct: "LED",
+        exp: "An LED is an output light actuator/indicator, not an input sensor."
+    },
+    {
+        q: "Q.35. Which of the following is not an actuator in IoT?",
+        options: ["Stepper motor", "A fan", "An LED", "Arduino", "More than one of the above"],
+        correct: "Arduino",
+        exp: "Arduino is a microcontroller board that controls actuators, not an actuator itself."
+    },
+    {
+        q: "Q.36. IoT-A stands for?",
+        options: ["Internet of Things Area", "Industrial of things Architecture", "Internet of Things Address", "Internet of Things Architecture", "None of these"],
+        correct: "Internet of Things Architecture",
+        exp: "IoT-A stands for Internet of Things Architecture."
+    },
+    {
+        q: "Q.37. What IoT collects?",
+        options: ["Device data", "Machine generated data", "Sensor data", "Human generated data", "All of these"],
+        correct: "Machine generated data",
+        exp: "IoT primarily focuses on automated machine-to-machine data generation."
+    },
+    {
+        q: "Q.38. Which of the following protocol is used to link all the devices in the IoT?",
+        options: ["HTTP", "UDP", "Network", "TCP/IP", "FTP"],
+        correct: "TCP/IP",
+        exp: "TCP/IP protocol suite forms the baseline internet communication framework used by IoT."
+    },
+    {
+        q: "Q.39. What is the component of an IoT system that executes a program?",
+        options: ["A sensor", "A microcontroller", "An actuator", "A digital to analog converter", "All of these"],
+        correct: "A microcontroller",
+        exp: "The microcontroller processes software instructions and executes code."
+    },
+    {
+        q: "Q.40. Which programming language is used by Arduino IDE IoT software for writing codes?",
+        options: ["Python", "Java", "C/C++", "JavaScript", "All of these"],
+        correct: "C/C++",
+        exp: "Arduino C/C++ variants are used in the Arduino IDE."
+    },
+    {
+        q: "Q.41. What is the full form of IDE in Arduino IDE IoT software?",
+        options: ["Intra Defence Environment", "Intra Development Environment", "Integrated Development Environment", "Integrated Deployed Environment", "All of these"],
+        correct: "Integrated Development Environment",
+        exp: "IDE stands for Integrated Development Environment."
+    },
+    {
+        q: "Q.42. Which of the following is the way in which an IoT device is associated with data?",
+        options: ["Internet", "Cloud", "Automata", "Network", "All of these"],
+        correct: "Cloud",
+        exp: "IoT devices stream telemetry data into cloud services for centralized storage and processing."
+    },
+    {
+        q: "Q.43. An IoT network is a collection of devices?",
+        options: ["Signal", "Machine to Machine", "Interconnected", "Network to Network", "All of these"],
+        correct: "Interconnected",
+        exp: "An IoT network comprises interconnected nodes that communicate data automatically."
+    },
+    {
+        q: "Q.44. Which one of the following is not an IoT device?",
+        options: ["Amazon Echo voice controller", "Google Home", "Nest Smoke Alarm", "All of these", "None of these"],
+        correct: "None of these",
+        exp: "All listed options (Echo, Google Home, Nest) are commercial IoT devices."
+    },
+    {
+        q: "Q.45. What is the main purpose of WoT (Web of Things) in the IoT?",
+        options: ["Improve the usability and interoperability", "Reduce the security", "Complex the development", "Increase the cost", "All of these"],
+        correct: "Improve the usability and interoperability",
+        exp: "Web of Things standardizes IoT endpoints using web standards (HTTP/REST) to improve interoperability."
+    },
+    {
+        q: "Q.46. What is the Arduino UNO?",
+        options: ["Software", "Hardware device", "Network", "Protocol", "All of these"],
+        correct: "Hardware device",
+        exp: "Arduino UNO is a physical microcontroller board based on the ATmega328P."
+    },
+    {
+        q: "Q.47. What is the role of Big Data in IoT's Smart Grid architecture?",
+        options: ["Filter the data", "Locked the data", "Store data", "All of these", "None of these"],
+        correct: "Store data",
+        exp: "Big Data infrastructure provides efficient long-term storage and processing of high-volume smart grid data."
+    },
+    {
+        q: "Q.48. What is the standard port number of secure MQTT?",
+        options: ["1883", "8000", "8883", "8888", "None of these"],
+        correct: "8883",
+        exp: "Port 1883 is unencrypted MQTT; Port 8883 is reserved for MQTT over TLS/SSL."
+    },
+    {
+        q: "Q.49. Which of the following layers provides end-to-end communication in IoT?",
+        options: ["Logical layer", "Data link layer", "Transport layer", "Session layer", "All of these"],
+        correct: "Transport layer",
+        exp: "The Transport Layer (TCP/UDP) handles end-to-end communication and reliability across networks."
+    },
+    {
+        q: "Q.50. Which of the following topology is used for ZigBee Smart Energy?",
+        options: ["Bus Topology", "Ring Topology", "Star Topology", "Any Topology", "All of these"],
+        correct: "Star Topology",
+        exp: "Zigbee Smart Energy profiles frequently utilize a star/cluster tree network topology anchored around an energy coordinator."
+    },
+    {
+        q: "Q.51. What is MQTT primarily used for?",
+        options: ["User communication", "System transfer", "Machine to Machine Communication", "Create connection", "All of these"],
+        correct: "Machine to Machine Communication",
+        exp: "MQTT is an M2M (Machine-to-Machine) telemetry transfer protocol."
+    },
+    {
+        q: "Q.52. ______ is a low-bandwidth machine-to-machine protocol for IoT device communication.",
+        options: ["MQTT", "HTTP", "Telnet", "TCP/IP", "CoAP"],
+        correct: "MQTT",
+        exp: "MQTT minimizes header overhead, making it ideal for low-bandwidth constrained M2M networks."
+    },
+    {
+        q: "Q.53. How many numbers of the element in the open IoT architecture?",
+        options: ["Four elements", "Five elements", "Six elements", "Seven elements", "None of these"],
+        correct: "Seven elements",
+        exp: "The OpenIoT architectural standard defines 7 distinct functional components."
+    },
+    {
+        q: "Q.54. What was the first Internet of Things device?",
+        options: ["Smart Watch", "Toaster", "Smart TVs", "Smart Security System", "None of these"],
+        correct: "Toaster",
+        exp: "John Romkey created the first internet-connected toaster in 1990."
+    },
+    {
+        q: "Q.55. How many messages will HTTP send per hour? (in benchmark comparison tests)",
+        options: ["1,708", "160,278", "3,628", "263,314", "None of these"],
+        correct: "1,708",
+        exp: "In standardized benchmark comparisons with lightweight protocols like MQTT, HTTP achieves significantly lower message frequency (~1,708/hr)."
+    },
+    {
+        q: "Q.56. Gateway provides the connection between ______ and ______?",
+        options: ["Controller and device", "Network and Controller", "Network and Cloud", "Cloud and Controller", "All of these"],
+        correct: "Cloud and Controller",
+        exp: "IoT Gateways link local sensor controller nodes with remote cloud services."
+    },
+    {
+        q: "Q.57. Which is used to capture data from the physical world in IoT devices?",
+        options: ["Sensors", "Actuators", "Microprocessors", "Microcontrollers", "None of these"],
+        correct: "Sensors",
+        exp: "Sensors read physical signals (heat, pressure, light) from the environment."
+    },
+    {
+        q: "Q.58. What does ICT stands for?",
+        options: ["Inter Connect Technology", "Internet Connection Topology", "Information and Communication Technology", "Infer Communication Topology", "None of these"],
+        correct: "Information and Communication Technology",
+        exp: "ICT stands for Information and Communication Technology."
+    },
+    {
+        q: "Q.59. An equation of internet of things?",
+        options: ["Physical Object + Controller Sensor and Actuator + Internet", "Controller Sensor and Actuator + Internet", "Physical Object + Internet", "Physical Object + Controller + Internet", "All of these"],
+        correct: "Physical Object + Controller Sensor and Actuator + Internet",
+        exp: "IoT equals physical hardware objects equipped with sensors/actuators and connected via the Internet."
+    },
+    {
+        q: "Q.60. A device that converts a physical attribute into an electrical signal in IoT is called?",
+        options: ["Actuator", "Compiler", "Sensor", "Motors", "All of these"],
+        correct: "Sensor",
+        exp: "Sensors convert real-world physical conditions into electrical signals."
+    },
+    {
+        q: "Q.61. ______ is designed for low-power, low-data-rate applications involving wireless sensor networks & home automation.",
+        options: ["Bluetooth", "Zigbee", "MQTT", "HTTP", "None of these"],
+        correct: "Zigbee",
+        exp: "Zigbee is tailored specifically for low-power, short-range, low-data-rate wireless sensor networks."
+    },
+    {
+        q: "Q.62. ______ protocol operates in real time and with minimal delays in IoT.",
+        options: ["HTTP", "TCP/IP", "MQTT", "FTP", "All of these"],
+        correct: "MQTT",
+        exp: "MQTT's lightweight publish/subscribe design yields low latency suitable for real-time messaging."
+    },
+    {
+        q: "Q.63. IoT gateway must provide?",
+        options: ["Simple and fast installation", "Security with hardware", "Data storage", "Protocol abstraction", "More than one of the above"],
+        correct: "Protocol abstraction",
+        exp: "A core role of an IoT Gateway is protocol translation/abstraction between local sensor networks and external cloud IP networks."
+    },
+    {
+        q: "Q.64. Among these which is not an Example of Low-power, wide-area networks (LPWAN)?",
+        options: ["4G LTE", "Sigfox", "Cat-0/1", "Zigbee", "LoRaWAN"],
+        correct: "Zigbee",
+        exp: "Zigbee is a short-range WPAN network, whereas Sigfox, LoRa, and cellular IoT are LPWAN."
+    },
+    {
+        q: "Q.65. Among these which is not an Example of Low-power, short-range networks?",
+        options: ["Bluetooth", "NFC", "Wi-Fi", "Z-wave", "NB-IoT"],
+        correct: "NB-IoT",
+        exp: "NB-IoT (Narrowband IoT) is a wide-area LPWAN cellular technology."
+    },
+    {
+        q: "Q.66. ______ technology in IoT allows users to make secure transactions, exchange digital content, and connect electronic devices with a touch.",
+        options: ["Bluetooth", "NFC", "Wi-Fi", "Z-wave", "Zigbee"],
+        correct: "NFC",
+        exp: "NFC (Near Field Communication) works over extremely short distances upon touching or bringing devices close."
+    },
+    {
+        q: "Q.67. What is the primary goal of IoT?",
+        options: ["To enhance global internet speed", "To network physical devices", "To Increase smartphone usage", "To Improve social media platforms", "More than one of the above"],
+        correct: "To network physical devices",
+        exp: "The core goal of IoT is to connect physical objects to networks to automate telemetry and control."
+    },
+    {
+        q: "Q.68. Which of the following is a common application of IoT technology?",
+        options: ["Automated email systems", "Voice-activated shopping", "Smart homes", "Text messaging", "None of these"],
+        correct: "Smart homes",
+        exp: "Smart homes represent one of the most prominent real-world applications of IoT technology."
+    },
+    {
+        q: "Q.69. IoT devices typically communicate through which of the following methods?",
+        options: ["Human Intervention", "Direct cable connections", "Internet protocols", "Sound waves", "All of these"],
+        correct: "Internet protocols",
+        exp: "IoT devices communicate over standard internet protocol suites (IP)."
+    },
+    {
+        q: "Q.70. What role do sensors play in IoT devices?",
+        options: ["Providing a user interface", "Storing data", "Converting physical parameters into digital data", "Encrypting data", "All of these"],
+        correct: "Converting physical parameters into digital data",
+        exp: "Sensors sense physical phenomena and convert them into digital representation."
+    },
+    {
+        q: "Q.71. Which protocol is commonly used for secure IoT device communication?",
+        options: ["HTTP", "MQTT", "FTP", "HTTPS", "All of these"],
+        correct: "HTTPS",
+        exp: "HTTPS adds SSL/TLS encryption layer over HTTP to secure web data communications."
+    },
+    {
+        q: "Q.72. Full form of LPWAN?",
+        options: ["Low Power Wide Area Network", "Lower Power Wide Area of Network", "Low Protocol Wide Area of Network", "Long Protocol Wider Area Network", "None of these"],
+        correct: "Low Power Wide Area Network",
+        exp: "LPWAN stands for Low Power Wide Area Network."
+    },
+    {
+        q: "Q.73. Which of the following is not an LPWAN technology?",
+        options: ["LoRa", "Sigfox", "NB-IoT", "Bluetooth", "All of these"],
+        correct: "Bluetooth",
+        exp: "Bluetooth is a short-range Personal Area Network technology, not an LPWAN."
+    },
+    {
+        q: "Q.74. IoT devices are naturally vulnerable to ______ threats.",
+        options: ["Sensors", "Connectivity", "Cloud", "Security", "Heterogeneity"],
+        correct: "Security",
+        exp: "Due to constrained hardware and lightweight designs, IoT devices face significant security threats."
+    },
+    {
+        q: "Q.75. What is the role of Sensor in smart grid architecture of IoT?",
+        options: ["Store data", "Manage data", "Collect data", "Security", "All of these"],
+        correct: "Collect data",
+        exp: "Sensors in smart grids collect power usage, voltage, and network metrics."
+    },
+    {
+        q: "Q.76. What is the role of Gateway in smart grid architecture of IoT?",
+        options: ["Store data", "Manage data", "Collect data", "Security", "All of these"],
+        correct: "Collect data",
+        exp: "Gateways collect data from multiple grid node sensors and relay it back to control centers."
+    },
+    {
+        q: "Q.77. Which is the Microcontroller used in Arduino UNO?",
+        options: ["ATmega328p", "ATmega2560", "ATmega32114", "AT91SAM3x8E", "All of these"],
+        correct: "ATmega328p",
+        exp: "The Arduino UNO hardware board is built around the Microchip ATmega328P."
+    },
+    {
+        q: "Q.78. Which of the following tags are useful in identifying devices, smartphones etc.?",
+        options: ["IETF 6LoWPAN", "IETF CoAP", "RFID/NFC", "IEEE 802.15.4.LowPAN", "All of these"],
+        correct: "RFID/NFC",
+        exp: "RFID and NFC tags are universally used for uniquely identifying hardware assets."
+    },
+    {
+        q: "Q.79. The smallest difference that a sensor can detect is?",
+        options: ["Scale", "Accuracy", "Resolution", "Precision", "All of these"],
+        correct: "Resolution",
+        exp: "Resolution defines the smallest detectable change in input parameter a sensor can measure."
+    },
+    {
+        q: "Q.80. BLE stands for?",
+        options: ["Blue Light Environment", "Blue Line Equation", "Bluetooth Low Energy", "Bluetooth Light Environment", "None of these"],
+        correct: "Bluetooth Low Energy",
+        exp: "BLE stands for Bluetooth Low Energy."
+    },
+    {
+        q: "Q.81. Which interface does the fingerprint sensor use?",
+        options: ["UART interface", "CoAP interface", "SPI interface", "I2C interface", "All of these"],
+        correct: "UART interface",
+        exp: "Optical fingerprint sensor modules usually communicate with microcontrollers via UART serial interface."
+    },
+    {
+        q: "Q.82. What is the frequency rate of Z-Wave in US/Global spectrum?",
+        options: ["908.42 MHz", "928.49 GHz", "888.42 GHz", "708.49 GHz", "All of these"],
+        correct: "908.42 MHz",
+        exp: "Z-Wave operates in the sub-GHz radio spectrum, specifically ~908.42 MHz in the US."
+    },
+    {
+        q: "Q.83. What is the primary purpose of using protocols like MQTT or CoAP in IoT?",
+        options: ["To encrypt data", "To Increase data transmission speed", "To enable lightweight data exchange", "To create a digital twin", "All of these"],
+        correct: "To enable lightweight data exchange",
+        exp: "MQTT and CoAP minimize network bandwidth and power consumption through lightweight framing."
+    },
+    {
+        q: "Q.84. Which protocol is specifically designed for constrained devices and networks in the IoT?",
+        options: ["MQTT", "CoAP", "HTTP", "FTP", "HTTPS"],
+        correct: "CoAP",
+        exp: "CoAP (Constrained Application Protocol) is designed explicitly for constrained node networks using UDP."
+    },
+    {
+        q: "Q.85. In the context of IoT, what is the main advantage of using edge computing over cloud computing for data processing?",
+        options: ["Lower costs", "Higher security", "Reduced latency in data processing", "More data storage options", "All of these"],
+        correct: "Reduced latency in data processing",
+        exp: "Edge computing processes data locally near the source, eliminating network transit delays to the cloud."
+    },
+    {
+        q: "Q.86. Which IoT communication model is most efficient for devices that require low power consumption?",
+        options: ["Peer-to-peer", "Publish/subscribe", "Request/response", "Broadcast", "All of these"],
+        correct: "Publish/subscribe",
+        exp: "Publish/subscribe decoupling allows battery-operated nodes to sleep when not sending data."
+    },
+    {
+        q: "Q.87. What distinguishes Bluetooth Low Energy (BLE) from classic Bluetooth in the context of IoT?",
+        options: ["Higher data transfer speeds", "Longer range", "Lower power consumption", "Support for more simultaneous connections", "All of these"],
+        correct: "Lower power consumption",
+        exp: "BLE was redesigned specifically to consume considerably less energy than Classic Bluetooth."
+    },
+    {
+        q: "Q.88. What role does the Constrained Application Protocol (CoAP) play in IoT?",
+        options: ["It encrypts IoT communications", "It standardizes web-based communication for constrained devices", "It increases the range of Wi-Fi", "It enhances Bluetooth connectivity", "All of these"],
+        correct: "It standardizes web-based communication for constrained devices",
+        exp: "CoAP translates web concepts (GET/POST) into UDP for low-power constrained microcontrollers."
+    },
+    {
+        q: "Q.89. Which coding structure is commonly used with MQTT to minimize data packet size for IoT communications?",
+        options: ["XML", "JSON", "Binary", "HTML", "None of these"],
+        correct: "Binary",
+        exp: "Binary payload formats minimize overall byte overhead across wireless telemetry streams."
+    },
+    {
+        q: "Q.90. How is security typically added to MQTT messages in IoT applications?",
+        options: ["Through SSL/TLS encryption", "By using strong passwords", "Through digital watermarks", "By encrypting the payload with AES", "All of these"],
+        correct: "Through SSL/TLS encryption",
+        exp: "MQTTS runs MQTT standard payloads over an SSL/TLS encrypted transport tunnel."
+    },
+    {
+        q: "Q.91. What security feature should be implemented to ensure the integrity of data transmitted between IoT devices?",
+        options: ["Digital signatures", "Password protection", "Firewalls", "Antivirus software", "All of these"],
+        correct: "Digital signatures",
+        exp: "Digital signatures verify authenticity and ensure data has not been altered in transit."
+    },
+    {
+        q: "Q.92. What is the primary function of actuators in IoT systems?",
+        options: ["To collect environmental data", "To convert electrical signals into physical movement", "To store data", "To process data", "All of these"],
+        correct: "To convert electrical signals into physical movement",
+        exp: "Actuators convert computational electrical output commands into real-world action (motors, valves, relays)."
+    },
+    {
+        q: "Q.93. Which device is used to detect the presence or absence of an object?",
+        options: ["Temperature sensor", "Pressure sensor", "Proximity sensor", "Humidity sensor", "All of these"],
+        correct: "Proximity sensor",
+        exp: "Proximity sensors identify the physical presence of nearby objects without direct contact."
+    },
+    {
+        q: "Q.94. What type of sensor is typically used for measuring humidity?",
+        options: ["Barometric pressure sensor", "Hygrometer", "Gyroscope", "Accelerometer", "All of these"],
+        correct: "Hygrometer",
+        exp: "A hygrometer measures atmospheric humidity levels."
+    },
+    {
+        q: "Q.95. What is the primary purpose of data analytics in IoT?",
+        options: ["To Increase data storage costs", "To reduce the efficiency of IoT devices", "To derive meaningful insights from collected data", "To complicate system architectures", "All of these"],
+        correct: "To derive meaningful insights from collected data",
+        exp: "Analytics converts raw telemetry data into actionable decisions and smart automation."
+    },
+    {
+        q: "Q.96. Which technology is primarily used for real-time data processing in IoT?",
+        options: ["Cloud computing", "Edge computing", "Data warehousing", "Blockchain", "All of these"],
+        correct: "Edge computing",
+        exp: "Edge computing processes real-time low-latency triggers directly on local gateways or devices."
+    },
+    {
+        q: "Q.97. For IoT applications, what is a common use case of MQTT?",
+        options: ["To create graphical user interfaces", "To encrypt device communications", "To facilitate lightweight messaging between devices", "To manage databases", "All of these"],
+        correct: "To facilitate lightweight messaging between devices",
+        exp: "MQTT facilitates efficient lightweight messaging between edge sensors and central brokers."
+    },
+    {
+        q: "Q.98. Which technology is pivotal for enabling real-time data analysis in smart home IoT devices?",
+        options: ["5G networks", "Dial-up internet connections", "Bluetooth Technology", "Wi-Fi", "VPN"],
+        correct: "5G networks",
+        exp: "5G offers ultra-low latency and high data throughput required for real-time analysis across dense node networks."
+    },
+    {
+        q: "Q.99. When optimizing an IoT system for low-power consumption, what emerging technology should be considered for efficient communication between devices?",
+        options: ["Li-Fi technology", "Bluetooth Low Energy (BLE)", "Zigbee", "NFC", "All of these"],
+        correct: "Bluetooth Low Energy (BLE)",
+        exp: "BLE is optimized for low duty cycles, consuming negligible idle power."
+    },
+    {
+        q: "Q.100. Who created MQTT?",
+        options: ["Robert Cailliau", "Tim Berners-Lee", "Andy Stanford-Clark", "Vint Cerf", "None of these"],
+        correct: "Andy Stanford-Clark",
+        exp: "Andy Stanford-Clark (IBM) and Arlen Nipper co-developed the MQTT protocol in 1999."
+    },
+    {
+        q: "Q.101. Once the data sensing is done, what facilitates the data transfer to external networks?",
+        options: ["Sensors", "Gateways", "Cloud devices", "GPS", "All of these"],
+        correct: "Gateways",
+        exp: "IoT Gateways aggregate sensor data and transmit it across protocol boundaries to remote targets."
+    },
+    {
+        q: "Q.102. Which Bluetooth version is specifically developed for the Internet of Things (IoT)?",
+        options: ["Bluetooth 3.0", "Bluetooth 4.2", "Bluetooth 5.0", "Bluetooth Smart Ready", "None of these"],
+        correct: "Bluetooth 5.0",
+        exp: "Bluetooth 5.0 introduced significantly higher range, speed, and broadcast capabilities tailored for IoT networks."
+    },
+    {
+        q: "Q.103. What is a key feature of Bluetooth Low Energy (BLE) that helps it conserve power?",
+        options: ["It operates in a mesh network architecture", "It always remains in sleep mode except during data transmission", "It uses a high data transfer rate of 3 Mbps", "It supports only point-to-point communication", "All of these"],
+        correct: "It always remains in sleep mode except during data transmission",
+        exp: "BLE conserves energy by staying in deep sleep mode and waking up strictly during packet transmission."
+    },
+    {
+        q: "Q.104. This protocol utilizes queues of data, enabling connected systems to communicate asynchronously and handle traffic spikes?",
+        options: ["MQTT", "AMQP", "HTTP", "DDS", "CoAP"],
+        correct: "AMQP",
+        exp: "AMQP (Advanced Message Queuing Protocol) provides transactional message queuing and asynchronous routing."
+    },
+    {
+        q: "Q.105. This protocol is mainly used under circumstances that require real-time data exchange—for example, autonomous vehicles, power generation, and robotics?",
+        options: ["MQTT", "AMQP", "HTTP", "DDS", "CoAP"],
+        correct: "DDS",
+        exp: "DDS (Data Distribution Service) is a high-performance data-bus standard designed for real-time robotic and defense systems."
+    },
+    {
+        q: "Q.106. Which protocol in IoT is designed with reliability and scalability in mind where security is provided via Transport Layer Security?",
+        options: ["MQTT", "AMQP", "HTTP", "DDS", "CoAP"],
+        correct: "MQTT",
+        exp: "MQTT provides QoS delivery levels for reliability and relies on TLS for underlying transport security."
+    },
+    {
+        q: "Q.107. In a mesh network using low-energy radio waves to communicate from appliance to appliance, which technology is used?",
+        options: ["Bluetooth", "NFC", "Wi-Fi", "Z Wave", "Zigbee"],
+        correct: "Z Wave",
+        exp: "Z-Wave uses low-power sub-GHz RF signals to establish mesh smart home appliance networks."
+    },
+    {
+        q: "Q.108. This global IoT network provider offers wireless networks to connect low-power objects that emit continuous data?",
+        options: ["Bluetooth", "NFC", "Wi-Fi", "Z Wave", "Sigfox"],
+        correct: "Sigfox",
+        exp: "Sigfox is a global LPWAN network operator providing low-power connectivity infrastructure."
+    }
+];
+
+// Fisher-Yates Shuffle Algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        // Create a copy of options array and shuffle it
+        const shuffledOptions = shuffleArray([...item.options]);
+
+        shuffledOptions.forEach((optionText) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = optionText;
+
+            btn.onclick = () => {
+                // Disable all options in this question once answered
+                const siblings = optionsDiv.querySelectorAll('.option-btn');
+                siblings.forEach(s => s.disabled = true);
+
+                // Check correctness
+                if (optionText === item.correct) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                    // Highlight the correct option in green
+                    siblings.forEach(s => {
+                        if (s.textContent === item.correct) {
+                            s.classList.add('correct');
+                        }
+                    });
+                }
+
+                // Show Explanation
+                const expBox = card.querySelector('.explanation');
+                expBox.style.display = 'block';
+            };
+
+            optionsDiv.appendChild(btn);
+        });
+
+        card.appendChild(optionsDiv);
+
+        // Explanation container
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+// Initialize on page load
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
