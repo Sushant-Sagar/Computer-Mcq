@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking MCQs Interactive Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not([disabled]) {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            font-weight: bold;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #e7f5ff;
+            border-left: 4px solid #1c7ed6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #1864ab;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Networking MCQs Interactive Quiz</h1>
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "Q.1. OSI model developed in which year.?[cite: 15]",
+        options: ["1981", "1990", "1996", "1984", "None of these"],
+        correct: "1984",
+        exp: "The Open Systems Interconnection (OSI) reference model was officially published by the International Organization for Standardization (ISO) in 1984."
+    },
+    {
+        q: "Q.2. Which type of model is OSI.?[cite: 15]",
+        options: ["Practical Model", "Realistic Model", "Conceptual Model", "Complex Model", "None of these"],
+        correct: "Conceptual Model",
+        exp: "OSI is a conceptual framework that standardizes functions of a telecommunication or computing system without specifying internal structure and technology."
+    },
+    {
+        q: "Q.3. The physical layer is concerned with movement of ______ over the physical medium.?[cite: 15]",
+        options: ["Bits", "Frames", "Data", "Packets", "None of these"],
+        correct: "Bits",
+        exp: "The Physical Layer is the lowest layer of the OSI model and deals with transmitting raw binary bits over a physical communications channel."
+    },
+    {
+        q: "Q.4. When a host on Network A sends a message to a host on network B, which address does the router look at.?[cite: 15]",
+        options: ["Port", "Logical", "Physical", "Socket", "None of these"],
+        correct: "Logical",
+        exp: "Routers forward packets between distinct networks by inspecting the destination logical address (IP address)."
+    },
+    {
+        q: "Q.5. Ethernet uses a ______ physical address that is imprinted on the network interface card (NIC)?[cite: 15]",
+        options: ["32 Bit", "64 Bit", "128 Bit", "6 Byte", "None of these"],
+        correct: "6 Byte",
+        exp: "Ethernet MAC addresses are 48-bit (6-byte) physical hardware identifiers burned into the Network Interface Card (NIC)."
+    },
+    {
+        q: "Q.6. The ______ layer responsible for delivering data units from one station to the next without errors?[cite: 15]",
+        options: ["Transport", "Network", "Data Link", "Physical", "More than one of the above"],
+        correct: "Data Link",
+        exp: "The Data Link Layer guarantees reliable node-to-node frame transfer across a single physical link through error detection and flow control."
+    },
+    {
+        q: "Q.7. The ______ layer responsible for Source to Destination delivery of a packet across multiple network links?[cite: 15]",
+        options: ["Transport", "Network", "Data Link", "Physical", "More than one of the above"],
+        correct: "Network",
+        exp: "The Network Layer manages end-to-end packet routing across intermediate routers from source host to destination host."
+    },
+    {
+        q: "Q.8. The_________ layer establishes, maintains & synchronizes the interactions between communicating devices?[cite: 15]",
+        options: ["Transport Layer", "Network Layer", "Session Layer", "Physical Layer", "More than one of the above"],
+        correct: "Session Layer",
+        exp: "The Session Layer manages dialog execution, establishing, maintaining, and synchronizing communication channels between end applications."
+    },
+    {
+        q: "Q.9. The _______address identifies a process on a host.?[cite: 15]",
+        options: ["Physical", "IP", "Port", "Specific", "More than one of the above"],
+        correct: "Port",
+        exp: "Port numbers identify specific software applications or process services executing on a target computing host."
+    },
+    {
+        q: "Q.10. The _________address also known as link address, is the address of a node as defined by its LAN or WAN?[cite: 15]",
+        options: ["Physical", "IP", "Port", "Specific", "More than one of the above"],
+        correct: "Physical",
+        exp: "The MAC address is the local node physical/link address defined on a local area network."
+    },
+    {
+        q: "Q.11. The________ layer enables the users to access the network?[cite: 15]",
+        options: ["Transport", "Application", "Data Link", "Physical", "More than one of the above"],
+        correct: "Application",
+        exp: "The Application Layer provides end-user applications direct access to network communication services."
+    },
+    {
+        q: "Q.12. TCP/IP Network model comes in which year?[cite: 15]",
+        options: ["1980", "1970", "1990", "1960", "More than one of the above"],
+        correct: "1970",
+        exp: "The TCP/IP protocol suite was developed under US DoD DARPA research initiatives during the 1970s."
+    },
+    {
+        q: "Q.13. Among these which is not the layer of TCP/IP model.?[cite: 15]",
+        options: ["Network Layer", "Internet Layer", "Transport Layer", "Session Layer", "More than one of the above"],
+        correct: "Session Layer",
+        exp: "The standard TCP/IP architectural suite collapses Session and Presentation layers directly into the Application layer."
+    },
+    {
+        q: "Q.14. TCP/IP protocol was designed by ?[cite: 15]",
+        options: ["Vint Cerf", "Bob Kahn", "Both of these", "Tim Berners Lee", "More than one of the above"],
+        correct: "Both of these",
+        exp: "Vint Cerf and Bob Kahn co-designed the fundamental TCP/IP protocol suite."
+    },
+    {
+        q: "Q.15. Which waves are used for short range communication such as those between a PC and a peripheral device?[cite: 15]",
+        options: ["Normal waves", "Micro wave", "Fiber optic", "Infrared wave", "More than one of the above"],
+        correct: "Infrared wave",
+        exp: "Infrared signals are high-frequency wireless light waves suited for short-range line-of-sight peripheral connections."
+    },
+    {
+        q: "Q.16. Among these name the connection-less protocol?[cite: 15]",
+        options: ["TCP", "UDP", "IP", "2&3", "None of these"],
+        correct: "2&3",
+        exp: "Both UDP (Transport layer) and IP (Network layer) are stateless connectionless protocols."
+    },
+    {
+        q: "Q.17. Among these name the connection-oriented protocol?[cite: 15]",
+        options: ["UDP", "TCP", "Both of these", "IP", "None of these"],
+        correct: "TCP",
+        exp: "TCP is a reliable, connection-oriented transport protocol establishing a explicit 3-way handshake before transmitting data."
+    },
+    {
+        q: "Q.18. What is the main advantage of UDP?[cite: 15]",
+        options: ["More Overload", "Reliable", "Low Overload", "Fast", "More than one of the above"],
+        correct: "Fast",
+        exp: "UDP skips handshakes, order reassembly, and retransmissions, leading to minimal overhead and fast delivery."
+    },
+    {
+        q: "Q.19. Port number of HTTP is?[cite: 15]",
+        options: ["21", "25", "81", "80", "More than one of the above"],
+        correct: "80",
+        exp: "Port 80 is the standard TCP port registered for unencrypted HTTP web traffic."
+    },
+    {
+        q: "Q.20. Port number of FTP is ?[cite: 15]",
+        options: ["21", "25", "60", "81", "More than one of the above"],
+        correct: "21",
+        exp: "FTP utilizes TCP port 21 to establish control connections for user authentication and command execution."
+    },
+    {
+        q: "Q.21. Port number of DHCP Server is ?[cite: 15]",
+        options: ["57", "67", "77", "87", "More than one of the above"],
+        correct: "67",
+        exp: "DHCP servers listen on UDP destination port 67 to receive configuration requests from clients."
+    },
+    {
+        q: "Q.22. Which of the following protocol is used for remote terminal connection service?[cite: 15]",
+        options: ["RARP", "UDP", "FTP", "TELNET", "More than one of the above"],
+        correct: "TELNET",
+        exp: "Telnet provides bidirectional interactive text-oriented remote terminal communication over networks."
+    },
+    {
+        q: "Q.23. The application layer of the OSI model is?[cite: 15]",
+        options: ["Four layer", "Five layer", "Six layer", "Seven layer", "More than one of the above"],
+        correct: "Seven layer",
+        exp: "The Application Layer sits at the very top as Layer 7 of the 7-layer OSI reference architecture."
+    },
+    {
+        q: "Q.24. Full form of SSL?[cite: 15]",
+        options: ["Secured Station Layer", "Secured Session LAN", "Session Secured Layer", "Secure Socket Layer", "More than one of the above"],
+        correct: "Secure Socket Layer",
+        exp: "SSL stands for Secure Sockets Layer, a cryptographic protocol designed to provide communication security over a computer network."
+    },
+    {
+        q: "Q.25. Bridge works in ________layer.?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "More than one of the above"],
+        correct: "Data Link Layer",
+        exp: "A Network Bridge operates at Layer 2 (Data Link) filtering network traffic using MAC addresses."
+    },
+    {
+        q: "Q.26. Which is a reference tool for understanding data communication between any two network system?[cite: 15]",
+        options: ["LAN", "WAN", "ISO Model", "OSI Model", "More than one of the above"],
+        correct: "OSI Model",
+        exp: "The OSI Reference Model provides a universal standard architecture for analyzing inter-computer communication processes."
+    },
+    {
+        q: "Q.27. How many layers are there in OSI model ?[cite: 15]",
+        options: ["6", "7", "8", "5", "More than one of the above"],
+        correct: "7",
+        exp: "The OSI reference architecture defines exactly 7 distinct structural layers."
+    },
+    {
+        q: "Q.28. Router operates in which layer of OSI Reference Model?[cite: 15]",
+        options: ["Layer 1 (Physical Layer)", "Layer 3 (Network Layer)", "Layer 4 (Transport Layer)", "Layer 7 (Application Layer)", "More than one of the above"],
+        correct: "Layer 3 (Network Layer)",
+        exp: "Routers analyze IP headers and function at Layer 3 (Network Layer)."
+    },
+    {
+        q: "Q.29. Bridge works in which layer of the OSI model ?[cite: 15]",
+        options: ["Application Layer", "Transport Layer", "Network Layer", "Data link Layer", "More than one of the above"],
+        correct: "Data link Layer",
+        exp: "Bridges forward frames according to MAC layer addressing at Layer 2."
+    },
+    {
+        q: "Q.30. How many layers are in the TCP/IP model?[cite: 15]",
+        options: ["4 Layers", "5 Layers", "6 Layers", "7 Layers", "More than one of the above"],
+        correct: "5 Layers",
+        exp: "The updated modern TCP/IP theoretical model consists of 5 layers (Application, Transport, Network, Data Link, Physical)."
+    },
+    {
+        q: "Q.31. Repeater operates in which layer of the OSI model[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "More than one of the above"],
+        correct: "Physical Layer",
+        exp: "Repeaters regenerate electrical/optical signals at the Physical Layer (Layer 1)."
+    },
+    {
+        q: "Q.32. MAC Address is the example of.?[cite: 15]",
+        options: ["Transport Layer", "Data Link Layer", "Application Layer", "Physical Layer", "More than one of the above"],
+        correct: "Data Link Layer",
+        exp: "Media Access Control (MAC) addresses are Layer 2 hardware identifiers."
+    },
+    {
+        q: "Q.33. Layer-2 Switch is also called ?[cite: 15]",
+        options: ["Multiport Hub", "Multiport Switch", "Multiport Bridge", "Multiport NIC", "More than one of the above"],
+        correct: "Multiport Bridge",
+        exp: "A Layer-2 Ethernet switch functions fundamentally as an advanced multiport bridge."
+    },
+    {
+        q: "Q.34. Which of the following is/are Protocols of Application Layer?[cite: 15]",
+        options: ["FTP", "SMTP", "POP3", "All of above", "None of these"],
+        correct: "All of above",
+        exp: "FTP, SMTP, and POP3 are all protocols residing within the Application Layer."
+    },
+    {
+        q: "Q.35. Which of the following protocol is/are defined in Transport layer?[cite: 15]",
+        options: ["FTP", "SMTP", "UDP", "HTTP", "More than one of the above"],
+        correct: "UDP",
+        exp: "UDP (User Datagram Protocol) is a core protocol belonging to the Transport Layer."
+    },
+    {
+        q: "Q.36. This is not a application layer protocol?[cite: 15]",
+        options: ["HTTP", "SMTP", "FTP", "TCP", "More than one of the above"],
+        correct: "TCP",
+        exp: "TCP operates at the Transport Layer, whereas HTTP, SMTP, and FTP are Application Layer protocols."
+    },
+    {
+        q: "Q.37. In the OSI model, encryption and decryption are function of which layer?[cite: 15]",
+        options: ["Transport", "Session", "Presentation", "Application", "More than one of the above"],
+        correct: "Presentation",
+        exp: "The Presentation Layer (Layer 6) manages data formatting, encryption, decryption, and compression."
+    },
+    {
+        q: "Q.38. Who developed standards for the OSI reference model?[cite: 15]",
+        options: ["ANSI", "IEEE", "ISO", "BCD", "More than one of the above"],
+        correct: "ISO",
+        exp: "The International Organization for Standardization (ISO) developed the OSI reference model."
+    },
+    {
+        q: "Q.39. In an OSI model, the first layer is the ______ layer?[cite: 15]",
+        options: ["Session Layer", "Application Layer", "Data Link Layer", "Physical Layer", "More than one of the above"],
+        correct: "Physical Layer",
+        exp: "In bottom-up order (1 to 7), Layer 1 is the Physical Layer."
+    },
+    {
+        q: "Q.40. Which is the layer of the OSI reference model that employs Error Detection?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Session Layer", "More than one of the above"],
+        correct: "Data Link Layer",
+        exp: "The Data Link layer uses Frame Check Sequence (FCS/CRC) fields to detect transmission frame errors."
+    },
+    {
+        q: "Q.41. ________protocol is the foundation of the internet and most home and business networks.?[cite: 15]",
+        options: ["HTTP", "FTP", "Telnet", "DHCP", "TCP/IP"],
+        correct: "TCP/IP",
+        exp: "The TCP/IP suite forms the core underlying protocol architecture of the modern Internet."
+    },
+    {
+        q: "Q.42.________ protocol commonly used for real-time applications such as video streaming and online gaming.?[cite: 15]",
+        options: ["HTTP", "FTP", "UDP", "DHCP", "TCP/IP"],
+        correct: "UDP",
+        exp: "UDP's low latency and lack of retransmission delays make it ideal for real-time media streaming and online gaming."
+    },
+    {
+        q: "Q.43. ________is a protocol used for real-time communication through text messaging.?[cite: 15]",
+        options: ["HTTP", "TCP/IP", "SNMP", "ICMP", "IRC"],
+        correct: "IRC",
+        exp: "Internet Relay Chat (IRC) is designed for real-time text-based chat communications."
+    },
+    {
+        q: "Q.44.__________ protocol automatically assigns IP addresses and network configuration settings to devices on a network.?[cite: 15]",
+        options: ["DHCP", "TCP/IP", "SNMP", "ICMP", "IRC"],
+        correct: "DHCP",
+        exp: "DHCP dynamically assigns IP configurations and gateway parameters to network hosts automatically."
+    },
+    {
+        q: "Q.45._________ protocol allows users to download emails from the server to their local devices.?[cite: 15]",
+        options: ["DHCP", "TCP/IP", "POP3", "IMAP", "SMTP"],
+        correct: "POP3",
+        exp: "POP3 downloads mail messages from an inbox server directly to local disk client storage."
+    },
+    {
+        q: "Q.46. _________protocols allows users to view and manipulate emails on the server without downloading them.?[cite: 15]",
+        options: ["DHCP", "TCP/IP", "POP3", "IMAP", "SMTP"],
+        correct: "IMAP",
+        exp: "IMAP maintains email synchronization directly on the central mail server across multiple user devices."
+    },
+    {
+        q: "Q.47. __________protocols uses SSL/TLS encryption to protect the confidentiality and integrity of data transmitted.?[cite: 15]",
+        options: ["HTTP", "HTTPS", "DHCP", "TCP/IP", "UDP"],
+        correct: "HTTPS",
+        exp: "HTTPS wraps standard HTTP web traffic over SSL/TLS encrypted transport connections."
+    },
+    {
+        q: "Q.48. _________protocols is designed to send and distribute outgoing E-Mail.?[cite: 15]",
+        options: ["SMTP", "MIME", "POP", "IMAP", "All of these"],
+        correct: "SMTP",
+        exp: "Simple Mail Transfer Protocol (SMTP) handles sending and transferring outgoing emails across servers."
+    },
+    {
+        q: "Q.49. __________protocols is designed for connecting one system with another as remote login.?[cite: 15]",
+        options: ["TCP/IP", "MIME", "POP", "IMAP", "Telnet"],
+        correct: "Telnet",
+        exp: "Telnet allows terminal network logins to manage remote hosts."
+    },
+    {
+        q: "Q.50. protocols is designed was designed for distributing, searching, and retrieving documents over the Internet.?[cite: 15]",
+        options: ["Telnet", "DHCP", "TCP/IP", "HTTP", "Gopher"],
+        correct: "Gopher",
+        exp: "Gopher was an early document distribution menu-driven protocol predating HTTP."
+    },
+    {
+        q: "Q.51. __________protocol used by network devices to send error messages and operational information.?[cite: 15]",
+        options: ["Telnet", "ICMP", "TCP/IP", "HTTP", "Gopher"],
+        correct: "ICMP",
+        exp: "Internet Control Message Protocol (ICMP) reports operational feedback and diagnostic error alerts."
+    },
+    {
+        q: "Q.52. __________protocol translates IP addresses to MAC addresses and vice versa.?[cite: 15]",
+        options: ["Telnet", "ICMP", "ARP", "RARP", "HTTP"],
+        correct: "ARP",
+        exp: "Address Resolution Protocol (ARP) resolves dynamic IP logical addresses to physical MAC hardware addresses."
+    },
+    {
+        q: "Q.53. ________ protocol translates domain name into IP addresses.?[cite: 15]",
+        options: ["Telnet", "ICMP", "ARP", "DNS", "HTTP"],
+        correct: "DNS",
+        exp: "Domain Name System (DNS) maps human-friendly domain names to numerical IP network addresses."
+    },
+    {
+        q: "Q.54. __________ protocol is used to find an IP address when only the MAC address is known.?[cite: 15]",
+        options: ["Telnet", "ARP", "RARP", "DNS", "HTTP"],
+        correct: "RARP",
+        exp: "Reverse ARP (RARP) resolves physical MAC addresses back into assigned IP logical addresses."
+    },
+    {
+        q: "Q.55. __________protocol is used to find MAC address when IP address is known.?[cite: 15]",
+        options: ["Telnet", "ARP", "RARP", "DNS", "HTTP"],
+        correct: "ARP",
+        exp: "ARP requests map known IP addresses to target local physical MAC addresses."
+    },
+    {
+        q: "Q.56. Which is the layer that converts Packets to Frames and Frames to Packets in the OSI model.?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "Session Layer"],
+        correct: "Network Layer",
+        exp: "The Network Layer encapsulates/decapsulates packets down to frame units processed by the Data Link Layer."
+    },
+    {
+        q: "Q.57. Choose the incorrect about MAC Address.?[cite: 15]",
+        options: ["MAC is globally unique", "Always in a hexadecimal format", "12-digit number", "48 bits long", "8 byte number"],
+        correct: "8 byte number",
+        exp: "A MAC address is 6 bytes (48 bits) long, making '8 byte number' factually incorrect."
+    },
+    {
+        q: "Q.58. In OSI Model IP Address & MAC Address comes under which layer respectively.?[cite: 15]",
+        options: ["Data Link, Session", "Physical, Data Link", "Network, Presentation", "Network, Data Link", "Application, Presentation"],
+        correct: "Network, Data Link",
+        exp: "IP addressing belongs to Layer 3 (Network), and MAC addressing belongs to Layer 2 (Data Link)."
+    },
+    {
+        q: "Q.59. Attempt to gain or change IP Address or DNS is called.?[cite: 15]",
+        options: ["Sniffing", "Spoofing", "Phishing", "Spooling", "Smishing"],
+        correct: "Spoofing",
+        exp: "Spoofing involves impersonating legitimate network identities by forging source IP or DNS records."
+    },
+    {
+        q: "Q.60. __________protocol enables more advanced email management and synchronization across numerous devices.?[cite: 15]",
+        options: ["IMAP", "MIME", "SMTP", "HTTP", "POP3"],
+        correct: "IMAP",
+        exp: "IMAP facilitates server-side mail management and folder state sync across multiple concurrent devices."
+    },
+    {
+        q: "Q.61. is a passage to connect two network that may work on different networking models.?[cite: 15]",
+        options: ["Hub", "Switch", "Gateway", "Router", "Bridge"],
+        correct: "Gateway",
+        exp: "Gateways perform protocol translation connecting disparate systems operating across differing network models."
+    },
+    {
+        q: "Q.62. Which of the following addresses is 32-bit.?[cite: 15]",
+        options: ["MAC address", "Virtual address", "Source address", "Destination address", "None of these"],
+        correct: "Virtual address",
+        exp: "An IPv4 host address (used as Virtual address in software networking context) uses 32 bits."
+    },
+    {
+        q: "Q.63. Select the standard protocol of the Internet.?[cite: 15]",
+        options: ["TCP/IP", "HTTP", "UDP", "FTP", "DHCP"],
+        correct: "TCP/IP",
+        exp: "TCP/IP is the standard baseline protocol suit governing global internet connectivity."
+    },
+    {
+        q: "Q.64. Contention based MAC protocol are commonly used in.?[cite: 15]",
+        options: ["Ethernet Networks", "Token Ring Networks", "ATM Networks", "Point to Point Networks", "All of these"],
+        correct: "Ethernet Networks",
+        exp: "Ethernet networks utilize CSMA/CD, which is a contention-based media access control method."
+    },
+    {
+        q: "Q.65. HTTP protocol is used for.?[cite: 15]",
+        options: ["E-Mail Communication", "File Transfers", "Web Browsing", "Remote Terminal Access", "All of these"],
+        correct: "Web Browsing",
+        exp: "Hypertext Transfer Protocol (HTTP) serves web content pages across browsers."
+    },
+    {
+        q: "Q.66. The maximum Length (in bytes) of an IPV-4 datagram is.?[cite: 15]",
+        options: ["32", "256", "1024", "65535", "128"],
+        correct: "65535",
+        exp: "The Total Length field in the IPv4 header is 16 bits, allowing a maximum datagram size of 65,535 bytes."
+    },
+    {
+        q: "Q.67. A single packet on a data link is known as ______ .?[cite: 15]",
+        options: ["Bits", "Frames", "Data", "Datagram", "Tokens"],
+        correct: "Frames",
+        exp: "Data units transmitted across the Data Link Layer are formatted as Frames."
+    },
+    {
+        q: "Q.68. Which layer in OSI Model is not comes under the category of Hardware layer.?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "All of these"],
+        correct: "Transport Layer",
+        exp: "The Transport layer functions as the boundary between lower hardware-centric layers and upper software layers."
+    },
+    {
+        q: "Q.69. Which layer in OSI Model comes under the category of Software layer.?[cite: 15]",
+        options: ["Session Layer", "Presentation Layer", "Application Layer", "All of these", "None of these"],
+        correct: "All of these",
+        exp: "Layers 5, 6, and 7 (Session, Presentation, Application) are software-focused application layers."
+    },
+    {
+        q: "Q.70. Topologies like Bus, Star, Ring, Tree comes under which layer in OSI Model.?[cite: 15]",
+        options: ["Session Layer", "Presentation Layer", "Application Layer", "Physical Layer", "Data Link Layer"],
+        correct: "Physical Layer",
+        exp: "Physical layout configurations (topologies) are defined within the Physical Layer specifications."
+    },
+    {
+        q: "Q.71. Lower Sub Layer of Data Link Layer in OSI Model is.?[cite: 15]",
+        options: ["Logical Link Control", "Mac Layer", "Physical Layer", "Network Layer", "TCP/IP Layer"],
+        correct: "Mac Layer",
+        exp: "The Data Link layer splits into upper LLC (Logical Link Control) and lower MAC (Media Access Control) sublayers."
+    },
+    {
+        q: "Q.72. In OSI model dialogue control and token management are responsibilities of?[cite: 15]",
+        options: ["Session Layer", "Network layer", "Transport layer", "Data link layer", "More than one of the above"],
+        correct: "Session Layer",
+        exp: "Dialogue control and token management synchronization are key functions of the Session Layer."
+    },
+    {
+        q: "Q.73. _______is operates in all seven layers of OSI model?[cite: 15]",
+        options: ["Gateway", "Bridge", "Hub", "Repeater", "More than one of the above"],
+        correct: "Gateway",
+        exp: "Gateways translate protocols across all 7 OSI layers."
+    },
+    {
+        q: "Q.74. The functionalities of the presentation layer include?[cite: 15]",
+        options: ["Data Compression", "Data Encryption", "Data Decryption", "All of these", "None of these"],
+        correct: "All of these",
+        exp: "The Presentation Layer performs formatting, compression, encryption, and decryption."
+    },
+    {
+        q: "Q.75. In Transport layer data travel in the form of ?[cite: 15]",
+        options: ["Frames", "Bits", "Packets", "Segments", "More than one of the above"],
+        correct: "Segments",
+        exp: "Data units handled at Layer 4 (Transport) are called Segments (or Datagrams in UDP)."
+    },
+    {
+        q: "Q.76. Transport Layer deals with which type of Address?[cite: 15]",
+        options: ["Logical address", "Physical Address", "Port Address", "Application Specific Address", "More than one of the above"],
+        correct: "Port Address",
+        exp: "The Transport Layer uses Port addresses to direct data to target processes."
+    },
+    {
+        q: "Q.77. Which layer specifies voltage, wire speed, and cables and moves bits between devices?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Session Layer", "More than one of the above"],
+        correct: "Physical Layer",
+        exp: "The Physical Layer defines hardware, electrical signaling, pinouts, and cable specifications."
+    },
+    {
+        q: "Q.78. The Process to Process delivery of the entire message is the responsibility of the layer?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "More than one of the above"],
+        correct: "Transport Layer",
+        exp: "Process-to-process delivery is handled by the Transport Layer via port numbers."
+    },
+    {
+        q: "Q.79. The _______layer is the layer closest to The transmission medium?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "More than one of the above"],
+        correct: "Physical Layer",
+        exp: "Layer 1 (Physical) interfaces directly with the transmission media."
+    },
+    {
+        q: "Q.80. The ______ layer lies between the Network Layer & Session Layer.?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Transport Layer", "Presentation Layer", "More than one of the above"],
+        correct: "Transport Layer",
+        exp: "Layer 4 (Transport) sits directly between Layer 3 (Network) and Layer 5 (Session)."
+    },
+    {
+        q: "Q.81. Which of the following layer of OSI model also called end-to-end layer?[cite: 15]",
+        options: ["Presentation layer", "Network layer", "Session layer", "Transport layer", "More than one of the above"],
+        correct: "Transport layer",
+        exp: "The Transport Layer provides true end-to-end connection control between client and server applications."
+    },
+    {
+        q: "Q.82. CSMA/CA operates in which layer of OSI Model.?[cite: 15]",
+        options: ["Physical Layer", "Data Link Layer", "Network Layer", "Transport Layer", "More than one of the above"],
+        correct: "Data Link Layer",
+        exp: "Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA) runs in the MAC sublayer of the Data Link Layer."
+    },
+    {
+        q: "Q.83. Node to Node delivery of data units is the responsibility of the ______ layer.?[cite: 15]",
+        options: ["Transport", "Data Link", "Presentation", "Application", "More than one of the above"],
+        correct: "Data Link",
+        exp: "The Data Link layer handles hop-to-hop or node-to-node frame delivery."
+    },
+    {
+        q: "Q.84. What is the use of Ping Command.?[cite: 15]",
+        options: ["PING Stands for Packet InterNet Groper", "Network connectivity Testing", "Network interface card troubleshooting", "Putting DNS name resolution issues to the test", "All of these"],
+        correct: "All of these",
+        exp: "Ping tests host reachability, network interface readiness, and name resolution capabilities."
+    },
+    {
+        q: "Q.85. ICMP is used in.?[cite: 15]",
+        options: ["PING", "Traceroute", "Both of these", "IPCONFIG", "SYSTEMINFO"],
+        correct: "Both of these",
+        exp: "Both PING (Echo Request/Reply) and Traceroute (TTL expired) rely on ICMP."
+    },
+    {
+        q: "Q.86. Which command is used for Network Statistics.?[cite: 15]",
+        options: ["NetSTATIS", "NetStat", "NetAllStat", "All of these", "None of these"],
+        correct: "NetStat",
+        exp: "`netstat` displays active network connections, routing tables, and interface statistics."
+    },
+    {
+        q: "Q.87. To find MAC address ______ is used.?[cite: 15]",
+        options: ["ARP", "Traceroute", "RARP", "More than one of the above", "None of these"],
+        correct: "ARP",
+        exp: "ARP resolves a destination IP address to its corresponding physical MAC address."
+    },
+    {
+        q: "Q.88. ipconfig command is used for.?[cite: 15]",
+        options: ["Find MAC Address", "Find Networks", "Find TCP/IP", "Find IP Address", "More than one of the above"],
+        correct: "Find IP Address",
+        exp: "`ipconfig` displays current TCP/IP network interface configuration parameters including local IP address."
+    },
+    {
+        q: "Q.89. Command to find MAC address is.?[cite: 15]",
+        options: ["macget", "getmacaddress", "getmac", "getmacid", "More than one of the above"],
+        correct: "getmac",
+        exp: "`getmac` is the Windows command utility used to view physical MAC addresses."
+    },
+    {
+        q: "Q.90. _______display the current name of your Windows computer.?[cite: 15]",
+        options: ["Hosteid", "Hostcomputer", "Hostpanel", "Hostname", "More than one of the above"],
+        correct: "Hostname",
+        exp: "`hostname` prints the network hostname assigned to the active local system."
+    },
+    {
+        q: "Q.91. __________displaying possible routes (paths) and measuring transit delays of packets.?[cite: 15]",
+        options: ["Tracert", "Tracerouter", "Traceaddress", "Tracenetwork", "More than one of the above"],
+        correct: "Tracert",
+        exp: "`tracert` traces the hop-by-hop router paths and measures packet round-trip delays."
+    },
+    {
+        q: "Q.92. __________command is used for corresponding IP address of domain name system (DNS).?[cite: 15]",
+        options: ["lookup", "networkLook", "ARP", "RARP", "nslookup"],
+        correct: "nslookup",
+        exp: "`nslookup` queries DNS servers to retrieve domain-to-IP resolution records."
+    },
+    {
+        q: "Q.93. __________command is used for ending processes.?[cite: 15]",
+        options: ["lookup", "networkLook", "ARP", "RARP", "taskkill"],
+        correct: "taskkill",
+        exp: "`taskkill` terminates running application processes or tasks in Windows."
+    },
+    {
+        q: "Q.94. How many host can be configured using a subnet mask 255.255.255.128 ?[cite: 15]",
+        options: ["254", "126", "62", "30", "20"],
+        correct: "126",
+        exp: "Mask 255.255.255.128 (/25) leaves 7 host bits ($2^7 - 2 = 126$ usable hosts)."
+    },
+    {
+        q: "Q.95. How many host can be configured using a subnet mask 255.255.255.252?[cite: 15]",
+        options: ["6", "14", "30", "2", "1"],
+        correct: "2",
+        exp: "Mask 255.255.255.252 (/30) leaves 2 host bits ($2^2 - 2 = 2$ usable hosts)."
+    },
+    {
+        q: "Q.96. How many host can be configured using a subnet mask 255.255.255.240?[cite: 15]",
+        options: ["6", "14", "30", "2", "15"],
+        correct: "14",
+        exp: "Mask 255.255.255.240 (/28) leaves 4 host bits ($2^4 - 2 = 14$ usable hosts)."
+    },
+    {
+        q: "Q.97. How many total links are required to connect 12 devices in a fully connected mesh network.?[cite: 15]",
+        options: ["144", "66", "72", "112", "50"],
+        correct: "66",
+        exp: "A full mesh network of $n$ nodes requires $\\frac{n(n-1)}{2}$ links. For 12 nodes: $\\frac{12 \\times 11}{2} = 66$ links."
+    }
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+
+    quizData.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'question';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        const shuffledOptions = shuffleArray([...item.options]);
+
+        shuffledOptions.forEach((optionText) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = optionText;
+
+            btn.onclick = () => {
+                const siblings = optionsDiv.querySelectorAll('.option-btn');
+                siblings.forEach(s => s.disabled = true);
+
+                if (optionText === item.correct) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                    siblings.forEach(s => {
+                        if (s.textContent === item.correct) {
+                            s.classList.add('correct');
+                        }
+                    });
+                }
+
+                const expBox = card.querySelector('.explanation');
+                expBox.style.display = 'block';
+            };
+
+            optionsDiv.appendChild(btn);
+        });
+
+        card.appendChild(optionsDiv);
+
+        const expDiv = document.createElement('div');
+        expDiv.className = 'explanation';
+        expDiv.innerHTML = `<strong>Explanation:</strong> ${item.exp}`;
+        card.appendChild(expDiv);
+
+        container.appendChild(card);
+    });
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
